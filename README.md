@@ -4,9 +4,9 @@ PS-Agnoster
 <img src="http://herebedragons.io/wp-content/uploads/2016/03/PS-Agnoster.png" width="600">
 
 A set of PowerShell scripts which provide super fancy Git/PowerShell integration
-It uses Posh-Git under the hood to get things done and was inspired by the done by Chris Benti on [PS-Config](https://github.com/chrisbenti/PS-Config).
-The downside of PS-Config is that it does not pay nicely with regular Powerline fonts I use on my Linux Vagrant boxes.
-This causes it to not have the correct symbols to visualize the paths in either Linux or Windows depending on the font u use.
+It uses Posh-Git under the hood to get things done and was inspired by the work done by Chris Benti on [PS-Config](https://github.com/chrisbenti/PS-Config).
+The downside of PS-Config is that it does not play nicely with the regular Powerline fonts I use on my Linux Vagrant boxes.
+This causes it to not have the correct symbols to visualize the paths in either Linux or Windows depending on the font you use.
 
 Fixes and improvements:
 * Powerline fonts work out of the boxes
@@ -23,13 +23,13 @@ Make sure you have Posh-Git installed. I do this using [PsGet](http://psget.net/
 Install-Module posh-git
 ```
 
-You should use ConEmu to have a brilliant Terminal experience on Windows. You can install it using [Chocolatey](https://chocolatey.org/) :
+You should use ConEmu to have a brilliant terminal experience on Windows. You can install it using [Chocolatey](https://chocolatey.org/) :
 
 ```
 choco install ConEmu
 ```
 
-The fonts I use are Powerline fonts, there is a great [repository](https://github.com/powerline/fonts) containing them and a ps1 file to install.
+The fonts I use are Powerline fonts, there is a great [repository](https://github.com/powerline/fonts) containing them and a .ps1 file to install.
 I use `Meslo LG M for Powerline` in my ConEmu setup together with custom colors.
 
 Installing
@@ -37,7 +37,7 @@ Installing
 
 Adjust your `Microsoft.PowerShell_profile.ps1` file to include both Posh-Git and PS-Agnoster
 Make sure the Posh-Git module is sourced before you source PS-Agnoster.
-This example assumes the location of PS-Agnoster is in my Github folder, adjust to your needs.
+This example assumes the location of PS-Agnoster is in the Github folder, adjust to your needs.
 
 ```
 Import-Module -Name posh-git -ErrorAction SilentlyContinue
@@ -62,7 +62,7 @@ This example allows you to tweak the branch symbol:
 $AgnosterPromptSettings.GitBranchSymbol = [char]::ConvertFromUtf32(0xE0A0)
 ````
 
-Also do not forget the Posh-Git settings itself:
+Also do not forget the Posh-Git settings itself (enable the stash indication for example):
 
 ````
 $GitPromptSettings
