@@ -1,6 +1,8 @@
 PS-Agnoster
 ===========
 
+<img src="http://herebedragons.io/wp-content/uploads/2016/03/PS-Agnoster.png" width="300">
+
 A set of PowerShell scripts which provide super fancy Git/PowerShell integration
 It uses Posh-Git under the hood to get things done and was inspired by the done by Chris Benti on [PS-Config](https://github.com/chrisbenti/PS-Config).
 The downside of PS-Config is that it does not pay nicely with regular Powerline fonts I use on my Linux Vagrant boxes.
@@ -50,6 +52,8 @@ List the current configuration:
 ````
 $AgnosterPromptSettings
 ````
+
+<img src="http://herebedragons.io/wp-content/uploads/2016/03/AgnosterPromptSettings.png" width="300">
 
 You can tweak the colors and symbols being used by manipulating the `$AgnosterPromptSettings`.
 This example allows you to tweak the branch symbol:
