@@ -13,6 +13,7 @@ $global:AgnosterPromptSettings = New-Object PSObject -Property @{
   BranchAheadStatusSymbol = [char]::ConvertFromUtf32(0x2191) # Up arrow
   BranchBehindStatusSymbol = [char]::ConvertFromUtf32(0x2193) # Down arrow
   BranchBehindAndAheadStatusSymbol = [char]::ConvertFromUtf32(0x21C5) # Up & Down arrow
+  ElevatedSymbol = [char]::ConvertFromUtf32(0x26A1) #lightning symbol
   DriveDefaultColor = "blue"
   GitDefaultColor = "cyan"
 }
@@ -65,6 +66,11 @@ function Prompt {
 
     # PowerLine starts with a space
     Write-Colors $driveColor " "
+
+    #check for elevated prompt
+    If (([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
+      Write-Colors $driveColor "$($sl.ElevatedSymbol) "
+    }
 
     # Writes the drive portion
     Write-Colors $driveColor "$drive"
