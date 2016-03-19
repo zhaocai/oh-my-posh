@@ -3,13 +3,12 @@ PS-Agnoster
 
 <img src="http://herebedragons.io/wp-content/uploads/2016/03/PS-Agnoster.png" width="600">
 
-A set of PowerShell scripts which provide super fancy Git/PowerShell integration
-It uses Posh-Git under the hood to get things done and was inspired by the work done by Chris Benti on [PS-Config](https://github.com/chrisbenti/PS-Config).
+An Agnoster theme for Powershell inspired by the work done by Chris Benti on [PS-Config](https://github.com/chrisbenti/PS-Config).
 The downside of PS-Config is that it does not play nicely with the regular Powerline fonts I use on my Linux Vagrant boxes.
 This causes it to not have the correct symbols to visualize the paths in either Linux or Windows depending on the font you use.
 
 Fixes and improvements:
-* Powerline fonts work out of the boxes
+* Powerline fonts work out of the box
 * Git status indications in the Agnoster theme
 * Configurable
 * Separate settings for PS-Agnoster and Posh-Git
