@@ -14,18 +14,12 @@ $global:AgnosterPromptSettings = New-Object PSObject -Property @{
   BranchBehindStatusSymbol = [char]::ConvertFromUtf32(0x2193) # Down arrow
   BranchBehindAndAheadStatusSymbol = [char]::ConvertFromUtf32(0x21C5) # Up & Down arrow
   ElevatedSymbol = [char]::ConvertFromUtf32(0x26A1) #lightning symbol
-  DriveDefaultColor = "blue"
-  GitDefaultColor = "cyan"
+  GitDefaultColor = [ConsoleColor]::DarkCyan
+  GitLocalChangesColor = [ConsoleColor]::DarkGreen
+  GitNoLocalChangesAndAheadColor = [ConsoleColor]::DarkGray
+  PromptForegroundColor = [ConsoleColor]::Black
+  PromptBackgroundColor = [ConsoleColor]::DarkBlue
 }
-
-$colors = @{}
-$colors["blue"] = ([ConsoleColor]::Cyan, [ConsoleColor]::DarkBlue)
-$colors["green"] = ([ConsoleColor]::Green, [ConsoleColor]::DarkGreen)
-$colors["cyan"] = ([ConsoleColor]::Cyan, [ConsoleColor]::DarkCyan)
-$colors["red"] = ([ConsoleColor]::Red, [ConsoleColor]::DarkRed)
-$colors["magenta"] = ([ConsoleColor]::Magenta, [ConsoleColor]::DarkMagenta)
-$colors["yellow"] = ([ConsoleColor]::Yellow, [ConsoleColor]::DarkYellow)
-$colors["gray"] = ([ConsoleColor]::White, [ConsoleColor]::DarkGray)
 
 <#
 .SYNOPSIS
@@ -57,25 +51,25 @@ function Prompt {
     $drive = (Get-Drive (Get-Location).Path)
 
     switch -wildcard ($drive){
-        "C:\" { $driveColor = "blue" }
-        "~\"  { $driveColor = "blue"}
-        "\\*" { $driveColor = "magenta" }
+        "C:\" { $driveColor = $sl.PromptBackgroundColor }
+        "~\"  { $driveColor = $sl.PromptBackgroundColor }
+        "\\*" { $driveColor = $sl.PromptBackgroundColor }
     }
 
     $lastColor = $driveColor
 
     # PowerLine starts with a space
-    Write-Colors $driveColor " "
+    Write-Prompt " " -ForegroundColor $sl.PromptForegroundColor -BackgroundColor $driveColor
 
     #check for elevated prompt
     If (([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
-      Write-Colors $driveColor "$($sl.ElevatedSymbol) "
+      Write-Prompt "$($sl.ElevatedSymbol) " -ForegroundColor $sl.PromptForegroundColor -BackgroundColor $driveColor
     }
 
     # Writes the drive portion
-    Write-Colors $driveColor "$drive"
-    Write-Colors $driveColor (Shorten-Path (Get-Location).Path)
-    Write-Colors $driveColor " "
+    Write-Prompt "$drive" -ForegroundColor $sl.PromptForegroundColor -BackgroundColor $driveColor
+    Write-Prompt (Shorten-Path (Get-Location).Path) -ForegroundColor $sl.PromptForegroundColor -BackgroundColor $driveColor
+    Write-Prompt " " -ForegroundColor $sl.PromptForegroundColor -BackgroundColor $driveColor
 
     if(Vanilla-Window){ #use the builtin posh-output
         Write-VcsStatus
@@ -128,7 +122,7 @@ function Write-Fancy-Vcs-Branches($status) {
         if(-not ($localChanges) -and ($status.AheadBy -gt 0)){ $color = "gray" } #only affects git
 
         $branchStatusBackgroundColor = $colors[$color][1]
-        $branchStatusForegroundColor = $colors[$driveColor][0]
+        $branchStatusForegroundColor = $sl.PromptForegroundColor #$colors[$driveColor][0]
 
         Write-Prompt $sl.FancySpacerSymbol -ForegroundColor $colors[$driveColor][1] -BackgroundColor $branchStatusBackgroundColor
         Write-Prompt " $($sl.GitBranchSymbol)" -BackgroundColor $branchStatusBackgroundColor -ForegroundColor $branchStatusForegroundColor
