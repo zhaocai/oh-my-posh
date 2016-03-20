@@ -14,18 +14,12 @@ $global:AgnosterPromptSettings = New-Object PSObject -Property @{
   BranchBehindStatusSymbol = [char]::ConvertFromUtf32(0x2193) # Down arrow
   BranchBehindAndAheadStatusSymbol = [char]::ConvertFromUtf32(0x21C5) # Up & Down arrow
   ElevatedSymbol = [char]::ConvertFromUtf32(0x26A1) #lightning symbol
-  DriveDefaultColor = "blue"
-  GitDefaultColor = "cyan"
+  GitDefaultColor = [ConsoleColor]::DarkCyan
+  GitLocalChangesColor = [ConsoleColor]::DarkGreen
+  GitNoLocalChangesAndAheadColor = [ConsoleColor]::DarkGray
+  PromptForegroundColor = [ConsoleColor]::Black
+  PromptBackgroundColor = [ConsoleColor]::DarkBlue
 }
-
-$colors = @{}
-$colors["blue"] = ([ConsoleColor]::Cyan, [ConsoleColor]::DarkBlue)
-$colors["green"] = ([ConsoleColor]::Green, [ConsoleColor]::DarkGreen)
-$colors["cyan"] = ([ConsoleColor]::Cyan, [ConsoleColor]::DarkCyan)
-$colors["red"] = ([ConsoleColor]::Red, [ConsoleColor]::DarkRed)
-$colors["magenta"] = ([ConsoleColor]::Magenta, [ConsoleColor]::DarkMagenta)
-$colors["yellow"] = ([ConsoleColor]::Yellow, [ConsoleColor]::DarkYellow)
-$colors["gray"] = ([ConsoleColor]::White, [ConsoleColor]::DarkGray)
 
 <#
 .SYNOPSIS
@@ -57,25 +51,25 @@ function Prompt {
     $drive = (Get-Drive (Get-Location).Path)
 
     switch -wildcard ($drive){
-        "C:\" { $driveColor = "blue" }
-        "~\"  { $driveColor = "blue"}
-        "\\*" { $driveColor = "magenta" }
+        "C:\" { $driveColor = $sl.PromptBackgroundColor }
+        "~\"  { $driveColor = $sl.PromptBackgroundColor }
+        "\\*" { $driveColor = $sl.PromptBackgroundColor }
     }
 
     $lastColor = $driveColor
 
     # PowerLine starts with a space
-    Write-Colors $driveColor " "
+    Write-Prompt " " -ForegroundColor $sl.PromptForegroundColor -BackgroundColor $driveColor
 
     #check for elevated prompt
     If (([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
-      Write-Colors $driveColor "$($sl.ElevatedSymbol) "
+      Write-Prompt "$($sl.ElevatedSymbol) " -ForegroundColor $sl.PromptForegroundColor -BackgroundColor $driveColor
     }
 
     # Writes the drive portion
-    Write-Colors $driveColor "$drive"
-    Write-Colors $driveColor (Shorten-Path (Get-Location).Path)
-    Write-Colors $driveColor " "
+    Write-Prompt "$drive" -ForegroundColor $sl.PromptForegroundColor -BackgroundColor $driveColor
+    Write-Prompt (Shorten-Path (Get-Location).Path) -ForegroundColor $sl.PromptForegroundColor -BackgroundColor $driveColor
+    Write-Prompt " " -ForegroundColor $sl.PromptForegroundColor -BackgroundColor $driveColor
 
     if(Vanilla-Window){ #use the builtin posh-output
         Write-VcsStatus
@@ -90,7 +84,7 @@ function Prompt {
     if(Vanilla-Window) {
         Write-Host -Object ">" -n
     } else {
-        Write-Colors $lastColor $sl.FancySpacerSymbol -invert -noB
+        Write-Prompt $sl.FancySpacerSymbol -ForegroundColor $lastColor
     }
 
     return " "
@@ -118,19 +112,22 @@ function Get-VCSStatus{
 
 function Write-Fancy-Vcs-Branches($status) {
     if ($status) {
-        $color = $sl.GitDefaultColor
+
+        $branchStatusForegroundColor = $sl.PromptForegroundColor
+        $branchStatusBackgroundColor = $sl.GitDefaultColor
 
         # Determine Colors
         $localChanges = ($status.HasIndex -or $status.HasUntracked -or $status.HasWorking); #Git flags
         $localChanges = $localChanges -or (($status.Untracked -gt 0) -or ($status.Added -gt 0) -or ($status.Modified -gt 0) -or ($status.Deleted -gt 0) -or ($status.Renamed -gt 0)); #hg/svn flags
 
-        if($localChanges) { $color = "green"}
-        if(-not ($localChanges) -and ($status.AheadBy -gt 0)){ $color = "gray" } #only affects git
+        if($localChanges) {
+          $branchStatusBackgroundColor = $sl.GitLocalChangesColor
+        }
+        if(-not ($localChanges) -and ($status.AheadBy -gt 0)){
+          $branchStatusBackgroundColor = $sl.GitNoLocalChangesAndAheadColor
+        }
 
-        $branchStatusBackgroundColor = $colors[$color][1]
-        $branchStatusForegroundColor = $colors[$driveColor][0]
-
-        Write-Prompt $sl.FancySpacerSymbol -ForegroundColor $colors[$driveColor][1] -BackgroundColor $branchStatusBackgroundColor
+        Write-Prompt $sl.FancySpacerSymbol -ForegroundColor $driveColor -BackgroundColor $branchStatusBackgroundColor
         Write-Prompt " $($sl.GitBranchSymbol)" -BackgroundColor $branchStatusBackgroundColor -ForegroundColor $branchStatusForegroundColor
 
         $branchStatusSymbol = $null
@@ -225,40 +222,8 @@ function Write-Fancy-Vcs-Branches($status) {
             $Host.UI.RawUI.WindowTitle = "$script:adminHeader$prefix$repoName [$($status.Branch)]"
         }
 
-        return $color
+        return $branchStatusBackgroundColor
     }
-}
-
-function Write-Colors{
-    param(
-        [Parameter(Mandatory=$True)][string]$color,
-        [string]$message,
-        [switch]$newLine,
-        [switch]$invert,
-        [switch]$noBackground
-    )
-
-    if(-not $colors[$color]){
-        throw "Not a valid color: $color"
-    }
-
-    $noBackground = ($noBackground -or (Vanilla-Window))
-
-    $FG = 0
-    $BG = 1
-    if($invert){
-        $FG = 1
-        $BG = 0
-    }
-
-
-    if(-not ($noBackground)){
-        Write-Host -Object $message -ForegroundColor $colors[$color][$FG] -BackgroundColor $colors[$color][$BG] -NoNewline
-    } else {
-        Write-Host -Object $message -ForegroundColor $colors[$color][$FG] -NoNewline
-    }
-
-    if($newLine) { Write-Host -Object "" }
 }
 
 function Format-BranchName($branchName){
@@ -344,22 +309,17 @@ function Shorten-Path([string] $path) {
 
 }
 
-
-function Colors {
-    Write-Host -Object "INDIVIDUAL COLORS"
-    [ConsoleColor].DeclaredMembers | Select-Object -Property Name `
-        | Where-Object {$_.Name -ne "value__" } `
-        | ForEach-Object {
-            Write-Host -Object $_.Name -ForegroundColor $_.Name
-        }
-
-    Write-Host
-    Write-Host -Object "NAMED PAIRS"
-    $colors.Keys | ForEach-Object {
-        Write-Host -Object " $_ " `
-            -ForegroundColor $colors[$_][0] `
-            -BackgroundColor $colors[$_][1]
-    }
+function Agnoster-Colors {
+    Write-Host "GitDefaultColor                " -nonewline
+    Write-Host "       " -backgroundcolor $sl.GitDefaultColor
+    Write-Host "GitLocalChangesColor           " -nonewline
+    Write-Host "       " -backgroundcolor $sl.GitLocalChangesColor
+    Write-Host "GitNoLocalChangesAndAheadColor " -nonewline
+    Write-Host "       " -backgroundcolor $sl.GitNoLocalChangesAndAheadColor
+    Write-Host "PromptForegroundColor          " -nonewline
+    Write-Host "       " -backgroundcolor $sl.PromptForegroundColor
+    Write-Host "PromptBackgroundColor          " -nonewline
+    Write-Host "       " -backgroundcolor $sl.PromptBackgroundColor
 }
 
 $sl = $global:AgnosterPromptSettings #local settings
