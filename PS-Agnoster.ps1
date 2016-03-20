@@ -84,7 +84,7 @@ function Prompt {
     if(Vanilla-Window) {
         Write-Host -Object ">" -n
     } else {
-        Write-Colors $lastColor $sl.FancySpacerSymbol -invert -noB
+        Write-Prompt $sl.FancySpacerSymbol -ForegroundColor $lastColor
     }
 
     return " "
@@ -112,19 +112,22 @@ function Get-VCSStatus{
 
 function Write-Fancy-Vcs-Branches($status) {
     if ($status) {
-        $color = $sl.GitDefaultColor
+
+        $branchStatusForegroundColor = $sl.PromptForegroundColor
+        $branchStatusBackgroundColor = $sl.GitDefaultColor
 
         # Determine Colors
         $localChanges = ($status.HasIndex -or $status.HasUntracked -or $status.HasWorking); #Git flags
         $localChanges = $localChanges -or (($status.Untracked -gt 0) -or ($status.Added -gt 0) -or ($status.Modified -gt 0) -or ($status.Deleted -gt 0) -or ($status.Renamed -gt 0)); #hg/svn flags
 
-        if($localChanges) { $color = "green"}
-        if(-not ($localChanges) -and ($status.AheadBy -gt 0)){ $color = "gray" } #only affects git
+        if($localChanges) {
+          $branchStatusBackgroundColor = $sl.GitLocalChangesColor
+        }
+        if(-not ($localChanges) -and ($status.AheadBy -gt 0)){
+          $branchStatusBackgroundColor = $sl.GitNoLocalChangesAndAheadColor
+        }
 
-        $branchStatusBackgroundColor = $colors[$color][1]
-        $branchStatusForegroundColor = $sl.PromptForegroundColor #$colors[$driveColor][0]
-
-        Write-Prompt $sl.FancySpacerSymbol -ForegroundColor $colors[$driveColor][1] -BackgroundColor $branchStatusBackgroundColor
+        Write-Prompt $sl.FancySpacerSymbol -ForegroundColor $driveColor -BackgroundColor $branchStatusBackgroundColor
         Write-Prompt " $($sl.GitBranchSymbol)" -BackgroundColor $branchStatusBackgroundColor -ForegroundColor $branchStatusForegroundColor
 
         $branchStatusSymbol = $null
@@ -219,7 +222,7 @@ function Write-Fancy-Vcs-Branches($status) {
             $Host.UI.RawUI.WindowTitle = "$script:adminHeader$prefix$repoName [$($status.Branch)]"
         }
 
-        return $color
+        return $branchStatusBackgroundColor
     }
 }
 
