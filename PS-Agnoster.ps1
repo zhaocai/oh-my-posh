@@ -226,38 +226,6 @@ function Write-Fancy-Vcs-Branches($status) {
     }
 }
 
-function Write-Colors{
-    param(
-        [Parameter(Mandatory=$True)][string]$color,
-        [string]$message,
-        [switch]$newLine,
-        [switch]$invert,
-        [switch]$noBackground
-    )
-
-    if(-not $colors[$color]){
-        throw "Not a valid color: $color"
-    }
-
-    $noBackground = ($noBackground -or (Vanilla-Window))
-
-    $FG = 0
-    $BG = 1
-    if($invert){
-        $FG = 1
-        $BG = 0
-    }
-
-
-    if(-not ($noBackground)){
-        Write-Host -Object $message -ForegroundColor $colors[$color][$FG] -BackgroundColor $colors[$color][$BG] -NoNewline
-    } else {
-        Write-Host -Object $message -ForegroundColor $colors[$color][$FG] -NoNewline
-    }
-
-    if($newLine) { Write-Host -Object "" }
-}
-
 function Format-BranchName($branchName){
     if($spg.BranchNameLimit -gt 0 -and $branchName.Length -gt $spg.BranchNameLimit)
     {
@@ -341,22 +309,17 @@ function Shorten-Path([string] $path) {
 
 }
 
-
-function Colors {
-    Write-Host -Object "INDIVIDUAL COLORS"
-    [ConsoleColor].DeclaredMembers | Select-Object -Property Name `
-        | Where-Object {$_.Name -ne "value__" } `
-        | ForEach-Object {
-            Write-Host -Object $_.Name -ForegroundColor $_.Name
-        }
-
-    Write-Host
-    Write-Host -Object "NAMED PAIRS"
-    $colors.Keys | ForEach-Object {
-        Write-Host -Object " $_ " `
-            -ForegroundColor $colors[$_][0] `
-            -BackgroundColor $colors[$_][1]
-    }
+function Agnoster-Colors {
+    Write-Host "GitDefaultColor                " -nonewline
+    Write-Host "       " -backgroundcolor $sl.GitDefaultColor
+    Write-Host "GitLocalChangesColor           " -nonewline
+    Write-Host "       " -backgroundcolor $sl.GitLocalChangesColor
+    Write-Host "GitNoLocalChangesAndAheadColor " -nonewline
+    Write-Host "       " -backgroundcolor $sl.GitNoLocalChangesAndAheadColor
+    Write-Host "PromptForegroundColor          " -nonewline
+    Write-Host "       " -backgroundcolor $sl.PromptForegroundColor
+    Write-Host "PromptBackgroundColor          " -nonewline
+    Write-Host "       " -backgroundcolor $sl.PromptBackgroundColor
 }
 
 $sl = $global:AgnosterPromptSettings #local settings
