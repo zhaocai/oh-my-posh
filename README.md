@@ -2,15 +2,14 @@ PS-Agnoster
 ===========
 
 An Agnoster theme for Powershell inspired by the work done by Chris Benti on [PS-Config](https://github.com/chrisbenti/PS-Config).
-The downside of PS-Config is that it does not play nicely with the regular Powerline fonts I use on my Linux Vagrant boxes.
-This causes it to not have the correct symbols to visualize the paths in either Linux or Windows depending on the font you use.
 
 Tweaks and improvements:
 * Powerline fonts work out of the box
 * Git status indications in the Agnoster theme
-* Current session indications (admin, failed commmand, user)
+* Current session indications (admin, failed command, user)
 * Configurable
 * Separate settings for PS-Agnoster and Posh-Git
+* Does not mess with the default Powershell console
 
 #### Git integration
 <img src="http://herebedragons.io/wp-content/uploads/2016/03/agnoster_git.png" width="600">
