@@ -20,6 +20,8 @@ $global:AgnosterPromptSettings = New-Object PSObject -Property @{
   PromptForegroundColor = [ConsoleColor]::Black
   PromptBackgroundColor = [ConsoleColor]::DarkBlue
   SessionInfoBackgroundColor = [ConsoleColor]::Green
+  CommandFailedIconForegroundColor = [ConsoleColor]::Red
+  AdminIconForegroundColor = [ConsoleColor]::DarkGreen
 }
 
 <#
@@ -49,6 +51,17 @@ function Start-Up{
 Generates the prompt before each line in the console
 #>
 function Prompt {
+
+    $lastCommandFailed = !$?
+
+    #Start the vanilla posh-git when in a vanilla windows, else: go nuts
+    if(Vanilla-Window) {
+        Write-Host($pwd.ProviderPath) -nonewline
+        Write-VcsStatus
+        $global:LASTEXITCODE = !$lastCommandFailed
+        return "> "
+    }
+
     $drive = (Get-Drive (Get-Location).Path)
 
     switch -wildcard ($drive){
@@ -62,9 +75,14 @@ function Prompt {
     # PowerLine starts with a space
     Write-Prompt " " -ForegroundColor $sl.PromptForegroundColor -BackgroundColor $sl.SessionInfoBackgroundColor
 
+    #check the last command state and indicate if failed
+    If ($lastCommandFailed) {
+      Write-Prompt "$($sl.FancyXSymbol) " -ForegroundColor $sl.CommandFailedIconForegroundColor -BackgroundColor $sl.SessionInfoBackgroundColor
+    }
+
     #check for elevated prompt
     If (([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
-      Write-Prompt "$($sl.ElevatedSymbol) " -ForegroundColor $sl.PromptForegroundColor -BackgroundColor $sl.SessionInfoBackgroundColor
+      Write-Prompt "$($sl.ElevatedSymbol) " -ForegroundColor $sl.AdminIconForegroundColor -BackgroundColor $sl.SessionInfoBackgroundColor
     }
 
     $user = [Environment]::UserName
@@ -76,21 +94,13 @@ function Prompt {
     Write-Prompt (Shorten-Path (Get-Location).Path) -ForegroundColor $sl.PromptForegroundColor -BackgroundColor $driveColor
     Write-Prompt " " -ForegroundColor $sl.PromptForegroundColor -BackgroundColor $driveColor
 
-    if(Vanilla-Window){ #use the builtin posh-output
-        Write-VcsStatus
-    } else { #get ~fancy~
-        $status = Get-VCSStatus
-        if ($status) {
-            $lastColor = Write-Fancy-Vcs-Branches($status);
-        }
+    $status = Get-VCSStatus
+    if ($status) {
+        $lastColor = Write-Fancy-Vcs-Branches($status);
     }
 
     # Writes the postfix to the prompt
-    if(Vanilla-Window) {
-        Write-Host -Object ">" -n
-    } else {
-        Write-Prompt $sl.FancySpacerSymbol -ForegroundColor $lastColor
-    }
+    Write-Prompt $sl.FancySpacerSymbol -ForegroundColor $lastColor
 
     return " "
 }
@@ -316,12 +326,14 @@ function Shorten-Path([string] $path) {
 
 function Agnoster-Colors {
     Write-Host ""
-    Preview-Color -text "GitDefaultColor                " -color $sl.GitDefaultColor
-    Preview-Color -text "GitLocalChangesColor           " -color $sl.GitLocalChangesColor
-    Preview-Color -text "GitNoLocalChangesAndAheadColor " -color $sl.GitNoLocalChangesAndAheadColor
-    Preview-Color -text "PromptForegroundColor          " -color $sl.PromptForegroundColor
-    Preview-Color -text "PromptBackgroundColor          " -color $sl.PromptBackgroundColor
-    Preview-Color -text "SessionInfoBackgroundColor     " -color $sl.SessionInfoBackgroundColor
+    Preview-Color -text "GitDefaultColor                  " -color $sl.GitDefaultColor
+    Preview-Color -text "GitLocalChangesColor             " -color $sl.GitLocalChangesColor
+    Preview-Color -text "GitNoLocalChangesAndAheadColor   " -color $sl.GitNoLocalChangesAndAheadColor
+    Preview-Color -text "PromptForegroundColor            " -color $sl.PromptForegroundColor
+    Preview-Color -text "PromptBackgroundColor            " -color $sl.PromptBackgroundColor
+    Preview-Color -text "SessionInfoBackgroundColor       " -color $sl.SessionInfoBackgroundColor
+    Preview-Color -text "CommandFailedIconForegroundColor " -color $sl.CommandFailedIconForegroundColor
+    Preview-Color -text "AdminIconForegroundColor         " -color $sl.AdminIconForegroundColor
     Write-Host ""
 }
 
