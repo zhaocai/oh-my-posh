@@ -20,7 +20,7 @@ $global:AgnosterPromptSettings = New-Object PSObject -Property @{
   PromptForegroundColor = [ConsoleColor]::Black
   PromptBackgroundColor = [ConsoleColor]::DarkBlue
   SessionInfoBackgroundColor = [ConsoleColor]::Green
-  CommandFailedForegroundColor = [ConsoleColor]::Red
+  CommandFailedIconForegroundColor = [ConsoleColor]::Red
   AdminIconForegroundColor = [ConsoleColor]::DarkGreen
 }
 
@@ -77,7 +77,7 @@ function Prompt {
 
     #check the last command state and indicate if failed
     If ($lastCommandFailed) {
-      Write-Prompt "$($sl.FancyXSymbol) " -ForegroundColor $sl.CommandFailedForegroundColor -BackgroundColor $sl.SessionInfoBackgroundColor
+      Write-Prompt "$($sl.FancyXSymbol) " -ForegroundColor $sl.CommandFailedIconForegroundColor -BackgroundColor $sl.SessionInfoBackgroundColor
     }
 
     #check for elevated prompt
@@ -326,14 +326,14 @@ function Shorten-Path([string] $path) {
 
 function Agnoster-Colors {
     Write-Host ""
-    Preview-Color -text "GitDefaultColor                " -color $sl.GitDefaultColor
-    Preview-Color -text "GitLocalChangesColor           " -color $sl.GitLocalChangesColor
-    Preview-Color -text "GitNoLocalChangesAndAheadColor " -color $sl.GitNoLocalChangesAndAheadColor
-    Preview-Color -text "PromptForegroundColor          " -color $sl.PromptForegroundColor
-    Preview-Color -text "PromptBackgroundColor          " -color $sl.PromptBackgroundColor
-    Preview-Color -text "SessionInfoBackgroundColor     " -color $sl.SessionInfoBackgroundColor
-    Preview-Color -text "CommandFailedForegroundColor   " -color $sl.CommandFailedForegroundColor
-    Preview-Color -text "CommandFailedForegroundColor   " -color $sl.AdminIconForegroundColor
+    Preview-Color -text "GitDefaultColor                  " -color $sl.GitDefaultColor
+    Preview-Color -text "GitLocalChangesColor             " -color $sl.GitLocalChangesColor
+    Preview-Color -text "GitNoLocalChangesAndAheadColor   " -color $sl.GitNoLocalChangesAndAheadColor
+    Preview-Color -text "PromptForegroundColor            " -color $sl.PromptForegroundColor
+    Preview-Color -text "PromptBackgroundColor            " -color $sl.PromptBackgroundColor
+    Preview-Color -text "SessionInfoBackgroundColor       " -color $sl.SessionInfoBackgroundColor
+    Preview-Color -text "CommandFailedIconForegroundColor " -color $sl.CommandFailedIconForegroundColor
+    Preview-Color -text "AdminIconForegroundColor         " -color $sl.AdminIconForegroundColor
     Write-Host ""
 }
 
