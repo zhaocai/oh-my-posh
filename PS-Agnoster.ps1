@@ -49,6 +49,9 @@ function Start-Up{
 Generates the prompt before each line in the console
 #>
 function Prompt {
+
+    $lastCommandFailed = !$?
+
     $drive = (Get-Drive (Get-Location).Path)
 
     switch -wildcard ($drive){
@@ -65,6 +68,10 @@ function Prompt {
     #check for elevated prompt
     If (([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
       Write-Prompt "$($sl.ElevatedSymbol) " -ForegroundColor $sl.PromptForegroundColor -BackgroundColor $sl.SessionInfoBackgroundColor
+    }
+
+    If ($lastCommandFailed) {
+      Write-Prompt "$($sl.FancyXSymbol) " -ForegroundColor $sl.PromptForegroundColor -BackgroundColor $sl.SessionInfoBackgroundColor
     }
 
     $user = [Environment]::UserName
