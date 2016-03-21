@@ -20,6 +20,7 @@ $global:AgnosterPromptSettings = New-Object PSObject -Property @{
   PromptForegroundColor = [ConsoleColor]::Black
   PromptBackgroundColor = [ConsoleColor]::DarkBlue
   SessionInfoBackgroundColor = [ConsoleColor]::Green
+  CommandFailedForegroundColor = [ConsoleColor]::Red
 }
 
 <#
@@ -70,8 +71,9 @@ function Prompt {
       Write-Prompt "$($sl.ElevatedSymbol) " -ForegroundColor $sl.PromptForegroundColor -BackgroundColor $sl.SessionInfoBackgroundColor
     }
 
+    #check the last command state and indicate if failed
     If ($lastCommandFailed) {
-      Write-Prompt "$($sl.FancyXSymbol) " -ForegroundColor $sl.PromptForegroundColor -BackgroundColor $sl.SessionInfoBackgroundColor
+      Write-Prompt "$($sl.FancyXSymbol) " -ForegroundColor $sl.CommandFailedForegroundColor -BackgroundColor $sl.SessionInfoBackgroundColor
     }
 
     $user = [Environment]::UserName
@@ -329,6 +331,7 @@ function Agnoster-Colors {
     Preview-Color -text "PromptForegroundColor          " -color $sl.PromptForegroundColor
     Preview-Color -text "PromptBackgroundColor          " -color $sl.PromptBackgroundColor
     Preview-Color -text "SessionInfoBackgroundColor     " -color $sl.SessionInfoBackgroundColor
+    Preview-Color -text "CommandFailedForegroundColor   " -color $sl.CommandFailedForegroundColor 
     Write-Host ""
 }
 
