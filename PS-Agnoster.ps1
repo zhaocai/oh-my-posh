@@ -315,18 +315,19 @@ function Shorten-Path([string] $path) {
 }
 
 function Agnoster-Colors {
-    Write-Host "GitDefaultColor                " -nonewline
-    Write-Host "       " -backgroundcolor $sl.GitDefaultColor
-    Write-Host "GitLocalChangesColor           " -nonewline
-    Write-Host "       " -backgroundcolor $sl.GitLocalChangesColor
-    Write-Host "GitNoLocalChangesAndAheadColor " -nonewline
-    Write-Host "       " -backgroundcolor $sl.GitNoLocalChangesAndAheadColor
-    Write-Host "PromptForegroundColor          " -nonewline
-    Write-Host "       " -backgroundcolor $sl.PromptForegroundColor
-    Write-Host "PromptBackgroundColor          " -nonewline
-    Write-Host "       " -backgroundcolor $sl.PromptBackgroundColor
-    Write-Host "SessionInfoBackgroundColor     " -nonewline
-    Write-Host "       " -backgroundcolor $sl.SessionInfoBackgroundColor
+    Write-Host ""
+    Preview-Color -text "GitDefaultColor                " -color $sl.GitDefaultColor
+    Preview-Color -text "GitLocalChangesColor           " -color $sl.GitLocalChangesColor
+    Preview-Color -text "GitNoLocalChangesAndAheadColor " -color $sl.GitNoLocalChangesAndAheadColor
+    Preview-Color -text "PromptForegroundColor          " -color $sl.PromptForegroundColor
+    Preview-Color -text "PromptBackgroundColor          " -color $sl.PromptBackgroundColor
+    Preview-Color -text "SessionInfoBackgroundColor     " -color $sl.SessionInfoBackgroundColor
+    Write-Host ""
+}
+
+function Preview-Color($text, $color) {
+    Write-Host $text -nonewline
+    Write-Host "       " -backgroundcolor $color
 }
 
 $sl = $global:AgnosterPromptSettings #local settings
