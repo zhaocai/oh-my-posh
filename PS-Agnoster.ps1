@@ -19,6 +19,7 @@ $global:AgnosterPromptSettings = New-Object PSObject -Property @{
   GitNoLocalChangesAndAheadColor = [ConsoleColor]::DarkGray
   PromptForegroundColor = [ConsoleColor]::Black
   PromptBackgroundColor = [ConsoleColor]::DarkBlue
+  SessionInfoBackgroundColor = [ConsoleColor]::Green
 }
 
 <#
@@ -59,12 +60,16 @@ function Prompt {
     $lastColor = $driveColor
 
     # PowerLine starts with a space
-    Write-Prompt " " -ForegroundColor $sl.PromptForegroundColor -BackgroundColor $driveColor
+    Write-Prompt " " -ForegroundColor $sl.PromptForegroundColor -BackgroundColor $sl.SessionInfoBackgroundColor
 
     #check for elevated prompt
     If (([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
-      Write-Prompt "$($sl.ElevatedSymbol) " -ForegroundColor $sl.PromptForegroundColor -BackgroundColor $driveColor
+      Write-Prompt "$($sl.ElevatedSymbol) " -ForegroundColor $sl.PromptForegroundColor -BackgroundColor $sl.SessionInfoBackgroundColor
     }
+
+    $user = [Environment]::UserName
+    Write-Prompt "$user " -ForegroundColor $sl.PromptForegroundColor -BackgroundColor $sl.SessionInfoBackgroundColor
+    Write-Prompt "$($sl.FancySpacerSymbol) " -ForegroundColor $sl.SessionInfoBackgroundColor -BackgroundColor $driveColor
 
     # Writes the drive portion
     Write-Prompt "$drive" -ForegroundColor $sl.PromptForegroundColor -BackgroundColor $driveColor
@@ -320,6 +325,8 @@ function Agnoster-Colors {
     Write-Host "       " -backgroundcolor $sl.PromptForegroundColor
     Write-Host "PromptBackgroundColor          " -nonewline
     Write-Host "       " -backgroundcolor $sl.PromptBackgroundColor
+    Write-Host "SessionInfoBackgroundColor     " -nonewline
+    Write-Host "       " -backgroundcolor $sl.SessionInfoBackgroundColor
 }
 
 $sl = $global:AgnosterPromptSettings #local settings
