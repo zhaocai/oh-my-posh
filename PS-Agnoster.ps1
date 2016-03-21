@@ -67,14 +67,14 @@ function Prompt {
     # PowerLine starts with a space
     Write-Prompt " " -ForegroundColor $sl.PromptForegroundColor -BackgroundColor $sl.SessionInfoBackgroundColor
 
-    #check for elevated prompt
-    If (([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
-      Write-Prompt "$($sl.ElevatedSymbol) " -ForegroundColor $sl.AdminIconForegroundColor -BackgroundColor $sl.SessionInfoBackgroundColor
-    }
-
     #check the last command state and indicate if failed
     If ($lastCommandFailed) {
       Write-Prompt "$($sl.FancyXSymbol) " -ForegroundColor $sl.CommandFailedForegroundColor -BackgroundColor $sl.SessionInfoBackgroundColor
+    }
+
+    #check for elevated prompt
+    If (([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
+      Write-Prompt "$($sl.ElevatedSymbol) " -ForegroundColor $sl.AdminIconForegroundColor -BackgroundColor $sl.SessionInfoBackgroundColor
     }
 
     $user = [Environment]::UserName
