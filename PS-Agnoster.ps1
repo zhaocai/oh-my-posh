@@ -54,6 +54,14 @@ function Prompt {
 
     $lastCommandFailed = !$?
 
+    #Start the vanilla posh-git when in a vanilla windows, else: go nuts
+    if(Vanilla-Window) {
+        Write-Host($pwd.ProviderPath) -nonewline
+        Write-VcsStatus
+        $global:LASTEXITCODE = !$lastCommandFailed
+        return "> "
+    }
+
     $drive = (Get-Drive (Get-Location).Path)
 
     switch -wildcard ($drive){
@@ -86,21 +94,13 @@ function Prompt {
     Write-Prompt (Shorten-Path (Get-Location).Path) -ForegroundColor $sl.PromptForegroundColor -BackgroundColor $driveColor
     Write-Prompt " " -ForegroundColor $sl.PromptForegroundColor -BackgroundColor $driveColor
 
-    if(Vanilla-Window){ #use the builtin posh-output
-        Write-VcsStatus
-    } else { #get ~fancy~
-        $status = Get-VCSStatus
-        if ($status) {
-            $lastColor = Write-Fancy-Vcs-Branches($status);
-        }
+    $status = Get-VCSStatus
+    if ($status) {
+        $lastColor = Write-Fancy-Vcs-Branches($status);
     }
 
     # Writes the postfix to the prompt
-    if(Vanilla-Window) {
-        Write-Host -Object ">" -n
-    } else {
-        Write-Prompt $sl.FancySpacerSymbol -ForegroundColor $lastColor
-    }
+    Write-Prompt $sl.FancySpacerSymbol -ForegroundColor $lastColor
 
     return " "
 }
