@@ -21,6 +21,7 @@ $global:AgnosterPromptSettings = New-Object PSObject -Property @{
   PromptBackgroundColor = [ConsoleColor]::DarkBlue
   SessionInfoBackgroundColor = [ConsoleColor]::Green
   CommandFailedForegroundColor = [ConsoleColor]::Red
+  AdminIconForegroundColor = [ConsoleColor]::DarkGreen
 }
 
 <#
@@ -68,7 +69,7 @@ function Prompt {
 
     #check for elevated prompt
     If (([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
-      Write-Prompt "$($sl.ElevatedSymbol) " -ForegroundColor $sl.PromptForegroundColor -BackgroundColor $sl.SessionInfoBackgroundColor
+      Write-Prompt "$($sl.ElevatedSymbol) " -ForegroundColor $sl.AdminIconForegroundColor -BackgroundColor $sl.SessionInfoBackgroundColor
     }
 
     #check the last command state and indicate if failed
@@ -331,7 +332,8 @@ function Agnoster-Colors {
     Preview-Color -text "PromptForegroundColor          " -color $sl.PromptForegroundColor
     Preview-Color -text "PromptBackgroundColor          " -color $sl.PromptBackgroundColor
     Preview-Color -text "SessionInfoBackgroundColor     " -color $sl.SessionInfoBackgroundColor
-    Preview-Color -text "CommandFailedForegroundColor   " -color $sl.CommandFailedForegroundColor 
+    Preview-Color -text "CommandFailedForegroundColor   " -color $sl.CommandFailedForegroundColor
+    Preview-Color -text "CommandFailedForegroundColor   " -color $sl.AdminIconForegroundColor
     Write-Host ""
 }
 
