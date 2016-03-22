@@ -65,7 +65,7 @@ function Prompt {
     $drive = (Get-Drive (Get-Location).Path)
 
     switch -wildcard ($drive){
-        "C:\" { $driveColor = $sl.PromptBackgroundColor }
+        "?:\" { $driveColor = $sl.PromptBackgroundColor }
         "~\"  { $driveColor = $sl.PromptBackgroundColor }
         "\\*" { $driveColor = $sl.PromptBackgroundColor }
     }
