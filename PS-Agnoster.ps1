@@ -1,11 +1,11 @@
 $global:AgnosterPromptSettings = New-Object PSObject -Property @{
   FancySpacerSymbol = [char]::ConvertFromUtf32(0xE0B0)
   GitBranchSymbol = [char]::ConvertFromUtf32(0xE0A0)
-  FancyXSymbol = [char]::ConvertFromUtf32(0x2716)
-  TruncatedFolderText = '..'
-  BeforeStashText = '{'
-  AfterStashText = '}'
-  DelimText = '|'
+  FailedCommandSymbol = [char]::ConvertFromUtf32(0x2716)
+  TruncatedFolderSymbol = '..'
+  BeforeStashSymbol = '{'
+  AfterStashSymbol = '}'
+  DelimSymbol = '|'
   LocalWorkingStatusSymbol = '!'
   LocalStagedStatusSymbol = '~'
   BranchUntrackedSymbol = [char]::ConvertFromUtf32(0x2262)
@@ -77,7 +77,7 @@ function Prompt {
 
     #check the last command state and indicate if failed
     If ($lastCommandFailed) {
-      Write-Prompt "$($sl.FancyXSymbol) " -ForegroundColor $sl.CommandFailedIconForegroundColor -BackgroundColor $sl.SessionInfoBackgroundColor
+      Write-Prompt "$($sl.FailedCommandSymbol) " -ForegroundColor $sl.CommandFailedIconForegroundColor -BackgroundColor $sl.SessionInfoBackgroundColor
     }
 
     #check for elevated prompt
@@ -173,7 +173,7 @@ function Write-Fancy-Vcs-Branches($status) {
         }
 
         if($spg.EnableFileStatus -and $status.HasIndex) {
-            Write-Prompt $sl.BeforeIndexText -BackgroundColor $branchStatusBackgroundColor -ForegroundColor $branchStatusForegroundColor
+            Write-Prompt $sl.BeforeIndexSymbol -BackgroundColor $branchStatusBackgroundColor -ForegroundColor $branchStatusForegroundColor
 
             if($spg.ShowStatusWhenZero -or $status.Index.Added) {
               Write-Prompt "+$($status.Index.Added.Count) " -BackgroundColor $branchStatusBackgroundColor -ForegroundColor $branchStatusForegroundColor
@@ -190,7 +190,7 @@ function Write-Fancy-Vcs-Branches($status) {
             }
 
             if($status.HasWorking) {
-                Write-Prompt "$($sl.DelimText) " -BackgroundColor $branchStatusBackgroundColor -ForegroundColor $branchStatusForegroundColor
+                Write-Prompt "$($sl.DelimSymbol) " -BackgroundColor $branchStatusBackgroundColor -ForegroundColor $branchStatusForegroundColor
             }
         }
 
@@ -225,7 +225,7 @@ function Write-Fancy-Vcs-Branches($status) {
         }
 
         if ($status.StashCount -gt 0) {
-             Write-Prompt "$($sl.BeforeStashText)$($status.StashCount)$($sl.AfterStashText) " -BackgroundColor $branchStatusBackgroundColor -ForegroundColor $branchStatusForegroundColor
+             Write-Prompt "$($sl.BeforeStashSymbol)$($status.StashCount)$($sl.AfterStashSymbol) " -BackgroundColor $branchStatusBackgroundColor -ForegroundColor $branchStatusForegroundColor
         }
 
         if ($WindowTitleSupported -and $spg.EnableWindowTitle) {
@@ -312,7 +312,7 @@ function Shorten-Path([string] $path) {
             if( (Is-VCSRoot $dir) -Or ($result.length -eq 0) ) {
                 $result = ,$dir.Name + $result
             } else {
-                $result = ,$sl.TruncatedFolderText + $result
+                $result = ,$sl.TruncatedFolderSymbol + $result
             }
 
             $dir = $dir.Parent
