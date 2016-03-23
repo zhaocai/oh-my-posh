@@ -61,16 +61,16 @@ $AgnosterPromptSettings
 
 <img src="http://herebedragons.io/wp-content/uploads/2016/03/agnosterpromptsettings.png" width="450">
 
-You can tweak the colors and symbols being used by manipulating `$AgnosterPromptSettings`.
+You can tweak the settings by manipulating `$AgnosterPromptSettings`.
 This example allows you to tweak the branch symbol using a unicode character:
 
 ````
 $AgnosterPromptSettings.GitBranchSymbol = [char]::ConvertFromUtf32(0xE0A0)
 ````
 
-If you want to display the current configured colors you can list them using the helper method `Agnoster-Colors`
+If you want to display the current configured colors you can list them using the helper method `Show-AgnosterColors`
 
-<img src="http://herebedragons.io/wp-content/uploads/2016/03/agnoster_colors.png" width="400">
+<img src="http://herebedragons.io/wp-content/uploads/2016/03/agnoster_colors-1.png" width="400">
 
 Also do not forget the Posh-Git settings itself (enable the stash indication for example):
 
