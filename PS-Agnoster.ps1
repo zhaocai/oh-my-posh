@@ -68,7 +68,7 @@ function Prompt
 
     $drive = (Get-Drive -path (Get-Location).Path)
 
-    $lastColor = $driveColor
+    $lastColor = $sl.PromptBackgroundColor
 
     # PowerLine starts with a space
     Write-Prompt -Object ' ' -ForegroundColor $sl.PromptForegroundColor -BackgroundColor $sl.SessionInfoBackgroundColor
@@ -87,12 +87,12 @@ function Prompt
 
     $user = [Environment]::UserName
     Write-Prompt -Object "$user " -ForegroundColor $sl.PromptForegroundColor -BackgroundColor $sl.SessionInfoBackgroundColor
-    Write-Prompt -Object "$($sl.FancySpacerSymbol) " -ForegroundColor $sl.SessionInfoBackgroundColor -BackgroundColor $driveColor
+    Write-Prompt -Object "$($sl.FancySpacerSymbol) " -ForegroundColor $sl.SessionInfoBackgroundColor -BackgroundColor $sl.PromptBackgroundColor
 
     # Writes the drive portion
-    Write-Prompt -Object "$drive" -ForegroundColor $sl.PromptForegroundColor -BackgroundColor $driveColor
-    Write-Prompt -Object (Get-ShortPath -path (Get-Location).Path) -ForegroundColor $sl.PromptForegroundColor -BackgroundColor $driveColor
-    Write-Prompt -Object ' ' -ForegroundColor $sl.PromptForegroundColor -BackgroundColor $driveColor
+    Write-Prompt -Object "$drive" -ForegroundColor $sl.PromptForegroundColor -BackgroundColor $sl.PromptBackgroundColor
+    Write-Prompt -Object (Get-ShortPath -path (Get-Location).Path) -ForegroundColor $sl.PromptForegroundColor -BackgroundColor $sl.PromptBackgroundColor
+    Write-Prompt -Object ' ' -ForegroundColor $sl.PromptForegroundColor -BackgroundColor $sl.PromptBackgroundColor
 
     $status = Get-VCSStatus
     if ($status) 
@@ -159,7 +159,7 @@ function Write-FancyVcsBranches
             $branchStatusBackgroundColor = $sl.GitNoLocalChangesAndAheadColor
         }
 
-        Write-Prompt -Object $sl.FancySpacerSymbol -ForegroundColor $driveColor -BackgroundColor $branchStatusBackgroundColor
+        Write-Prompt -Object $sl.FancySpacerSymbol -ForegroundColor $sl.PromptBackgroundColor -BackgroundColor $branchStatusBackgroundColor
         Write-Prompt -Object " $($sl.GitBranchSymbol)" -BackgroundColor $branchStatusBackgroundColor -ForegroundColor $branchStatusForegroundColor
 
         $branchStatusSymbol = $null
@@ -465,5 +465,4 @@ function Write-ColorPreview
 
 $sl = $global:AgnosterPromptSettings #local settings
 $spg = $global:GitPromptSettings #Posh-Git settings
-$driveColor = $sl.PromptBackgroundColor
 Start-Up # Executes the Start-Up function, better encapsulation
