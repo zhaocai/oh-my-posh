@@ -182,12 +182,12 @@ function Write-FancyVcsBranches
         elseif ($status.BehindBy -ge 1)
         {
             # We are behind remote
-            $branchStatusSymbol = $sl.BranchBehindStatusSymbol
+            $branchStatusSymbol = "$($sl.BranchBehindStatusSymbol)$($status.BehindBy)"
         }
         elseif ($status.AheadBy -ge 1)
         {
             # We are ahead of remote
-            $branchStatusSymbol = $sl.BranchAheadStatusSymbol
+            $branchStatusSymbol = "$($sl.BranchAheadStatusSymbol)$($status.AheadBy)"
         }
         else
         {
