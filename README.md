@@ -2,6 +2,7 @@ PS-Agnoster
 ===========
 
 An Agnoster theme for Powershell inspired by the work done by Chris Benti on [PS-Config](https://github.com/chrisbenti/PS-Config).
+More information about why I made this can be found on my [blog](http://herebedragons.io/shell-shock/).
 
 Tweaks and improvements:
 * Powerline fonts work out of the box
