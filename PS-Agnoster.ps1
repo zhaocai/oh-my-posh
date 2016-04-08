@@ -14,7 +14,6 @@ $global:AgnosterPromptSettings = New-Object -TypeName PSObject -Property @{
     BranchIdenticalStatusToSymbol    = [char]::ConvertFromUtf32(0x2263)
     BranchAheadStatusSymbol          = [char]::ConvertFromUtf32(0x2191)
     BranchBehindStatusSymbol         = [char]::ConvertFromUtf32(0x2193)
-    BranchBehindAndAheadStatusSymbol = [char]::ConvertFromUtf32(0x21C5)
     ElevatedSymbol                   = [char]::ConvertFromUtf32(0x26A1)
     GitDefaultColor                  = [ConsoleColor]::DarkCyan
     GitLocalChangesColor             = [ConsoleColor]::DarkGreen
@@ -177,7 +176,7 @@ function Write-FancyVcsBranches
         elseif ($status.BehindBy -ge 1 -and $status.AheadBy -ge 1)
         {
             # We are both behind and ahead of remote
-            $branchStatusSymbol = $sl.BranchBehindAndAheadStatusSymbol
+            $branchStatusSymbol = "$($sl.BranchAheadStatusSymbol)$($status.AheadBy) $($sl.BranchBehindStatusSymbol)$($status.BehindBy)"
         }
         elseif ($status.BehindBy -ge 1)
         {

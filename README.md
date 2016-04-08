@@ -2,7 +2,7 @@ PS-Agnoster
 ===========
 
 An Agnoster theme for Powershell inspired by the work done by Chris Benti on [PS-Config](https://github.com/chrisbenti/PS-Config).
-More information about why I made this can be found on my [blog](http://herebedragons.io/shell-shock/).
+More information about why I made this can be found on my [blog](https://herebedragons.io/shell-shock/).
 
 Tweaks and improvements:
 * Powerline fonts work out of the box
@@ -13,13 +13,13 @@ Tweaks and improvements:
 * Does not mess with the default Powershell console
 
 #### Git integration
-<img src="http://herebedragons.io/wp-content/uploads/2016/03/agnoster_git.png" width="600">
+<img src="https://herebedragons.io/wp-content/uploads/2016/03/agnoster_git.png" width="600">
 
 #### Failed command indication
-<img src="http://herebedragons.io/wp-content/uploads/2016/03/agnoster_failed.png" width="600">
+<img src="https://herebedragons.io/wp-content/uploads/2016/03/agnoster_failed.png" width="600">
 
 #### Admin prompt indication
-<img src="http://herebedragons.io/wp-content/uploads/2016/03/agnoster_admin.png" width="400">
+<img src="https://herebedragons.io/wp-content/uploads/2016/03/agnoster_admin.png" width="400">
 
 Prerequisites
 -------------
@@ -60,7 +60,7 @@ List the current configuration:
 $AgnosterPromptSettings
 ````
 
-<img src="http://herebedragons.io/wp-content/uploads/2016/03/agnosterpromptsettings.png" width="450">
+<img src="https://herebedragons.io/wp-content/uploads/2016/03/agnosterpromptsettings.png" width="450">
 
 You can tweak the settings by manipulating `$AgnosterPromptSettings`.
 This example allows you to tweak the branch symbol using a unicode character:
@@ -71,7 +71,7 @@ $AgnosterPromptSettings.GitBranchSymbol = [char]::ConvertFromUtf32(0xE0A0)
 
 If you want to display the current configured colors you can list them using the helper method `Show-AgnosterColors`
 
-<img src="http://herebedragons.io/wp-content/uploads/2016/03/agnoster_colors-1.png" width="400">
+<img src="https://herebedragons.io/wp-content/uploads/2016/03/agnoster_colors-1.png" width="400">
 
 Also do not forget the Posh-Git settings itself (enable the stash indication for example):
 
