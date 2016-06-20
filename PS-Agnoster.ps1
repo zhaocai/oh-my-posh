@@ -66,6 +66,13 @@ function Prompt
         return '> '
     }
 
+    Write-Theme
+
+    return ' '
+}
+
+function Write-Theme
+{
     $drive = (Get-Drive -path (Get-Location).Path)
 
     $lastColor = $sl.PromptBackgroundColor
@@ -97,13 +104,14 @@ function Prompt
     $status = Get-VCSStatus
     if ($status)
     {
-        $lastColor = Write-FancyVcsBranches -status ($status)
+        $themeInfo = Get-VcsInfo -status ($status)
+        $lastColor = $themeInfo.BackgroundColor
+        Write-Prompt -Object $sl.FancySpacerSymbol -ForegroundColor $sl.PromptBackgroundColor -BackgroundColor $lastColor
+        Write-Prompt -Object ($themeInfo.VcInfo) -BackgroundColor $lastColor -ForegroundColor $sl.PromptForegroundColor        
     }
 
     # Writes the postfix to the prompt
     Write-Prompt -Object $sl.FancySpacerSymbol -ForegroundColor $lastColor
-
-    return ' '
 }
 
 function Get-VCSStatus
@@ -131,7 +139,7 @@ function Get-VCSStatus
 }
 
 
-function Write-FancyVcsBranches
+function Get-VcsInfo
 {
     param
     (
@@ -141,7 +149,6 @@ function Write-FancyVcsBranches
 
     if ($status)
     {
-        $branchStatusForegroundColor = $sl.PromptForegroundColor
         $branchStatusBackgroundColor = $sl.GitDefaultColor
 
         # Determine Colors
@@ -159,9 +166,11 @@ function Write-FancyVcsBranches
             $branchStatusBackgroundColor = $sl.GitNoLocalChangesAndAheadColor
         }
 
-        Write-Prompt -Object $sl.FancySpacerSymbol -ForegroundColor $sl.PromptBackgroundColor -BackgroundColor $branchStatusBackgroundColor
-        Write-Prompt -Object " $($sl.GitBranchSymbol)" -BackgroundColor $branchStatusBackgroundColor -ForegroundColor $branchStatusForegroundColor
+        $vcInfo = '';
 
+        $vcInfo = $vcInfo + " $($sl.GitBranchSymbol)"
+
+        
         $branchStatusSymbol = $null
 
         if (!$status.Upstream)
@@ -194,38 +203,38 @@ function Write-FancyVcsBranches
             $branchStatusSymbol = '?'
         }
 
-        Write-Prompt -Object (Format-BranchName -branchName ($status.Branch)) -BackgroundColor $branchStatusBackgroundColor -ForegroundColor $branchStatusForegroundColor
+        $vcInfo = $vcInfo +  (Format-BranchName -branchName ($status.Branch))
 
         if ($branchStatusSymbol)
         {
-            Write-Prompt  -Object ('{0} ' -f $branchStatusSymbol) -BackgroundColor $branchStatusBackgroundColor -ForegroundColor $branchStatusForegroundColor
+            $vcInfo = $vcInfo +  ('{0} ' -f $branchStatusSymbol)
         }
 
         if($spg.EnableFileStatus -and $status.HasIndex)
         {
-            Write-Prompt -Object $sl.BeforeIndexSymbol -BackgroundColor $branchStatusBackgroundColor -ForegroundColor $branchStatusForegroundColor
+            $vcInfo = $vcInfo +  $sl.BeforeIndexSymbol
 
             if($spg.ShowStatusWhenZero -or $status.Index.Added)
             {
-                Write-Prompt -Object "+$($status.Index.Added.Count) " -BackgroundColor $branchStatusBackgroundColor -ForegroundColor $branchStatusForegroundColor
+                $vcInfo = $vcInfo +  "+$($status.Index.Added.Count) "
             }
             if($spg.ShowStatusWhenZero -or $status.Index.Modified)
             {
-                Write-Prompt -Object "~$($status.Index.Modified.Count) " -BackgroundColor $branchStatusBackgroundColor -ForegroundColor $branchStatusForegroundColor
+                $vcInfo = $vcInfo +  "~$($status.Index.Modified.Count) "
             }
             if($spg.ShowStatusWhenZero -or $status.Index.Deleted)
             {
-                Write-Prompt -Object "-$($status.Index.Deleted.Count) " -BackgroundColor $branchStatusBackgroundColor -ForegroundColor $branchStatusForegroundColor
+                $vcInfo = $vcInfo +  "-$($status.Index.Deleted.Count) "
             }
 
             if ($status.Index.Unmerged)
             {
-                Write-Prompt -Object "!$($status.Index.Unmerged.Count) " -BackgroundColor $branchStatusBackgroundColor -ForegroundColor $branchStatusForegroundColor
+                $vcInfo = $vcInfo +  "!$($status.Index.Unmerged.Count) "
             }
 
             if($status.HasWorking)
             {
-                Write-Prompt -Object "$($sl.DelimSymbol) " -BackgroundColor $branchStatusBackgroundColor -ForegroundColor $branchStatusForegroundColor
+                $vcInfo = $vcInfo +  "$($sl.DelimSymbol) "
             }
         }
 
@@ -233,19 +242,19 @@ function Write-FancyVcsBranches
         {
             if($showStatusWhenZero -or $status.Working.Added)
             {
-                Write-Prompt -Object "+$($status.Working.Added.Count) " -BackgroundColor $branchStatusBackgroundColor -ForegroundColor $branchStatusForegroundColor
+                $vcInfo = $vcInfo +  "+$($status.Working.Added.Count) "
             }
             if($spg.ShowStatusWhenZero -or $status.Working.Modified)
             {
-                Write-Prompt -Object "~$($status.Working.Modified.Count) " -BackgroundColor $branchStatusBackgroundColor -ForegroundColor $branchStatusForegroundColor
+                $vcInfo = $vcInfo +  "~$($status.Working.Modified.Count) "
             }
             if($spg.ShowStatusWhenZero -or $status.Working.Deleted)
             {
-                Write-Prompt -Object "-$($status.Working.Deleted.Count) " -BackgroundColor $branchStatusBackgroundColor -ForegroundColor $branchStatusForegroundColor
+                $vcInfo = $vcInfo +  "-$($status.Working.Deleted.Count) "
             }
             if ($status.Working.Unmerged)
             {
-                Write-Prompt -Object "!$($status.Working.Unmerged.Count) " -BackgroundColor $branchStatusBackgroundColor -ForegroundColor $branchStatusForegroundColor
+                $vcInfo = $vcInfo +  "!$($status.Working.Unmerged.Count) "
             }
         }
 
@@ -267,12 +276,12 @@ function Write-FancyVcsBranches
 
         if ($localStatusSymbol)
         {
-            Write-Prompt -Object ('{0} ' -f $localStatusSymbol) -BackgroundColor $branchStatusBackgroundColor -ForegroundColor $branchStatusForegroundColor
+            $vcInfo = $vcInfo +  ('{0} ' -f $localStatusSymbol)
         }
 
         if ($status.StashCount -gt 0)
         {
-            Write-Prompt -Object "$($sl.BeforeStashSymbol)$($status.StashCount)$($sl.AfterStashSymbol) " -BackgroundColor $branchStatusBackgroundColor -ForegroundColor $branchStatusForegroundColor
+            $vcInfo = $vcInfo +  "$($sl.BeforeStashSymbol)$($status.StashCount)$($sl.AfterStashSymbol) "
         }
 
         if ($WindowTitleSupported -and $spg.EnableWindowTitle)
@@ -293,7 +302,10 @@ function Write-FancyVcsBranches
             $Host.UI.RawUI.WindowTitle = "$script:adminHeader$prefix$repoName [$($status.Branch)]"
         }
 
-        return $branchStatusBackgroundColor
+        return New-Object PSObject -Property @{
+            BackgroundColor = $branchStatusBackgroundColor
+            VcInfo          = $vcInfo
+        }
     }
 }
 
@@ -414,7 +426,6 @@ function Get-ShortPath
 
         while( ($dir.Parent) -And ($dir.FullName -ne $HOME) )
         {
-            $isVcsRoot = Test-IsVCSRoot -dir $dir
             if( (Test-IsVCSRoot -dir $dir) -Or ($result.length -eq 0) )
             {
                 $result = ,$dir.Name + $result
