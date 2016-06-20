@@ -1,5 +1,6 @@
 #requires -Version 2 -Modules posh-git
-$global:AgnosterPromptSettings = New-Object -TypeName PSObject -Property @{
+
+$global:ThemeSettings = New-Object -TypeName PSObject -Property @{
     FancySpacerSymbol                = [char]::ConvertFromUtf32(0xE0B0)
     GitBranchSymbol                  = [char]::ConvertFromUtf32(0xE0A0)
     FailedCommandSymbol              = [char]::ConvertFromUtf32(0x2716)
@@ -23,95 +24,6 @@ $global:AgnosterPromptSettings = New-Object -TypeName PSObject -Property @{
     SessionInfoBackgroundColor       = [ConsoleColor]::Green
     CommandFailedIconForegroundColor = [ConsoleColor]::Red
     AdminIconForegroundColor         = [ConsoleColor]::DarkGreen
-}
-
-<#
-        .SYNOPSIS
-        Method called at each launch of Powershell
-
-        .DESCRIPTION
-        Sets up things needed in each console session, aside from prompt
-#>
-function Start-Up
-{
-    if(Test-Path -Path ~\.last)
-    {
-        (Get-Content -Path ~\.last) | Set-Location
-        Remove-Item -Path ~\.last
-    }
-
-    # Makes git diff work
-    $env:TERM = 'msys'
-
-    if(Get-Module -Name Posh-Git)
-    {
-        Start-SshAgent -Quiet
-    }
-}
-
-<#
-        .SYNOPSIS
-        Generates the prompt before each line in the console
-#>
-function Prompt
-{
-    $lastCommandFailed = !$?
-
-    #Start the vanilla posh-git when in a vanilla window, else: go nuts
-    if(Test-IsVanillaWindow)
-    {
-        Write-Host -Object ($pwd.ProviderPath) -NoNewline
-        Write-VcsStatus
-        $global:LASTEXITCODE = !$lastCommandFailed
-        return '> '
-    }
-
-    Write-Theme
-
-    return ' '
-}
-
-function Write-Theme
-{
-    $drive = (Get-Drive -path (Get-Location).Path)
-
-    $lastColor = $sl.PromptBackgroundColor
-
-    # PowerLine starts with a space
-    Write-Prompt -Object ' ' -ForegroundColor $sl.PromptForegroundColor -BackgroundColor $sl.SessionInfoBackgroundColor
-
-    #check the last command state and indicate if failed
-    If ($lastCommandFailed)
-    {
-        Write-Prompt -Object "$($sl.FailedCommandSymbol) " -ForegroundColor $sl.CommandFailedIconForegroundColor -BackgroundColor $sl.SessionInfoBackgroundColor
-    }
-
-    #check for elevated prompt
-    If (([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator'))
-    {
-        Write-Prompt -Object "$($sl.ElevatedSymbol) " -ForegroundColor $sl.AdminIconForegroundColor -BackgroundColor $sl.SessionInfoBackgroundColor
-    }
-
-    $user = [Environment]::UserName
-    Write-Prompt -Object "$user " -ForegroundColor $sl.PromptForegroundColor -BackgroundColor $sl.SessionInfoBackgroundColor
-    Write-Prompt -Object "$($sl.FancySpacerSymbol) " -ForegroundColor $sl.SessionInfoBackgroundColor -BackgroundColor $sl.PromptBackgroundColor
-
-    # Writes the drive portion
-    Write-Prompt -Object "$drive" -ForegroundColor $sl.PromptForegroundColor -BackgroundColor $sl.PromptBackgroundColor
-    Write-Prompt -Object (Get-ShortPath -path (Get-Location).Path) -ForegroundColor $sl.PromptForegroundColor -BackgroundColor $sl.PromptBackgroundColor
-    Write-Prompt -Object ' ' -ForegroundColor $sl.PromptForegroundColor -BackgroundColor $sl.PromptBackgroundColor
-
-    $status = Get-VCSStatus
-    if ($status)
-    {
-        $themeInfo = Get-VcsInfo -status ($status)
-        $lastColor = $themeInfo.BackgroundColor
-        Write-Prompt -Object $sl.FancySpacerSymbol -ForegroundColor $sl.PromptBackgroundColor -BackgroundColor $lastColor
-        Write-Prompt -Object ($themeInfo.VcInfo) -BackgroundColor $lastColor -ForegroundColor $sl.PromptForegroundColor        
-    }
-
-    # Writes the postfix to the prompt
-    Write-Prompt -Object $sl.FancySpacerSymbol -ForegroundColor $lastColor
 }
 
 function Get-VCSStatus
@@ -445,7 +357,7 @@ function Get-ShortPath
     }
 }
 
-function Show-AgnosterColors
+function Show-ThemeColors
 {
     Write-Host -Object ''
     Write-ColorPreview -text 'GitDefaultColor                  ' -color $sl.GitDefaultColor
@@ -474,6 +386,5 @@ function Write-ColorPreview
     Write-Host -Object '       ' -BackgroundColor $color
 }
 
-$sl = $global:AgnosterPromptSettings #local settings
 $spg = $global:GitPromptSettings #Posh-Git settings
-Start-Up # Executes the Start-Up function, better encapsulation
+$sl = $global:ThemeSettings #local settings
