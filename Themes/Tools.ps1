@@ -1,7 +1,6 @@
 #requires -Version 2 -Modules posh-git
 
 $global:ThemeSettings = New-Object -TypeName PSObject -Property @{
-    FancySpacerSymbol                = [char]::ConvertFromUtf32(0xE0B0)
     GitBranchSymbol                  = [char]::ConvertFromUtf32(0xE0A0)
     FailedCommandSymbol              = [char]::ConvertFromUtf32(0x2716)
     TruncatedFolderSymbol            = '..'
@@ -267,8 +266,6 @@ function Get-Provider
     return (Get-Item $path).PSProvider.Name
 }
 
-
-
 function Get-Drive
 {
     param
@@ -354,6 +351,25 @@ function Get-ShortPath
     else
     {
         return $path.Replace((Get-Drive -path $path), '')
+    }
+}
+
+function Get-BetweenSpace {
+    param(
+        [string]
+        $promptText,
+        [string]
+        $endText
+    )
+
+    if($Host -and $Host.UI -and $Host.UI.RawUI) {
+        $rawUI = $Host.UI.RawUI
+        $width = $rawUI.BufferSize.Width
+        $width = $width - $promptText.Length
+        return $width
+    }
+    else {
+        return 0
     }
 }
 

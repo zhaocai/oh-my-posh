@@ -1,6 +1,6 @@
 #requires -Version 2 -Modules posh-git
 
-. "$PSScriptRoot\Themes\Agnoster.ps1"
+. "$PSScriptRoot\Themes\Avit.ps1"
 
 <#
         .SYNOPSIS

@@ -4,6 +4,7 @@
 
 function Write-Theme
 {
+    $fancySpacerSymbol = [char]::ConvertFromUtf32(0xE0B0)
     $drive = (Get-Drive -path (Get-Location).Path)
 
     $lastColor = $sl.PromptBackgroundColor
@@ -25,7 +26,7 @@ function Write-Theme
 
     $user = [Environment]::UserName
     Write-Prompt -Object "$user " -ForegroundColor $sl.PromptForegroundColor -BackgroundColor $sl.SessionInfoBackgroundColor
-    Write-Prompt -Object "$($sl.FancySpacerSymbol) " -ForegroundColor $sl.SessionInfoBackgroundColor -BackgroundColor $sl.PromptBackgroundColor
+    Write-Prompt -Object "$fancySpacerSymbol " -ForegroundColor $sl.SessionInfoBackgroundColor -BackgroundColor $sl.PromptBackgroundColor
 
     # Writes the drive portion
     Write-Prompt -Object "$drive" -ForegroundColor $sl.PromptForegroundColor -BackgroundColor $sl.PromptBackgroundColor
@@ -37,12 +38,12 @@ function Write-Theme
     {
         $themeInfo = Get-VcsInfo -status ($status)
         $lastColor = $themeInfo.BackgroundColor
-        Write-Prompt -Object $sl.FancySpacerSymbol -ForegroundColor $sl.PromptBackgroundColor -BackgroundColor $lastColor
+        Write-Prompt -Object $fancySpacerSymbol -ForegroundColor $sl.PromptBackgroundColor -BackgroundColor $lastColor
         Write-Prompt -Object ($themeInfo.VcInfo) -BackgroundColor $lastColor -ForegroundColor $sl.PromptForegroundColor        
     }
 
     # Writes the postfix to the prompt
-    Write-Prompt -Object $sl.FancySpacerSymbol -ForegroundColor $lastColor
+    Write-Prompt -Object $fancySpacerSymbol -ForegroundColor $lastColor
 }
 
 $sl = $global:ThemeSettings #local settings
