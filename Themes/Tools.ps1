@@ -1,30 +1,5 @@
 #requires -Version 2 -Modules posh-git
 
-$global:ThemeSettings = New-Object -TypeName PSObject -Property @{
-    GitBranchSymbol                  = [char]::ConvertFromUtf32(0xE0A0)
-    FailedCommandSymbol              = [char]::ConvertFromUtf32(0x2716)
-    TruncatedFolderSymbol            = '..'
-    BeforeStashSymbol                = '{'
-    AfterStashSymbol                 = '}'
-    DelimSymbol                      = '|'
-    LocalWorkingStatusSymbol         = '!'
-    LocalStagedStatusSymbol          = '~'
-    LocalDefaultStatusSymbol         = ''
-    BranchUntrackedSymbol            = [char]::ConvertFromUtf32(0x2262)
-    BranchIdenticalStatusToSymbol    = [char]::ConvertFromUtf32(0x2263)
-    BranchAheadStatusSymbol          = [char]::ConvertFromUtf32(0x2191)
-    BranchBehindStatusSymbol         = [char]::ConvertFromUtf32(0x2193)
-    ElevatedSymbol                   = [char]::ConvertFromUtf32(0x26A1)
-    GitDefaultColor                  = [ConsoleColor]::DarkCyan
-    GitLocalChangesColor             = [ConsoleColor]::DarkGreen
-    GitNoLocalChangesAndAheadColor   = [ConsoleColor]::DarkGray
-    PromptForegroundColor            = [ConsoleColor]::Black
-    PromptBackgroundColor            = [ConsoleColor]::DarkBlue
-    SessionInfoBackgroundColor       = [ConsoleColor]::Green
-    CommandFailedIconForegroundColor = [ConsoleColor]::Red
-    AdminIconForegroundColor         = [ConsoleColor]::DarkGreen
-}
-
 function Get-VCSStatus
 {
     $status = $null
