@@ -23,6 +23,7 @@ $global:ThemeSettings = New-Object -TypeName PSObject -Property @{
     GitNoLocalChangesAndAheadColor   = [ConsoleColor]::DarkGray
     PromptForegroundColor            = [ConsoleColor]::Black
     PromptBackgroundColor            = [ConsoleColor]::DarkBlue
+    PromptSymbolColor                = [ConsoleColor]::Red
     SessionInfoBackgroundColor       = [ConsoleColor]::Green
     CommandFailedIconForegroundColor = [ConsoleColor]::Red
     AdminIconForegroundColor         = [ConsoleColor]::DarkGreen
@@ -75,7 +76,7 @@ function Prompt
         # fall back to Agnoster if not found
         $global:ThemeSettings.Theme = 'Agnoster'
     }
-    
+
     . "$PSScriptRoot\Themes\$($global:ThemeSettings.Theme).ps1"
 
     Write-Theme

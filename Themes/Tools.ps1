@@ -356,6 +356,7 @@ function Show-ThemeColors
     Write-ColorPreview -text 'GitNoLocalChangesAndAheadColor   ' -color $sl.GitNoLocalChangesAndAheadColor
     Write-ColorPreview -text 'PromptForegroundColor            ' -color $sl.PromptForegroundColor
     Write-ColorPreview -text 'PromptBackgroundColor            ' -color $sl.PromptBackgroundColor
+    Write-ColorPreview -text 'PromptSymbolColor                ' -color $sl.PromptSymbolColor
     Write-ColorPreview -text 'SessionInfoBackgroundColor       ' -color $sl.SessionInfoBackgroundColor
     Write-ColorPreview -text 'CommandFailedIconForegroundColor ' -color $sl.CommandFailedIconForegroundColor
     Write-ColorPreview -text 'AdminIconForegroundColor         ' -color $sl.AdminIconForegroundColor

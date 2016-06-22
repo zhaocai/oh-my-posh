@@ -15,10 +15,10 @@ function Write-Theme
     $status = Get-VCSStatus
     if ($status)
     {
-        $themeInfo = Get-VcsInfo -status ($status)
-        $info = $themeInfo.VcInfo.Trim()
+        $vcsInfo = Get-VcsInfo -status ($status)
+        $info = $vcsInfo.VcInfo.Trim()
         $prompt = $prompt + " $info"
-        Write-Prompt -Object " $info" -ForegroundColor $themeInfo.BackgroundColor
+        Write-Prompt -Object " $info" -ForegroundColor $vcsInfo.BackgroundColor
     }
     
     #check for elevated prompt
