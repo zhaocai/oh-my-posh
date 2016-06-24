@@ -13,7 +13,7 @@ function Write-Theme
     if ($status)
     {
         $vcsInfo = Get-VcsInfo -status ($status)
-        $info = $vcsInfo.VcInfo.Trim()
+        $info = $vcsInfo.VcInfo
         Write-Segment -content $info -foregroundColor $sl.PromptForegroundColor
     }
 

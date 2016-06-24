@@ -52,10 +52,7 @@ function Get-VcsInfo
             $branchStatusBackgroundColor = $sl.GitNoLocalChangesAndAheadColor
         }
 
-        $vcInfo = '';
-
-        $vcInfo = $vcInfo + " $($sl.GitBranchSymbol)"
-
+        $vcInfo = $sl.GitBranchSymbol;
         
         $branchStatusSymbol = $null
 
@@ -190,7 +187,7 @@ function Get-VcsInfo
 
         return New-Object PSObject -Property @{
             BackgroundColor = $branchStatusBackgroundColor
-            VcInfo          = $vcInfo
+            VcInfo          = $vcInfo.Trim()
         }
     }
 }
@@ -369,13 +366,21 @@ function Write-ColorPreview
     (
         [string]
         $text,
-
         [ConsoleColor]
         $color
     )
 
     Write-Host -Object $text -NoNewline
     Write-Host -Object '       ' -BackgroundColor $color
+}
+
+function Show-Colors
+{
+    for($i = 1; $i -lt 16; $i++)
+    {
+        $color = [ConsoleColor]$i
+        Write-Host -Object $color -BackgroundColor $i
+    }
 }
 
 $spg = $global:GitPromptSettings #Posh-Git settings

@@ -16,7 +16,7 @@ function Write-Theme
     if ($status)
     {
         $vcsInfo = Get-VcsInfo -status ($status)
-        $info = $vcsInfo.VcInfo.Trim()
+        $info = $vcsInfo.VcInfo
         $prompt = $prompt + " $info"
         Write-Prompt -Object " $info" -ForegroundColor $vcsInfo.BackgroundColor
     }

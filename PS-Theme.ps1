@@ -5,7 +5,7 @@
 $global:ThemeSettings = New-Object -TypeName PSObject -Property @{
     Theme                            = 'Agnoster'
     GitBranchSymbol                  = [char]::ConvertFromUtf32(0xE0A0)
-    FailedCommandSymbol              = [char]::ConvertFromUtf32(0x2716)
+    FailedCommandSymbol              = [char]::ConvertFromUtf32(0x2A2F)
     TruncatedFolderSymbol            = '..'
     BeforeStashSymbol                = '{'
     AfterStashSymbol                 = '}'
@@ -22,6 +22,7 @@ $global:ThemeSettings = New-Object -TypeName PSObject -Property @{
     GitLocalChangesColor             = [ConsoleColor]::DarkGreen
     GitNoLocalChangesAndAheadColor   = [ConsoleColor]::DarkGray
     PromptForegroundColor            = [ConsoleColor]::Black
+    DriveForegroundColor             = [ConsoleColor]::DarkBlue
     PromptBackgroundColor            = [ConsoleColor]::DarkBlue
     PromptSymbolColor                = [ConsoleColor]::Red
     SessionInfoBackgroundColor       = [ConsoleColor]::Green
@@ -71,13 +72,13 @@ function Prompt
     }
 
     # check if the theme exists
-    if (!(Test-Path "$PSScriptRoot\Themes\$($global:ThemeSettings.Theme).ps1"))
+    if (!(Test-Path "$PSScriptRoot\Themes\$($sl.Theme).ps1"))
     {
         # fall back to Agnoster if not found
-        $global:ThemeSettings.Theme = 'Agnoster'
+        $sl.Theme = 'Agnoster'
     }
 
-    . "$PSScriptRoot\Themes\$($global:ThemeSettings.Theme).ps1"
+    . "$PSScriptRoot\Themes\$($sl.Theme).ps1"
 
     Write-Theme
 
@@ -85,3 +86,4 @@ function Prompt
 }
 
 Start-Up # Executes the Start-Up function, better encapsulation
+$sl = $global:ThemeSettings #local settings
