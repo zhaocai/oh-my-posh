@@ -107,13 +107,17 @@ $GitPromptSettings
 Helper functions
 ----------------
 
-If you want to display the currently configured colors you can list them using `Show-ThemeColors`
+`Show-ThemeColors`: display the colors used by the theme
 
 <img src="https://herebedragons.io/wp-content/uploads/2016/06/themecolors.png" width="800">
 
-To display all the configured colors you can list them using `Show-Colors`
+`Show-Colors`: display colors configured in ConEmu
 
 <img src="https://herebedragons.io/wp-content/uploads/2016/06/colors.png" width="800">
+
+`Show-Themes`: list available themes
+
+<img src="https://herebedragons.io/wp-content/uploads/2016/06/themes.png" width="800">
 
 <div id='themes'/>
 Themes

@@ -383,5 +383,15 @@ function Show-Colors
     }
 }
 
+function Show-Themes
+{
+    Write-Host ''
+    Write-Host 'Themes:'
+    Write-Host ''
+    Get-ChildItem -Path "$PSScriptRoot\*" -Include '*.ps1' -Exclude Tools.ps1 | Sort-Object Name | ForEach-Object -Process {write-Host "- $($_.BaseName)"} 
+    Write-Host ''
+    
+}
+
 $spg = $global:GitPromptSettings #Posh-Git settings
 $sl = $global:ThemeSettings #local settings
