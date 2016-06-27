@@ -1,6 +1,8 @@
 oh-my-posh
 ==========
 
+> If you are migrating from PS-Agnoster to oh-my-posh, replace the import statement `. "$env:USERPROFILE\Github\PS-Agnoster\PS-Agnoster.ps1"` with `. "$env:USERPROFILE\Github\oh-my-posh\oh-my-posh.ps1"` and replace all overrides using `$AgnosterPromptSettings` with `$ThemeSettings`. Enjoy!
+
 ## Table of Contents
 
 * [About](#about)
