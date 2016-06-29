@@ -1,6 +1,17 @@
+Import-Module -Name posh-git -ErrorAction SilentlyContinue
+Import-Module -Name PSColor -ErrorAction SilentlyContinue
+Import-Module -Name Find-String -ErrorAction SilentlyContinue
+Import-Module -Name Invoke-ElevatedCommand -ErrorAction SilentlyContinue
+Import-Module -Name z -ErrorAction SilentlyContinue
+Import-Module -Name out-diff -ErrorAction SilentlyContinue
+Import-Module -Name PoShAncestry -ErrorAction SilentlyContinue
+Import-Module -Name PoShWarp -ErrorAction SilentlyContinue
+Import-Module -Name PsUrl -ErrorAction SilentlyContinue
+
 #requires -Version 2 -Modules posh-git
 
 . "$PSScriptRoot\Themes\Tools.ps1"
+. "$PSScriptRoot\defaults.ps1"
 
 $global:ThemeSettings = New-Object -TypeName PSObject -Property @{
     Theme                            = 'Agnoster'
@@ -20,13 +31,13 @@ $global:ThemeSettings = New-Object -TypeName PSObject -Property @{
     ElevatedSymbol                   = [char]::ConvertFromUtf32(0x26A1)
     GitDefaultColor                  = [ConsoleColor]::DarkCyan
     GitLocalChangesColor             = [ConsoleColor]::DarkGreen
-    GitNoLocalChangesAndAheadColor   = [ConsoleColor]::DarkGray
-    PromptForegroundColor            = [ConsoleColor]::Black
+    GitNoLocalChangesAndAheadColor   = [ConsoleColor]::DarkMagenta
+    PromptForegroundColor            = [ConsoleColor]::Cyan
     DriveForegroundColor             = [ConsoleColor]::DarkBlue
     PromptBackgroundColor            = [ConsoleColor]::DarkBlue
     PromptSymbolColor                = [ConsoleColor]::Red
     SessionInfoBackgroundColor       = [ConsoleColor]::Green
-    CommandFailedIconForegroundColor = [ConsoleColor]::Red
+    CommandFailedIconForegroundColor = [ConsoleColor]::DarkYellow
     AdminIconForegroundColor         = [ConsoleColor]::DarkGreen
 }
 
@@ -52,13 +63,16 @@ function Start-Up
     {
         Start-SshAgent -Quiet
     }
+
+    # Set sane defaults
+    Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
 }
 
 <#
         .SYNOPSIS
         Generates the prompt before each line in the console
 #>
-function Prompt
+function global:prompt
 {
     $lastCommandFailed = !$?
 
@@ -83,6 +97,54 @@ function Prompt
     Write-Theme
 
     return ' '
+}
+
+function Show-ThemeColors
+{
+    Write-Host -Object ''
+    Write-ColorPreview -text 'GitDefaultColor                  ' -color $sl.GitDefaultColor
+    Write-ColorPreview -text 'GitLocalChangesColor             ' -color $sl.GitLocalChangesColor
+    Write-ColorPreview -text 'GitNoLocalChangesAndAheadColor   ' -color $sl.GitNoLocalChangesAndAheadColor
+    Write-ColorPreview -text 'PromptForegroundColor            ' -color $sl.PromptForegroundColor
+    Write-ColorPreview -text 'PromptBackgroundColor            ' -color $sl.PromptBackgroundColor
+    Write-ColorPreview -text 'PromptSymbolColor                ' -color $sl.PromptSymbolColor
+    Write-ColorPreview -text 'SessionInfoBackgroundColor       ' -color $sl.SessionInfoBackgroundColor
+    Write-ColorPreview -text 'CommandFailedIconForegroundColor ' -color $sl.CommandFailedIconForegroundColor
+    Write-ColorPreview -text 'AdminIconForegroundColor         ' -color $sl.AdminIconForegroundColor
+    Write-Host -Object ''
+}
+
+function Write-ColorPreview
+{
+    param
+    (
+        [string]
+        $text,
+        [ConsoleColor]
+        $color
+    )
+
+    Write-Host -Object $text -NoNewline
+    Write-Host -Object '       ' -BackgroundColor $color
+}
+
+function Show-Colors
+{
+    for($i = 1; $i -lt 16; $i++)
+    {
+        $color = [ConsoleColor]$i
+        Write-Host -Object $color -BackgroundColor $i
+    }
+}
+
+function Show-Themes
+{
+    Write-Host ''
+    Write-Host 'Themes:'
+    Write-Host ''
+    Get-ChildItem -Path "$PSScriptRoot\Themes\*" -Include '*.ps1' -Exclude Tools.ps1 | Sort-Object Name | ForEach-Object -Process {write-Host "- $($_.BaseName)"} 
+    Write-Host ''
+    
 }
 
 Start-Up # Executes the Start-Up function, better encapsulation

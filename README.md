@@ -1,7 +1,7 @@
 oh-my-posh
 ==========
 
-> If you are migrating from PS-Agnoster to oh-my-posh, replace the import statement `. "$env:USERPROFILE\Github\PS-Agnoster\PS-Agnoster.ps1"` with `. "$env:USERPROFILE\Github\oh-my-posh\oh-my-posh.ps1"` and replace all overrides using `$AgnosterPromptSettings` with `$ThemeSettings`. Enjoy!
+> If you are migrating from PS-Agnoster to oh-my-posh, remove everything and install using [PsGet](#installation)
 
 ## Table of Contents
 
@@ -20,11 +20,13 @@ About
 A theme engine for Powershell in ConEmu inspired by the work done by Chris Benti on [PS-Config](https://github.com/chrisbenti/PS-Config). And [Oh-My-ZSH](https://github.com/robbyrussell/oh-my-zsh) on OSX and Linux (hence the name)
 More information about why I made this can be found on my [blog](https://herebedragons.io/shell-shock/).
 
-Tweaks and improvements over PS-Config:
+Features:
 
-* Powerline fonts work out of the box
+* Easy installation
+* Awesome prompt themes for PowerShell in ConEmu
 * Git status indications
 * Current session indications (admin, failed command, user)
+* Includes awesome PowerShell modules
 * Configurable
 * Easily create your own theme
 * Separate settings for oh-my-posh and posh-git
@@ -46,12 +48,6 @@ Tweaks and improvements over PS-Config:
 Prerequisites
 -------------
 
-Make sure you have Posh-Git installed. I do this using [PsGet](http://psget.net/) :
-
-```bash
-Install-Module posh-git
-```
-
 You should use ConEmu to have a brilliant terminal experience on Windows. You can install it using [Chocolatey](https://chocolatey.org/) :
 
 ```bash
@@ -59,19 +55,22 @@ choco install ConEmu
 ```
 
 The fonts I use are Powerline fonts, there is a great [repository](https://github.com/powerline/fonts) containing them and a .ps1 file to install.
+Or, could absuse [PsGet](http://psget.net/) and install them:
+
+```bash
+Install-Module -ModuleUrl https://github.com/powerline/fonts/archive/master.zip
+```
+
 I use `Meslo LG M for Powerline` in my ConEmu setup together with custom colors You can find my configuration [here](https://gist.github.com/JanJoris/71c9f1361a562f337b855b75d7bbfd28).
 
 <div id='installation'/>
 Installation
 ------------
 
-Adjust your `Microsoft.PowerShell_profile.ps1` file to include both posh-git and oh-my-posh
-Make sure the Posh-Git module is sourced before you source oh-my-posh.
-This example assumes the location of oh-my-posh is in the Github folder, adjust to your needs.
+Use [PsGet](http://psget.net/) to install oh-my-posh straight from this repository:
 
 ```bash
-Import-Module -Name posh-git -ErrorAction SilentlyContinue
-. "$env:USERPROFILE\Github\oh-my-posh\oh-my-posh.ps1"
+Install-Module -ModuleUrl https://github.com/JanJoris/oh-my-posh/archive/master.zip
 ```
 
 <div id='configuration'/>

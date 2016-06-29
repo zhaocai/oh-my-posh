@@ -345,53 +345,5 @@ function Get-BetweenSpace {
     }
 }
 
-function Show-ThemeColors
-{
-    Write-Host -Object ''
-    Write-ColorPreview -text 'GitDefaultColor                  ' -color $sl.GitDefaultColor
-    Write-ColorPreview -text 'GitLocalChangesColor             ' -color $sl.GitLocalChangesColor
-    Write-ColorPreview -text 'GitNoLocalChangesAndAheadColor   ' -color $sl.GitNoLocalChangesAndAheadColor
-    Write-ColorPreview -text 'PromptForegroundColor            ' -color $sl.PromptForegroundColor
-    Write-ColorPreview -text 'PromptBackgroundColor            ' -color $sl.PromptBackgroundColor
-    Write-ColorPreview -text 'PromptSymbolColor                ' -color $sl.PromptSymbolColor
-    Write-ColorPreview -text 'SessionInfoBackgroundColor       ' -color $sl.SessionInfoBackgroundColor
-    Write-ColorPreview -text 'CommandFailedIconForegroundColor ' -color $sl.CommandFailedIconForegroundColor
-    Write-ColorPreview -text 'AdminIconForegroundColor         ' -color $sl.AdminIconForegroundColor
-    Write-Host -Object ''
-}
-
-function Write-ColorPreview
-{
-    param
-    (
-        [string]
-        $text,
-        [ConsoleColor]
-        $color
-    )
-
-    Write-Host -Object $text -NoNewline
-    Write-Host -Object '       ' -BackgroundColor $color
-}
-
-function Show-Colors
-{
-    for($i = 1; $i -lt 16; $i++)
-    {
-        $color = [ConsoleColor]$i
-        Write-Host -Object $color -BackgroundColor $i
-    }
-}
-
-function Show-Themes
-{
-    Write-Host ''
-    Write-Host 'Themes:'
-    Write-Host ''
-    Get-ChildItem -Path "$PSScriptRoot\*" -Include '*.ps1' -Exclude Tools.ps1 | Sort-Object Name | ForEach-Object -Process {write-Host "- $($_.BaseName)"} 
-    Write-Host ''
-    
-}
-
 $spg = $global:GitPromptSettings #Posh-Git settings
 $sl = $global:ThemeSettings #local settings
