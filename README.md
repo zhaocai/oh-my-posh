@@ -67,10 +67,10 @@ I use `Meslo LG M for Powerline` in my ConEmu setup together with custom colors 
 Installation
 ------------
 
-Use [PsGet](http://psget.net/) to install oh-my-posh straight from this repository:
+Use [PsGet](http://psget.net/) to install oh-my-posh:
 
 ```bash
-Install-Module -ModuleUrl https://github.com/JanJoris/oh-my-posh/archive/master.zip
+Install-Module oh-my-posh
 ```
 
 <div id='configuration'/>
