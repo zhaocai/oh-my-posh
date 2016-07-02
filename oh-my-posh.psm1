@@ -1,13 +1,3 @@
-Import-Module -Name posh-git -ErrorAction SilentlyContinue
-Import-Module -Name PSColor -ErrorAction SilentlyContinue
-Import-Module -Name Find-String -ErrorAction SilentlyContinue
-Import-Module -Name Invoke-ElevatedCommand -ErrorAction SilentlyContinue
-Import-Module -Name z -ErrorAction SilentlyContinue
-Import-Module -Name out-diff -ErrorAction SilentlyContinue
-Import-Module -Name PoShAncestry -ErrorAction SilentlyContinue
-Import-Module -Name PoShWarp -ErrorAction SilentlyContinue
-Import-Module -Name PsUrl -ErrorAction SilentlyContinue
-
 #requires -Version 2 -Modules posh-git
 
 . "$PSScriptRoot\Themes\Tools.ps1"
@@ -63,9 +53,6 @@ function Start-Up
     {
         Start-SshAgent -Quiet
     }
-
-    # Set sane defaults
-    Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
 }
 
 <#

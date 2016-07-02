@@ -21,3 +21,6 @@ $global:PSColor = @{
         Line       = @{ Color = 'White' }
     }
 }
+
+# Set sane defaults
+Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
