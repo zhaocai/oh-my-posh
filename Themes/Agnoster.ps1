@@ -4,6 +4,11 @@
 
 function Write-Theme
 {
+    param(
+        [bool]
+        $lastCommandFailed
+    )
+
     $fancySpacerSymbol = [char]::ConvertFromUtf32(0xE0B0)
     $drive = (Get-Drive -path (Get-Location).Path)
 

@@ -4,6 +4,11 @@
 
 function Write-Theme
 {
+    param(
+        [bool]
+        $lastCommandFailed
+    )
+    
     Write-Prompt -Object ([char]::ConvertFromUtf32(0x250C)) -ForegroundColor $sl.PromptSymbolColor
     Write-Segment -content ([Environment]::UserName) -foregroundColor $sl.PromptForegroundColor
 

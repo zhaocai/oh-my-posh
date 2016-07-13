@@ -4,6 +4,11 @@
 
 function Write-Theme
 {
+    param(
+        [bool]
+        $lastCommandFailed
+    )
+    
     $drive = (Get-Drive -path (Get-Location).Path)
 
     #check the last command state and indicate if failed
@@ -30,7 +35,7 @@ function Write-Theme
     if ($status)
     {
         $themeInfo = Get-VcsInfo -status ($status)
-        Write-Prompt -Object "git:" -ForegroundColor $sl.PromptForegroundColor   #$($themeInfo.VcInfo.Trim())  
+        Write-Prompt -Object "git:" -ForegroundColor $sl.PromptForegroundColor
         Write-Prompt -Object "$($themeInfo.VcInfo) " -ForegroundColor $themeInfo.BackgroundColor 
     }
 

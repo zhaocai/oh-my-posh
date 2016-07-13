@@ -23,6 +23,7 @@ $global:ThemeSettings = New-Object -TypeName PSObject -Property @{
     GitLocalChangesColor             = [ConsoleColor]::DarkGreen
     GitNoLocalChangesAndAheadColor   = [ConsoleColor]::DarkMagenta
     PromptForegroundColor            = [ConsoleColor]::Cyan
+    PromptHighlightColor             = [ConsoleColor]::DarkBlue
     DriveForegroundColor             = [ConsoleColor]::DarkBlue
     PromptBackgroundColor            = [ConsoleColor]::DarkBlue
     PromptSymbolColor                = [ConsoleColor]::Red
@@ -81,7 +82,7 @@ function global:prompt
 
     . "$PSScriptRoot\Themes\$($sl.Theme).ps1"
 
-    Write-Theme
+    Write-Theme -lastCommandFailed $lastCommandFailed
 
     return ' '
 }

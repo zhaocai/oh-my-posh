@@ -4,6 +4,11 @@
 
 function Write-Theme
 {
+    param(
+        [bool]
+        $lastCommandFailed
+    )
+
     $prompt = (Get-Location).Path.Replace($HOME,'~')
     if ($prompt -eq '~')
     {
