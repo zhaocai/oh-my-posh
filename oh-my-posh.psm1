@@ -30,6 +30,7 @@ $global:ThemeSettings = New-Object -TypeName PSObject -Property @{
     SessionInfoBackgroundColor       = [ConsoleColor]::Green
     CommandFailedIconForegroundColor = [ConsoleColor]::DarkYellow
     AdminIconForegroundColor         = [ConsoleColor]::DarkGreen
+    ErrorCount                       = 0
 }
 
 <#
@@ -62,7 +63,8 @@ function Start-Up
 #>
 function global:prompt
 {
-    $lastCommandFailed = !$?
+    $lastCommandFailed = $global:error.Count -gt $sl.ErrorCount
+    $sl.ErrorCount = $global:error.Count
 
     #Start the vanilla posh-git when in a vanilla window, else: go nuts
     if(Test-IsVanillaWindow)
@@ -137,3 +139,4 @@ function Show-Themes
 
 Start-Up # Executes the Start-Up function, better encapsulation
 $sl = $global:ThemeSettings #local settings
+$sl.ErrorCount = $global:error.Count

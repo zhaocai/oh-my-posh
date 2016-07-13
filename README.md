@@ -144,6 +144,10 @@ Themes
 
 <img src="https://herebedragons.io/wp-content/uploads/2016/06/avit.png" width="800">
 
+### Honukai
+
+<img src="https://herebedragons.io/wp-content/uploads/2016/07/honukai.png" width="800">
+
 <div id='owntheme'/>
 Creating your own theme
 -----------------------
@@ -158,7 +162,12 @@ The only required function is Write-Theme, you can use the following template to
 
 function Write-Theme
 {
-    //enter you prompt building logic here
+    param(
+        [bool]
+        $lastCommandFailed
+    )
+
+    # enter your prompt building logic here
 }
 
 $sl = $global:ThemeSettings #local settings
