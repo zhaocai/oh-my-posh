@@ -55,38 +55,35 @@ function Start-Up
     {
         Start-SshAgent -Quiet
     }
+
+    Set-Prompt
 }
 
 <#
         .SYNOPSIS
         Generates the prompt before each line in the console
 #>
-function global:prompt
+function Set-Prompt
 {
-    $lastCommandFailed = $global:error.Count -gt $sl.ErrorCount
-    $sl.ErrorCount = $global:error.Count
+    Import-Module $PSScriptRoot\Themes\$($sl.Theme).psm1
 
-    #Start the vanilla posh-git when in a vanilla window, else: go nuts
-    if(Test-IsVanillaWindow)
+    function global:prompt
     {
-        Write-Host -Object ($pwd.ProviderPath) -NoNewline
-        Write-VcsStatus
-        $global:LASTEXITCODE = !$lastCommandFailed
-        return '> '
+        $lastCommandFailed = $global:error.Count -gt $sl.ErrorCount
+        $sl.ErrorCount = $global:error.Count
+
+        #Start the vanilla posh-git when in a vanilla window, else: go nuts
+        if(Test-IsVanillaWindow)
+        {
+            Write-Host -Object ($pwd.ProviderPath) -NoNewline
+            Write-VcsStatus
+            $global:LASTEXITCODE = !$lastCommandFailed
+            return '> '
+        }
+
+        Write-Theme -lastCommandFailed $lastCommandFailed
+        return ' '
     }
-
-    # check if the theme exists
-    if (!(Test-Path "$PSScriptRoot\Themes\$($sl.Theme).ps1"))
-    {
-        # fall back to Agnoster if not found
-        $sl.Theme = 'Agnoster'
-    }
-
-    . "$PSScriptRoot\Themes\$($sl.Theme).ps1"
-
-    Write-Theme -lastCommandFailed $lastCommandFailed
-
-    return ' '
 }
 
 function Show-ThemeColors
@@ -130,13 +127,34 @@ function Show-Colors
 function Show-Themes
 {
     Write-Host ''
-    Write-Host 'Themes:'
-    Write-Host ''
-    Get-ChildItem -Path "$PSScriptRoot\Themes\*" -Include '*.ps1' -Exclude Tools.ps1 | Sort-Object Name | ForEach-Object -Process {write-Host "- $($_.BaseName)"} 
+    Get-ChildItem -Path "$PSScriptRoot\Themes\*" -Include '*.psm1' -Exclude Tools.ps1 | Sort-Object Name | ForEach-Object -Process {write-Host "- $($_.BaseName)"} 
     Write-Host ''
     
 }
 
-Start-Up # Executes the Start-Up function, better encapsulation
+function Set-Theme
+{
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]
+        $name
+    )
+
+    if (Test-Path "$PSScriptRoot\Themes\$($name).psm1")
+    {
+        $sl.Theme = $name
+    }
+    else
+    {
+        Write-Host ''
+        Write-Host "Theme $name not found. Available themes are:"
+        Show-Themes
+    }
+
+    Set-Prompt
+}
+
+
 $sl = $global:ThemeSettings #local settings
 $sl.ErrorCount = $global:error.Count
+Start-Up # Executes the Start-Up function, better encapsulation
