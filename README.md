@@ -92,12 +92,6 @@ This example allows you to tweak the branch symbol using a unicode character:
 $ThemeSettings.GitBranchSymbol = [char]::ConvertFromUtf32(0xE0A0)
 ````
 
-If you want to change the theme, adjust theme by selecting a theme from the Themes directory. If no match is found, it will default back to Agnoster.
-
-```bash
-$ThemeSettings.Theme = 'paradox'
-```
-
 Also do not forget the Posh-Git settings itself (enable the stash indication for example):
 
 ```bash
@@ -107,6 +101,12 @@ $GitPromptSettings
 <div id='helper'/>
 Helper functions
 ----------------
+
+`Set-Theme`:  set a theme from the Themes directory. If no match is found, it will not be changed.
+
+```bash
+Set-Theme -theme 'paradox'
+```
 
 `Show-ThemeColors`: display the colors used by the theme
 
