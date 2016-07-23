@@ -16,13 +16,6 @@ function Write-Theme
     # PowerLine starts with a space
     Write-Prompt -Object $prompt -ForegroundColor $sl.PromptForegroundColor -BackgroundColor $sl.SessionInfoBackgroundColor
 
-    #check the last command state and indicate if failed
-    If ($lastCommandFailed)
-    {
-        $prompt = $prompt + "$($sl.FailedCommandSymbol) "
-        Write-Prompt -Object "$($sl.FailedCommandSymbol) " -ForegroundColor $sl.CommandFailedIconForegroundColor -BackgroundColor $sl.SessionInfoBackgroundColor
-    }
-
     #check for elevated prompt
     If (([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator'))
     {
@@ -64,9 +57,14 @@ function Write-Theme
     Write-Prompt -Object $backwardSpacerSymbol.PadLeft($remainingWidth - $leftText.length, ' ') -ForegroundColor $sl.PromptBackgroundColor -BackgroundColor $sl.SessionInfoBackgroundColor 
     
     Write-Host " $date $betweenBackwardSpacerSymbol $timeStamp " -ForegroundColor $sl.PromptForegroundColor -BackgroundColor $sl.PromptBackgroundColor 
-
-    $promptSymbol = [char]::ConvertFromUtf32(0x276F)
-    Write-Prompt -Object " $promptSymbol" -ForegroundColor $sl.PromptBackgroundColor
+    
+    $foregroundColor = $sl.PromptSymbolColor
+    If ($lastCommandFailed)
+    {
+        $foregroundColor = $sl.CommandFailedIconForegroundColor
+    }
+    $promptSymbol = [char]::ConvertFromUtf32(0x25B6)
+    Write-Prompt -Object $promptSymbol -ForegroundColor $foregroundColor
 }
 
 $sl = $global:ThemeSettings #local settings

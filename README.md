@@ -148,6 +148,10 @@ Themes
 
 <img src="https://herebedragons.io/wp-content/uploads/2016/07/honukai.png" width="800">
 
+### Fish
+
+<img src="https://herebedragons.io/wp-content/uploads/2016/07/fish.png" width="800">
+
 <div id='owntheme'/>
 Creating your own theme
 -----------------------
