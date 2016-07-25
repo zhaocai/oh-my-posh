@@ -5,7 +5,7 @@ Write-Host "Get ready to receive all the awesomeness..."
 Install-Module posh-git
 Install-Module PSColor
 Install-Module Find-String
-Install-Module Invoke-ElevatedCommand
+Install-Module PSSudo
 Install-Module z
 Install-Module out-diff
 Install-Module PoShAncestry
