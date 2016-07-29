@@ -156,7 +156,7 @@ Themes
 Creating your own theme
 -----------------------
 
-If you want to create a theme it can be done rather easily by adding a `mytheme.ps1` file in the Themes folder (replace `mytheme` with your own, awesome theme name).
+If you want to create a theme it can be done rather easily by adding a `mytheme.psm1` file in the Themes folder (replace `mytheme` with your own, awesome theme name).
 The only required function is Write-Theme, you can use the following template to get started:
 
 ````bash
