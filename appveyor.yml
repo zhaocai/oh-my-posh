@@ -4,6 +4,8 @@ branches:
 skip_tags: true
 version: 0.0.{build}
 image: WMF 5
+install:
+- ps: Get-PackageProvider -Name Nuget -Force
 environment:
     NG_KEY:
       secure: tN2AWqN8DMHjaUvl6AbwwMK1GrF6K0xPiCSGRh1SWZGex4kgVAx+Rri1AxxPYmBg

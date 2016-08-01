@@ -1,16 +1,6 @@
 param([switch]$WhatIf = $false)
 
-# Install all the awesome packages!
-Write-Host "Get ready to receive all the awesomeness..."
 Install-Module posh-git
-Install-Module PSColor
-Install-Module Find-String
-Install-Module PSSudo
-Install-Module z
-Install-Module out-diff
-Install-Module PoShAncestry
-Install-Module PoShWarp
-Install-Module PsUrl
 
 # Adapted from http://www.west-wind.com/Weblog/posts/197245.aspx
 function Get-FileEncoding($Path) {
@@ -44,16 +34,8 @@ if(Select-String -Path $PROFILE -Pattern $importLine -Quiet -SimpleMatch) {
 Write-Host "Adding oh-my-posh to profile..." 
 @"
 
-# Import awesome packages and oh-my-posh
+# Import oh-my-posh and dependecies
 Import-Module -Name posh-git -ErrorAction SilentlyContinue
-Import-Module -Name PSColor -ErrorAction SilentlyContinue
-Import-Module -Name Find-String -ErrorAction SilentlyContinue
-Import-Module -Name Invoke-ElevatedCommand -ErrorAction SilentlyContinue
-Import-Module -Name z -ErrorAction SilentlyContinue
-Import-Module -Name out-diff -ErrorAction SilentlyContinue
-Import-Module -Name PoShAncestry -ErrorAction SilentlyContinue
-Import-Module -Name PoShWarp -ErrorAction SilentlyContinue
-Import-Module -Name PsUrl -ErrorAction SilentlyContinue
 $importLine
 
 "@ | Out-File $PROFILE -Append -WhatIf:$WhatIf -Encoding (Get-FileEncoding $PROFILE)

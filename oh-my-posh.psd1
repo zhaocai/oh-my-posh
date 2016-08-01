@@ -9,13 +9,10 @@
 @{
 
 # Version number of this module.
-ModuleVersion = '1.3.0'
+ModuleVersion = '1.3.1'
 
 # Script module or binary module file associated with this manifest.
 RootModule = 'oh-my-posh.psm1'
-
-# Modules that must be imported into the global environment prior to importing this module
-RequiredModules = 'posh-git'
 
 # ID used to uniquely identify this module
 GUID = '7d7c4a78-e2fe-4e5f-9510-34ac893e4562'
