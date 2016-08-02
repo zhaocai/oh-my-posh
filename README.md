@@ -1,7 +1,10 @@
 oh-my-posh
 ==========
 
-> If you are migrating from PS-Agnoster to oh-my-posh, remove everything and install using [PsGet](#installation)
+[![Build status](https://img.shields.io/appveyor/ci/janjoris/oh-my-posh/master.svg?maxAge=2592000)](https://ci.appveyor.com/project/JanJoris/oh-my-posh) [![Gitter](https://badges.gitter.im/oh-my-posh/Lobby.svg)](https://gitter.im/oh-my-posh/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+
+
+> If you are migrating from PS-Agnoster to oh-my-posh, remove everything and [reinstall](#installation)
 
 ## Table of Contents
 
@@ -11,7 +14,6 @@ oh-my-posh
 * [Configuration](#configuration)
 * [Helper functions](#helper)
 * [Themes](#themes)
-* [Creating your own theme](#owntheme)
 
 <div id='about'/>
 About
@@ -44,8 +46,8 @@ Features:
 <img src="https://herebedragons.io/wp-content/uploads/2016/06/admin_prompt.png" width="800">
 
 <div id='prerequisites'/>
-Prerequisites
--------------
+<details>
+<summary>Prerequisites</summary>
 
 You should use ConEmu to have a brilliant terminal experience on Windows. You can install it using [Chocolatey](https://chocolatey.org/) :
 
@@ -62,9 +64,11 @@ Install-Module -ModuleUrl https://github.com/powerline/fonts/archive/master.zip
 
 I use `Meslo LG M for Powerline` in my ConEmu setup together with custom colors You can find my configuration [here](https://gist.github.com/JanJoris/71c9f1361a562f337b855b75d7bbfd28).
 
+</details>
+
 <div id='installation'/>
-Installation
-------------
+<details>
+<summary>Installation</summary>
 
 ### PsGet
 
@@ -83,9 +87,11 @@ Install-Module posh-git -Scope CurrentUser
 Install-Module oh-my-posh -Scope CurrentUser
 ```
 
+</details>
+
 <div id='configuration'/>
-Configuration
--------------
+<details>
+<summary>Configuration</summary>
 
 List the current configuration:
 
@@ -108,9 +114,11 @@ Also do not forget the Posh-Git settings itself (enable the stash indication for
 $GitPromptSettings
 ```
 
+</details>
+
 <div id='helper'/>
-Helper functions
-----------------
+<details>
+<summary>Helper functions</summary>
 
 `Set-Theme`:  set a theme from the Themes directory. If no match is found, it will not be changed.
 
@@ -130,9 +138,11 @@ Set-Theme -theme 'paradox'
 
 <img src="https://herebedragons.io/wp-content/uploads/2016/06/themes.png" width="800">
 
+</details>
+
 <div id='themes'/>
-Themes
-------
+<details>
+<summary>Themes</summary>
 
 ### Agnoster
 
@@ -198,6 +208,9 @@ If you want to include your theme in oh-my-posh, send me a PR and I'll try to gi
 
 Happy theming!
 
+</details>
+
 ### Based on work by
 
-* Chris Benti, https://github.com/chrisbenti
+* [Chris Benti](https://github.com/chrisbenti/PS-Config)
+* [Keith Dahlby](https://github.com/dahlbyk/posh-git)
