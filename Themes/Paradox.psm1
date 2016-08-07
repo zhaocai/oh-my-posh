@@ -31,10 +31,11 @@ function Write-Theme
     }
 
     $user = [Environment]::UserName
+    $computer = $env:computername
     $path = (Get-Location).Path.Replace($HOME,'~')
     
-    $prompt = $prompt + "$user $fancySpacerSymbol $path "
-    Write-Prompt -Object "$user " -ForegroundColor $sl.PromptForegroundColor -BackgroundColor $sl.SessionInfoBackgroundColor
+    $prompt = $prompt + "$user@$computer $fancySpacerSymbol $path "
+    Write-Prompt -Object "$user@$computer " -ForegroundColor $sl.SessionInfoForegroundColor -BackgroundColor $sl.SessionInfoBackgroundColor
     Write-Prompt -Object "$fancySpacerSymbol " -ForegroundColor $sl.SessionInfoBackgroundColor -BackgroundColor $sl.PromptBackgroundColor
 
     # Writes the drive portion

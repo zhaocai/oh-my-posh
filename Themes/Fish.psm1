@@ -24,10 +24,11 @@ function Write-Theme
     }
 
     $user = [Environment]::UserName
+    $computer = $env:computername
     $path = (Get-Location).Path.Replace($HOME,'~')
     
-    $prompt = $prompt + "$user $fancySpacerSymbol $path "
-    Write-Prompt -Object "$user " -ForegroundColor $sl.PromptForegroundColor -BackgroundColor $sl.SessionInfoBackgroundColor
+    $prompt = $prompt + "$user@$computer $fancySpacerSymbol $path "
+    Write-Prompt -Object "$user@$computer " -ForegroundColor $sl.SessionInfoForegroundColor -BackgroundColor $sl.SessionInfoBackgroundColor
     Write-Prompt -Object "$fancySpacerSymbol " -ForegroundColor $sl.SessionInfoBackgroundColor -BackgroundColor $sl.PromptBackgroundColor
 
     # Writes the drive portion
@@ -44,7 +45,7 @@ function Write-Theme
 
     # Writes the postfix to the prompt
     $prompt = $prompt + $fancySpacerSymbol
-    Write-Prompt -Object $fancySpacerSymbol -ForegroundColor $sl.PromptBackgroundColor -BackgroundColor $sl.SessionInfoBackgroundColor 
+    Write-Prompt -Object $fancySpacerSymbol -ForegroundColor $sl.PromptBackgroundColor -BackgroundColor $sl.PromptHighlightColor 
 
     $backwardSpacerSymbol = [char]::ConvertFromUtf32(0xE0B2)
     $betweenBackwardSpacerSymbol = [char]::ConvertFromUtf32(0xE0B3)
@@ -54,7 +55,7 @@ function Write-Theme
 
     $remainingWidth = Get-BetweenSpace -promptText $prompt -endText $leftText
 
-    Write-Prompt -Object $backwardSpacerSymbol.PadLeft($remainingWidth - $leftText.length, ' ') -ForegroundColor $sl.PromptBackgroundColor -BackgroundColor $sl.SessionInfoBackgroundColor 
+    Write-Prompt -Object $backwardSpacerSymbol.PadLeft($remainingWidth - $leftText.length, ' ') -ForegroundColor $sl.PromptBackgroundColor -BackgroundColor $sl.PromptHighlightColor 
     
     Write-Host " $date $betweenBackwardSpacerSymbol $timeStamp " -ForegroundColor $sl.PromptForegroundColor -BackgroundColor $sl.PromptBackgroundColor 
     
@@ -68,3 +69,4 @@ function Write-Theme
 }
 
 $sl = $global:ThemeSettings #local settings
+$sl.PromptHighlightColor = [ConsoleColor]::Gray

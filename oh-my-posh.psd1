@@ -9,7 +9,7 @@
 @{
 
 # Version number of this module.
-ModuleVersion = '1.3.2'
+ModuleVersion = '1.4.0'
 
 # Script module or binary module file associated with this manifest.
 RootModule = 'oh-my-posh.psm1'

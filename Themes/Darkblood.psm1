@@ -61,3 +61,5 @@ function Write-Segment
 }
 
 $sl = $global:ThemeSettings #local settings
+$sl.PromptSymbolColor = [ConsoleColor]::DarkRed
+$sl.PromptForegroundColor = [ConsoleColor]::White

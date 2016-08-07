@@ -17,7 +17,7 @@ function Write-Theme
     # write at (devicename)
     $device = $env:computername
     Write-Prompt -Object " at" -ForegroundColor $sl.PromptForegroundColor
-    Write-Prompt -Object " $device" -ForegroundColor $sl.GitNoLocalChangesAndAheadColor
+    Write-Prompt -Object " $device" -ForegroundColor $sl.GitDefaultColor
     # write in (folder)
     Write-Prompt -Object " in" -ForegroundColor $sl.PromptForegroundColor
     $prompt = (Get-Location).Path.Replace($HOME,'~')
@@ -55,3 +55,5 @@ function Get-TimeSinceLastCommit
 }
 
 $sl = $global:ThemeSettings #local settings
+$sl.PromptHighlightColor = [ConsoleColor]::DarkBlue
+$sl.PromptForegroundColor = [ConsoleColor]::White

@@ -62,7 +62,7 @@ Or, could absuse [PsGet](http://psget.net/) and install them:
 Install-Module -ModuleUrl https://github.com/powerline/fonts/archive/master.zip
 ```
 
-I use `Meslo LG M for Powerline` in my ConEmu setup together with custom colors You can find my configuration [here](https://gist.github.com/JanJoris/71c9f1361a562f337b855b75d7bbfd28).
+I use `Meslo LG M for Powerline` in my ConEmu setup together with custom colors You can find my theme [here](https://gist.github.com/JanJoris/71c9f1361a562f337b855b75d7bbfd28).
 
 </details>
 

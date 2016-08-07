@@ -47,3 +47,4 @@ function Write-Theme
 }
 
 $sl = $global:ThemeSettings #local settings
+$sl.PromptForegroundColor = [ConsoleColor]::White

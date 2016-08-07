@@ -62,3 +62,4 @@ function Get-TimeSinceLastCommit
 }
 
 $sl = $global:ThemeSettings #local settings
+$sl.PromptForegroundColor = [ConsoleColor]::DarkBlue

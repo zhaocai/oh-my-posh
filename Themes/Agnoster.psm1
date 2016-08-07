@@ -11,11 +11,17 @@ function Write-Theme
 
     $fancySpacerSymbol = [char]::ConvertFromUtf32(0xE0B0)
     $drive = (Get-Drive -path (Get-Location).Path)
+    $location = (Get-ShortPath -path (Get-Location).Path)
+    # remove the trailing slash for the HOME folder
+    if ($location -eq '' -and $drive -eq '~\')
+    {
+        $drive = '~'
+    }
 
     $lastColor = $sl.PromptBackgroundColor
 
     # PowerLine starts with a space
-    Write-Prompt -Object ' ' -ForegroundColor $sl.PromptForegroundColor -BackgroundColor $sl.SessionInfoBackgroundColor
+    Write-Prompt -Object ' ' -ForegroundColor $sl.SessionInfoForegroundColor -BackgroundColor $sl.SessionInfoBackgroundColor
 
     #check the last command state and indicate if failed
     If ($lastCommandFailed)
@@ -30,7 +36,8 @@ function Write-Theme
     }
 
     $user = [Environment]::UserName
-    Write-Prompt -Object "$user " -ForegroundColor $sl.PromptForegroundColor -BackgroundColor $sl.SessionInfoBackgroundColor
+    $computer = $env:computername
+    Write-Prompt -Object "$user@$computer " -ForegroundColor $sl.SessionInfoForegroundColor -BackgroundColor $sl.SessionInfoBackgroundColor
     Write-Prompt -Object "$fancySpacerSymbol " -ForegroundColor $sl.SessionInfoBackgroundColor -BackgroundColor $sl.PromptBackgroundColor
 
     # Writes the drive portion

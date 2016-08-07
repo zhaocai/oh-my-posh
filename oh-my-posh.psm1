@@ -19,17 +19,18 @@ $global:ThemeSettings = New-Object -TypeName PSObject -Property @{
     BranchAheadStatusSymbol          = [char]::ConvertFromUtf32(0x2191)
     BranchBehindStatusSymbol         = [char]::ConvertFromUtf32(0x2193)
     ElevatedSymbol                   = [char]::ConvertFromUtf32(0x26A1)
-    GitDefaultColor                  = [ConsoleColor]::DarkCyan
-    GitLocalChangesColor             = [ConsoleColor]::DarkGreen
+    GitDefaultColor                  = [ConsoleColor]::DarkGreen
+    GitLocalChangesColor             = [ConsoleColor]::DarkYellow
     GitNoLocalChangesAndAheadColor   = [ConsoleColor]::DarkMagenta
-    PromptForegroundColor            = [ConsoleColor]::Cyan
+    PromptForegroundColor            = [ConsoleColor]::Black
     PromptHighlightColor             = [ConsoleColor]::DarkBlue
     DriveForegroundColor             = [ConsoleColor]::DarkBlue
     PromptBackgroundColor            = [ConsoleColor]::DarkBlue
-    PromptSymbolColor                = [ConsoleColor]::Red
-    SessionInfoBackgroundColor       = [ConsoleColor]::Green
-    CommandFailedIconForegroundColor = [ConsoleColor]::DarkYellow
-    AdminIconForegroundColor         = [ConsoleColor]::DarkGreen
+    PromptSymbolColor                = [ConsoleColor]::White
+    SessionInfoBackgroundColor       = [ConsoleColor]::Magenta
+    SessionInfoForegroundColor       = [ConsoleColor]::White
+    CommandFailedIconForegroundColor = [ConsoleColor]::DarkRed
+    AdminIconForegroundColor         = [ConsoleColor]::DarkYellow
     ErrorCount                       = 0
 }
 
