@@ -118,7 +118,7 @@ function Write-ColorPreview
 
 function Show-Colors
 {
-    for($i = 1; $i -lt 16; $i++)
+    for($i = 0; $i -lt 16; $i++)
     {
         $color = [ConsoleColor]$i
         Write-Host -Object $color -BackgroundColor $i

@@ -22,5 +22,7 @@ $global:PSColor = @{
     }
 }
 
-# Set sane defaults
+# PSReadline options
 Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
+Set-PSReadlineOption -TokenKind Command -ForegroundColor DarkBlue
+Set-PSReadlineOption -TokenKind Parameter -ForegroundColor Yellow
