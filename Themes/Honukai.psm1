@@ -6,7 +6,9 @@ function Write-Theme
 {
     param(
         [bool]
-        $lastCommandFailed
+        $lastCommandFailed,
+        [string]
+        $with
     )
     
     # write # and space
@@ -45,6 +47,12 @@ function Write-Theme
     {
         $foregroundColor = $sl.CommandFailedIconForegroundColor
     }
+
+    if ($with)
+    {
+        Write-Prompt -Object "$($with.ToUpper()) " -BackgroundColor $sl.WithBackgroundColor -ForegroundColor $sl.WithForegroundColor
+    }
+
     $promptSymbol = [char]::ConvertFromUtf32(0x279C)
     Write-Prompt -Object "$promptSymbol" -ForegroundColor $foregroundColor
 }
@@ -57,3 +65,6 @@ function Get-TimeSinceLastCommit
 $sl = $global:ThemeSettings #local settings
 $sl.PromptHighlightColor = [ConsoleColor]::DarkBlue
 $sl.PromptForegroundColor = [ConsoleColor]::White
+$sl.PromptHighlightColor = [ConsoleColor]::DarkBlue
+$sl.WithForegroundColor = [ConsoleColor]::DarkRed
+$sl.WithBackgroundColor = [ConsoleColor]::Magenta

@@ -6,7 +6,9 @@ function Write-Theme
 {
     param(
         [bool]
-        $lastCommandFailed
+        $lastCommandFailed,
+        [string]
+        $with
     )
     
     $fancySpacerSymbol = [char]::ConvertFromUtf32(0xE0B0)
@@ -60,10 +62,20 @@ function Write-Theme
 
     $remainingWidth = Get-BetweenSpace -promptText $prompt -endText $timeStamp
 
-    Write-Host $timeStamp.PadLeft($remainingWidth -1, ' ').PadLeft(1, ' ') -ForegroundColor $sl.PromptForegroundColor 
+    Write-Host $timeStamp.PadLeft($remainingWidth -1, ' ').PadLeft(1, ' ') -ForegroundColor $sl.PromptForegroundColor
+
+    if ($with)
+    {
+        Write-Prompt -Object "$($with.ToUpper()) " -BackgroundColor $sl.WithBackgroundColor -ForegroundColor $sl.WithForegroundColor
+    }
 
     $promptSymbol = [char]::ConvertFromUtf32(0x276F)
-    Write-Prompt -Object " $promptSymbol" -ForegroundColor $sl.PromptBackgroundColor
+    Write-Prompt -Object $promptSymbol -ForegroundColor $sl.PromptBackgroundColor
 }
 
 $sl = $global:ThemeSettings #local settings
+$sl.PromptForegroundColor = [ConsoleColor]::White
+$sl.PromptSymbolColor = [ConsoleColor]::White
+$sl.PromptHighlightColor = [ConsoleColor]::DarkBlue
+$sl.WithForegroundColor = [ConsoleColor]::DarkRed
+$sl.WithBackgroundColor = [ConsoleColor]::Magenta

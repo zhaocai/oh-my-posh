@@ -6,14 +6,15 @@ function Write-Theme
 {
     param(
         [bool]
-        $lastCommandFailed
+        $lastCommandFailed,
+        [string]
+        $with
     )
     
     $fancySpacerSymbol = [char]::ConvertFromUtf32(0xE0B0)
     $betweenFancySpacerSymbol = [char]::ConvertFromUtf32(0xE0B1)
 
     $prompt = ' '
-    # PowerLine starts with a space
     Write-Prompt -Object $prompt -ForegroundColor $sl.PromptForegroundColor -BackgroundColor $sl.SessionInfoBackgroundColor
 
     #check for elevated prompt
@@ -64,9 +65,19 @@ function Write-Theme
     {
         $foregroundColor = $sl.CommandFailedIconForegroundColor
     }
+
+    if ($with)
+    {
+        Write-Prompt -Object "$($with.ToUpper()) " -BackgroundColor $sl.WithBackgroundColor -ForegroundColor $sl.WithForegroundColor
+    }
+
     $promptSymbol = [char]::ConvertFromUtf32(0x25B6)
     Write-Prompt -Object $promptSymbol -ForegroundColor $foregroundColor
 }
 
 $sl = $global:ThemeSettings #local settings
-$sl.PromptHighlightColor = [ConsoleColor]::Gray
+$sl.PromptSymbolColor = [ConsoleColor]::White
+$sl.PromptForegroundColor = [ConsoleColor]::White
+$sl.PromptHighlightColor = [ConsoleColor]::Magenta
+$sl.WithForegroundColor = [ConsoleColor]::DarkRed
+$sl.WithBackgroundColor = [ConsoleColor]::Magenta

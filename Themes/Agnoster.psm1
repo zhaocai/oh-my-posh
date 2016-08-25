@@ -6,7 +6,9 @@ function Write-Theme
 {
     param(
         [bool]
-        $lastCommandFailed
+        $lastCommandFailed,
+        [string]
+        $with
     )
 
     $fancySpacerSymbol = [char]::ConvertFromUtf32(0xE0B0)
@@ -54,8 +56,20 @@ function Write-Theme
         Write-Prompt -Object " $($themeInfo.VcInfo) " -BackgroundColor $lastColor -ForegroundColor $sl.PromptForegroundColor        
     }
 
+    if ($with)
+    {
+        Write-Prompt -Object $fancySpacerSymbol -ForegroundColor $lastColor -BackgroundColor $sl.WithBackgroundColor
+        Write-Prompt -Object " $($with.ToUpper()) " -BackgroundColor $sl.WithBackgroundColor -ForegroundColor $sl.WithForegroundColor
+        $lastColor = $sl.WithBackgroundColor
+    }
+
     # Writes the postfix to the prompt
     Write-Prompt -Object $fancySpacerSymbol -ForegroundColor $lastColor
 }
 
 $sl = $global:ThemeSettings #local settings
+$sl.PromptForegroundColor = [ConsoleColor]::White
+$sl.PromptSymbolColor = [ConsoleColor]::White
+$sl.PromptHighlightColor = [ConsoleColor]::DarkBlue
+$sl.WithForegroundColor = [ConsoleColor]::White
+$sl.WithBackgroundColor = [ConsoleColor]::DarkRed

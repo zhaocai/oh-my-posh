@@ -22,7 +22,7 @@ $global:ThemeSettings = New-Object -TypeName PSObject -Property @{
     GitDefaultColor                  = [ConsoleColor]::DarkGreen
     GitLocalChangesColor             = [ConsoleColor]::DarkYellow
     GitNoLocalChangesAndAheadColor   = [ConsoleColor]::DarkMagenta
-    PromptForegroundColor            = [ConsoleColor]::Black
+    PromptForegroundColor            = [ConsoleColor]::White
     PromptHighlightColor             = [ConsoleColor]::DarkBlue
     DriveForegroundColor             = [ConsoleColor]::DarkBlue
     PromptBackgroundColor            = [ConsoleColor]::DarkBlue
@@ -31,6 +31,8 @@ $global:ThemeSettings = New-Object -TypeName PSObject -Property @{
     SessionInfoForegroundColor       = [ConsoleColor]::White
     CommandFailedIconForegroundColor = [ConsoleColor]::DarkRed
     AdminIconForegroundColor         = [ConsoleColor]::DarkYellow
+    WithBackgroundColor              = [ConsoleColor]::DarkRed
+    WithForegroundColor              = [ConsoleColor]::White
     ErrorCount                       = 0
 }
 
@@ -87,6 +89,26 @@ function Set-Prompt
     }
 }
 
+function global:Write-WithPrompt()
+{
+    param(
+        [string]
+        $command
+    )
+
+    $lastCommandFailed = $global:error.Count -gt $sl.ErrorCount
+    $sl.ErrorCount = $global:error.Count
+
+    if(Test-IsVanillaWindow)
+    {
+        Write-ClassicPrompt -command $command 
+        return
+    }
+    
+    Write-Theme -lastCommandFailed $lastCommandFailed -with $command
+    Write-Host ' ' -NoNewline
+}
+
 function Show-ThemeColors
 {
     Write-Host -Object ''
@@ -96,9 +118,13 @@ function Show-ThemeColors
     Write-ColorPreview -text 'PromptForegroundColor            ' -color $sl.PromptForegroundColor
     Write-ColorPreview -text 'PromptBackgroundColor            ' -color $sl.PromptBackgroundColor
     Write-ColorPreview -text 'PromptSymbolColor                ' -color $sl.PromptSymbolColor
+    Write-ColorPreview -text 'PromptHighlightColor             ' -color $sl.PromptHighlightColor
     Write-ColorPreview -text 'SessionInfoBackgroundColor       ' -color $sl.SessionInfoBackgroundColor
+    Write-ColorPreview -text 'SessionInfoForegroundColor       ' -color $sl.SessionInfoForegroundColor
     Write-ColorPreview -text 'CommandFailedIconForegroundColor ' -color $sl.CommandFailedIconForegroundColor
     Write-ColorPreview -text 'AdminIconForegroundColor         ' -color $sl.AdminIconForegroundColor
+    Write-ColorPreview -text 'WithBackgroundColor              ' -color $sl.WithBackgroundColor
+    Write-ColorPreview -text 'WithForegroundColor              ' -color $sl.WithForegroundColor
     Write-Host -Object ''
 }
 

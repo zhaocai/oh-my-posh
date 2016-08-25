@@ -45,6 +45,10 @@ Features:
 
 <img src="https://herebedragons.io/wp-content/uploads/2016/06/admin_prompt.png" width="800">
 
+### [posh-with](https://github.com/JanJoris/posh-with) prompt indication
+
+<img src="https://herebedragons.io/wp-content/uploads/2016/08/with.png" width="800">
+
 <div id='prerequisites'/>
 <details>
 <summary>Prerequisites</summary>

@@ -6,7 +6,9 @@ function Write-Theme
 {
     param(
         [bool]
-        $lastCommandFailed
+        $lastCommandFailed,
+        [string]
+        $with
     )
     
     $drive = (Get-Drive -path (Get-Location).Path)
@@ -39,6 +41,11 @@ function Write-Theme
         Write-Prompt -Object "$($themeInfo.VcInfo) " -ForegroundColor $themeInfo.BackgroundColor 
     }
 
+    if ($with)
+    {
+        Write-Prompt -Object "$($with.ToUpper()) " -BackgroundColor $sl.WithBackgroundColor -ForegroundColor $sl.WithForegroundColor
+    }
+
     # Writes the postfixes to the prompt
     $forwardSpacerSymbol = [char]::ConvertFromUtf32(0x276F)
     Write-Prompt -Object $forwardSpacerSymbol -ForegroundColor $sl.CommandFailedIconForegroundColor
@@ -48,3 +55,7 @@ function Write-Theme
 
 $sl = $global:ThemeSettings #local settings
 $sl.PromptForegroundColor = [ConsoleColor]::White
+$sl.PromptSymbolColor = [ConsoleColor]::White
+$sl.PromptHighlightColor = [ConsoleColor]::DarkBlue
+$sl.WithForegroundColor = [ConsoleColor]::DarkRed
+$sl.WithBackgroundColor = [ConsoleColor]::Magenta

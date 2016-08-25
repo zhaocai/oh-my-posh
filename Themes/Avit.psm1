@@ -6,7 +6,9 @@ function Write-Theme
 {
     param(
         [bool]
-        $lastCommandFailed
+        $lastCommandFailed,
+        [string]
+        $with
     )
 
     $prompt = (Get-Location).Path.Replace($HOME,'~')
@@ -52,6 +54,12 @@ function Write-Theme
     $remainingWidth = Get-BetweenSpace -promptText $prompt -endText $timeStamp
 
     Write-Host $timeStamp.PadLeft($remainingWidth -1, ' ').PadLeft(1, ' ') -ForegroundColor $sl.PromptBackgroundColor
+  
+    if ($with)
+    {
+        Write-Prompt -Object "$($with.ToUpper()) " -BackgroundColor $sl.WithBackgroundColor -ForegroundColor $sl.WithForegroundColor
+    }
+
     $promptSymbol = [char]::ConvertFromUtf32(0x25B6)
     Write-Prompt -Object "$promptSymbol" -ForegroundColor $sl.PromptBackgroundColor
 }
@@ -63,3 +71,7 @@ function Get-TimeSinceLastCommit
 
 $sl = $global:ThemeSettings #local settings
 $sl.PromptForegroundColor = [ConsoleColor]::DarkBlue
+$sl.WithForegroundColor = [ConsoleColor]::DarkRed
+$sl.PromptHighlightColor = [ConsoleColor]::DarkBlue
+$sl.WithBackgroundColor = [ConsoleColor]::Magenta
+$sl.PromptSymbolColor = [ConsoleColor]::White

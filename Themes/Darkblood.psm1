@@ -6,7 +6,9 @@ function Write-Theme
 {
     param(
         [bool]
-        $lastCommandFailed
+        $lastCommandFailed,
+        [string]
+        $with
     )
     
     Write-Prompt -Object ([char]::ConvertFromUtf32(0x250C)) -ForegroundColor $sl.PromptSymbolColor
@@ -46,6 +48,13 @@ function Write-Theme
 
     Write-Prompt -Object "[" -ForegroundColor $sl.PromptSymbolColor
     Write-Prompt -Object $prompt -ForegroundColor $sl.PromptForegroundColor
+
+    if ($with)
+    {
+        Write-Prompt -Object "] [" -ForegroundColor $sl.PromptSymbolColor
+        Write-Prompt -Object "$($with.ToUpper())" -ForegroundColor $sl.WithForegroundColor
+    }
+
     Write-Prompt -Object "]>" -ForegroundColor $sl.PromptSymbolColor
 }
 
@@ -61,5 +70,8 @@ function Write-Segment
 }
 
 $sl = $global:ThemeSettings #local settings
-$sl.PromptSymbolColor = [ConsoleColor]::DarkRed
 $sl.PromptForegroundColor = [ConsoleColor]::White
+$sl.PromptSymbolColor = [ConsoleColor]::DarkRed
+$sl.PromptHighlightColor = [ConsoleColor]::DarkBlue
+$sl.WithForegroundColor = [ConsoleColor]::DarkYellow
+$sl.WithBackgroundColor = [ConsoleColor]::Magenta
