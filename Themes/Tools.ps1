@@ -17,6 +17,7 @@ function Get-VCSStatus
             $status = (Invoke-Expression -Command ($vcs_systems[$key]))
             if ($status)
             {
+                $global:GitStatus = $status
                 return $status
             }
         }
