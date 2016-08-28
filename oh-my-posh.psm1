@@ -80,7 +80,6 @@ function Set-Prompt
         {
             Write-Host -Object ($pwd.ProviderPath) -NoNewline
             Write-VcsStatus
-            $global:LASTEXITCODE = !$lastCommandFailed
             return '> '
         }
 
