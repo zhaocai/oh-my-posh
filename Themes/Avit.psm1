@@ -24,21 +24,18 @@ function Write-Theme
     {
         $vcsInfo = Get-VcsInfo -status ($status)
         $info = $vcsInfo.VcInfo
-        $prompt = $prompt + " $info"
         Write-Prompt -Object " $info" -ForegroundColor $vcsInfo.BackgroundColor
     }
     
     #check for elevated prompt
     If (([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator'))
     {
-        $prompt = $prompt + " $($sl.ElevatedSymbol)"
         Write-Prompt -Object " $($sl.ElevatedSymbol)" -ForegroundColor $sl.AdminIconForegroundColor
     }
 
     #check the last command state and indicate if failed
     If ($lastCommandFailed)
     {
-        $prompt = $prompt + " $($sl.FailedCommandSymbol)"
         Write-Prompt -Object " $($sl.FailedCommandSymbol)" -ForegroundColor $sl.CommandFailedIconForegroundColor
     }
 
@@ -51,9 +48,8 @@ function Write-Theme
         $timeStamp = Get-TimeSinceLastCommit
     }
 
-    $remainingWidth = Get-BetweenSpace -promptText $prompt -endText $timeStamp
-
-    Write-Host $timeStamp.PadLeft($remainingWidth -1, ' ').PadLeft(1, ' ') -ForegroundColor $sl.PromptBackgroundColor
+    Set-CursorForRightBlockWrite -textLength $timestamp.Length
+    Write-Host $timeStamp -ForegroundColor $sl.PromptBackgroundColor
   
     if ($with)
     {

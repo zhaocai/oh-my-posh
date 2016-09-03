@@ -327,24 +327,38 @@ function Get-ShortPath
     }
 }
 
-function Get-BetweenSpace {
+function Set-CursorForRightBlockWrite
+{
     param(
-        [string]
-        $promptText,
-        [string]
-        $endText
+        [int]
+        $textLength
     )
-
-    if($Host -and $Host.UI -and $Host.UI.RawUI) {
-        $rawUI = $Host.UI.RawUI
-        $width = $rawUI.BufferSize.Width
-        $width = $width - $promptText.Length
-        return $width
-    }
-    else {
-        return 0
-    }
+    
+    $rawUI = $Host.UI.RawUI
+    $width = $rawUI.BufferSize.Width
+    $space = $width - $textLength
+    Write-Host "$escapeChar[$($space)G" -NoNewline
 }
 
+function Save-CursorPosition
+{
+    Write-Host "$escapeChar[s" -NoNewline
+}
+
+function Pop-CursorPosition
+{
+    Write-Host "$escapeChar[u" -NoNewline
+}
+
+function Set-CursorUp
+{
+    param(
+        [int]
+        $lines
+    )
+    Write-Host "$escapeChar[$($lines)A" -NoNewline
+}
+
+$escapeChar = [char]27
 $spg = $global:GitPromptSettings #Posh-Git settings
 $sl = $global:ThemeSettings #local settings

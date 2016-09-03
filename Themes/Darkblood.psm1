@@ -21,7 +21,7 @@ function Write-Theme
     {
         $vcsInfo = Get-VcsInfo -status ($status)
         $info = $vcsInfo.VcInfo
-        Write-Segment -content $info -foregroundColor $sl.PromptForegroundColor
+        Write-Segment -content $info -foregroundColor $sl.GitForegroundColor
     }
 
     #check for elevated prompt
@@ -73,5 +73,6 @@ $sl = $global:ThemeSettings #local settings
 $sl.PromptForegroundColor = [ConsoleColor]::White
 $sl.PromptSymbolColor = [ConsoleColor]::DarkRed
 $sl.PromptHighlightColor = [ConsoleColor]::DarkBlue
+$sl.GitForegroundColor = [ConsoleColor]::White
 $sl.WithForegroundColor = [ConsoleColor]::DarkYellow
 $sl.WithBackgroundColor = [ConsoleColor]::Magenta

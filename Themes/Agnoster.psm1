@@ -53,7 +53,7 @@ function Write-Theme
         $themeInfo = Get-VcsInfo -status ($status)
         $lastColor = $themeInfo.BackgroundColor
         Write-Prompt -Object $fancySpacerSymbol -ForegroundColor $sl.PromptBackgroundColor -BackgroundColor $lastColor
-        Write-Prompt -Object " $($themeInfo.VcInfo) " -BackgroundColor $lastColor -ForegroundColor $sl.PromptForegroundColor        
+        Write-Prompt -Object " $($themeInfo.VcInfo) " -BackgroundColor $lastColor -ForegroundColor $sl.GitForegroundColor        
     }
 
     if ($with)
@@ -71,5 +71,6 @@ $sl = $global:ThemeSettings #local settings
 $sl.PromptForegroundColor = [ConsoleColor]::White
 $sl.PromptSymbolColor = [ConsoleColor]::White
 $sl.PromptHighlightColor = [ConsoleColor]::DarkBlue
+$sl.GitForegroundColor = [ConsoleColor]::Black
 $sl.WithForegroundColor = [ConsoleColor]::White
 $sl.WithBackgroundColor = [ConsoleColor]::DarkRed

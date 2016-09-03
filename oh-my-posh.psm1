@@ -33,6 +33,7 @@ $global:ThemeSettings = New-Object -TypeName PSObject -Property @{
     AdminIconForegroundColor         = [ConsoleColor]::DarkYellow
     WithBackgroundColor              = [ConsoleColor]::DarkRed
     WithForegroundColor              = [ConsoleColor]::White
+    GitForegroundColor               = [ConsoleColor]::Black
     ErrorCount                       = 0
 }
 
@@ -114,6 +115,7 @@ function Show-ThemeColors
     Write-ColorPreview -text 'GitDefaultColor                  ' -color $sl.GitDefaultColor
     Write-ColorPreview -text 'GitLocalChangesColor             ' -color $sl.GitLocalChangesColor
     Write-ColorPreview -text 'GitNoLocalChangesAndAheadColor   ' -color $sl.GitNoLocalChangesAndAheadColor
+    Write-ColorPreview -text 'GitForegroundColor               ' -color $sl.GitForegroundColor
     Write-ColorPreview -text 'PromptForegroundColor            ' -color $sl.PromptForegroundColor
     Write-ColorPreview -text 'PromptBackgroundColor            ' -color $sl.PromptBackgroundColor
     Write-ColorPreview -text 'PromptSymbolColor                ' -color $sl.PromptSymbolColor
