@@ -1,7 +1,5 @@
 #requires -Version 2 -Modules posh-git
 
-. "$PSScriptRoot\Tools.ps1"
-
 function Write-Theme
 {
     param(

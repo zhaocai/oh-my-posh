@@ -4,7 +4,8 @@
 . "$PSScriptRoot\defaults.ps1"
 
 $global:ThemeSettings = New-Object -TypeName PSObject -Property @{
-    Theme                            = 'Agnoster'
+    CurrentThemeLocation             = "$PSScriptRoot\Themes\Agnoster.psm1"
+    MyThemesLocation                 = '~\Documents\WindowsPowerShell\PoshThemes'
     GitBranchSymbol                  = [char]::ConvertFromUtf32(0xE0A0)
     FailedCommandSymbol              = [char]::ConvertFromUtf32(0x2A2F)
     TruncatedFolderSymbol            = '..'
@@ -69,7 +70,7 @@ function Start-Up
 #>
 function Set-Prompt
 {
-    Import-Module $PSScriptRoot\Themes\$($sl.Theme).psm1
+    Import-Module $sl.CurrentThemeLocation
 
     function global:prompt
     {
@@ -168,9 +169,13 @@ function Set-Theme
         $name
     )
 
-    if (Test-Path "$PSScriptRoot\Themes\$($name).psm1")
+    if (Test-Path "$($sl.MyThemesLocation)\$($name).psm1")
     {
-        $sl.Theme = $name
+        $sl.CurrentThemeLocation = "$($sl.MyThemesLocation)\$($name).psm1"
+    }
+    elseif (Test-Path "$PSScriptRoot\Themes\$($name).psm1")
+    {
+        $sl.CurrentThemeLocation = "$PSScriptRoot\Themes\$($name).psm1"
     }
     else
     {
