@@ -156,6 +156,7 @@ function Show-Colors
 function Show-Themes
 {
     Write-Host ''
+    Get-ChildItem -Path "$($sl.MyThemesLocation)\*" -Include '*.psm1' -Exclude Tools.ps1 | Sort-Object Name | ForEach-Object -Process {write-Host "- $($_.BaseName)"} 
     Get-ChildItem -Path "$PSScriptRoot\Themes\*" -Include '*.psm1' -Exclude Tools.ps1 | Sort-Object Name | ForEach-Object -Process {write-Host "- $($_.BaseName)"} 
     Write-Host ''
     
