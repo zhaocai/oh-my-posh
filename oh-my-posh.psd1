@@ -45,7 +45,7 @@ VariablesToExport = @()
 AliasesToExport = '*'
 
 # Functions to export from this module
-FunctionsToExport = @('Show-Themes', 'Show-Colors', 'Show-ThemeColors', 'Set-Theme', 'Get-VCSStatus', 'Get-VcsInfo', 'Get-Drive', 'Get-ShortPath', 'Set-CursorForRightBlockWrite', 'Save-CursorPosition', 'Pop-CursorPosition', 'Set-CursorUp')
+FunctionsToExport = @('Show-Colors', 'Show-ThemeColors', 'Set-Theme', 'Get-VCSStatus', 'Get-VcsInfo', 'Get-Drive', 'Get-ShortPath', 'Set-CursorForRightBlockWrite', 'Save-CursorPosition', 'Pop-CursorPosition', 'Set-CursorUp')
 
 # Private data to pass to the module specified in RootModule. This may also contain a PSData hashtable with additional module metadata used by PowerShell.
 PrivateData = @{

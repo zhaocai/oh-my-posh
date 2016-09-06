@@ -153,15 +153,6 @@ function Show-Colors
     }
 }
 
-function Show-Themes
-{
-    Write-Host ''
-    Get-ChildItem -Path "$($sl.MyThemesLocation)\*" -Include '*.psm1' -Exclude Tools.ps1 | Sort-Object Name | ForEach-Object -Process {write-Host "- $($_.BaseName)"} 
-    Get-ChildItem -Path "$PSScriptRoot\Themes\*" -Include '*.psm1' -Exclude Tools.ps1 | Sort-Object Name | ForEach-Object -Process {write-Host "- $($_.BaseName)"} 
-    Write-Host ''
-    
-}
-
 function Set-Theme
 {
     param(
@@ -188,6 +179,39 @@ function Set-Theme
     Set-Prompt
 }
 
+# Helper function to create argument completion results
+function New-CompletionResult
+{
+    param(
+        [Parameter(Mandatory)]
+        [string]$CompletionText,
+        [string]$ListItemText = $CompletionText,
+        [System.Management.Automation.CompletionResultType]$CompletionResultType = [System.Management.Automation.CompletionResultType]::ParameterValue,
+        [string]$ToolTip = $CompletionText
+    )
+
+    New-Object System.Management.Automation.CompletionResult $CompletionText, $ListItemText, $CompletionResultType, $ToolTip
+}
+
+function ThemeCompletion 
+{
+    param(
+        $commandName, 
+        $parameterName, 
+        $wordToComplete, 
+        $commandAst, 
+        $fakeBoundParameter
+    )
+    $themes = @()
+    Get-ChildItem -Path "$($ThemeSettings.MyThemesLocation)\*" -Include '*.psm1' -Exclude Tools.ps1 | ForEach-Object -Process { $themes += $_.BaseName }
+    Get-ChildItem -Path "$PSScriptRoot\Themes\*" -Include '*.psm1' -Exclude Tools.ps1 | Sort-Object Name | ForEach-Object -Process { $themes += $_.BaseName }
+    $themes | Where-Object {$_.ToLower().StartsWith($wordToComplete)} | ForEach-Object { New-CompletionResult -CompletionText $_  }
+}
+
+Register-ArgumentCompleter `
+        -CommandName Set-Theme `
+        -ParameterName name `
+        -ScriptBlock $function:ThemeCompletion
 
 $sl = $global:ThemeSettings #local settings
 $sl.ErrorCount = $global:error.Count
