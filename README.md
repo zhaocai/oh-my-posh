@@ -3,9 +3,6 @@ oh-my-posh
 
 [![Build status](https://img.shields.io/appveyor/ci/janjoris/oh-my-posh/master.svg?maxAge=2592000)](https://ci.appveyor.com/project/JanJoris/oh-my-posh) [![Gitter](https://badges.gitter.im/oh-my-posh/Lobby.svg)](https://gitter.im/oh-my-posh/general?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
-
-> If you are migrating from PS-Agnoster to oh-my-posh, remove everything and [reinstall](#installation)
-
 ## Table of Contents
 
 * [About](#about)
@@ -22,32 +19,20 @@ About
 A theme engine for Powershell in ConEmu inspired by the work done by Chris Benti on [PS-Config](https://github.com/chrisbenti/PS-Config). And [Oh-My-ZSH](https://github.com/robbyrussell/oh-my-zsh) on OSX and Linux (hence the name)
 More information about why I made this can be found on my [blog](https://herebedragons.io/shell-shock/).
 
+![Theme](http://janjoris.github.com/img/indications.png)
+
 Features:
 
 * Easy installation
 * Awesome prompt themes for PowerShell in ConEmu
-* Git status indications
+* Git status indications (powered by posh-git)
+* Failed command indication
+* Admin indication
 * Current session indications (admin, failed command, user)
 * Configurable
 * Easily create your own theme
 * Separate settings for oh-my-posh and posh-git
 * Does not mess with the default Powershell console
-
-### Git integration
-
-<img src="https://herebedragons.io/wp-content/uploads/2016/06/paradox.png" width="800">
-
-### Failed command indication
-
-<img src="https://herebedragons.io/wp-content/uploads/2016/06/failed_command.png" width="800">
-
-### Admin prompt indication
-
-<img src="https://herebedragons.io/wp-content/uploads/2016/06/admin_prompt.png" width="800">
-
-### [posh-with](https://github.com/JanJoris/posh-with) prompt indication
-
-<img src="https://herebedragons.io/wp-content/uploads/2016/08/with.png" width="800">
 
 <div id='prerequisites'/>
 <details>
@@ -103,7 +88,7 @@ List the current configuration:
 $ThemeSettings
 ```
 
-<img src="https://herebedragons.io/wp-content/uploads/2016/06/ThemeSettings.png" width="800">
+![Theme](http://janjoris.github.com/img/themesettings.png)
 
 You can tweak the settings by manipulating `$ThemeSettings`.
 This example allows you to tweak the branch symbol using a unicode character:
@@ -124,23 +109,19 @@ $GitPromptSettings
 <details>
 <summary>Helper functions</summary>
 
-`Set-Theme`:  set a theme from the Themes directory. If no match is found, it will not be changed.
+`Set-Theme`:  set a theme from the Themes directory. If no match is found, it will not be changed. Autocomplete is available to list and complete available themes.
 
 ```bash
-Set-Theme -theme 'paradox'
+Set-Theme paradox
 ```
 
 `Show-ThemeColors`: display the colors used by the theme
 
-<img src="https://herebedragons.io/wp-content/uploads/2016/06/themecolors.png" width="800">
+![Theme](http://janjoris.github.com/img/themecolors.png)
 
 `Show-Colors`: display colors configured in ConEmu
 
-<img src="https://herebedragons.io/wp-content/uploads/2016/06/colors.png" width="800">
-
-`Show-Themes`: list available themes
-
-<img src="https://herebedragons.io/wp-content/uploads/2016/06/themes.png" width="800">
+![Theme](http://janjoris.github.com/img/showcolors.png)
 
 </details>
 
@@ -150,49 +131,49 @@ Set-Theme -theme 'paradox'
 
 ### Agnoster
 
-<img src="https://herebedragons.io/wp-content/uploads/2016/06/agnoster.png" width="800">
+![Theme](http://janjoris.github.com/img/agnoster.png)
 
 ### Paradox
 
-<img src="https://herebedragons.io/wp-content/uploads/2016/06/paradox.png" width="800">
+![Theme](http://janjoris.github.com/img/paradox.png)
 
 ### Sorin
 
-<img src="https://herebedragons.io/wp-content/uploads/2016/06/sorin.png" width="800">
+![Theme](http://janjoris.github.com/img/sorin.png)
 
 ### Darkblood
 
-<img src="https://herebedragons.io/wp-content/uploads/2016/06/darkblood.png" width="800">
+![Theme](http://janjoris.github.com/img/darkblood.png)
 
 ### Avit
 
-<img src="https://herebedragons.io/wp-content/uploads/2016/06/avit.png" width="800">
+![Theme](http://janjoris.github.com/img/avit.png)
 
 ### Honukai
 
-<img src="https://herebedragons.io/wp-content/uploads/2016/07/honukai.png" width="800">
+![Theme](http://janjoris.github.com/img/honukai.png)
 
 ### Fish
 
-<img src="https://herebedragons.io/wp-content/uploads/2016/07/fish.png" width="800">
+![Theme](http://janjoris.github.com/img/fish.png)
 
 <div id='owntheme'/>
 Creating your own theme
 -----------------------
 
-If you want to create a theme it can be done rather easily by adding a `mytheme.psm1` file in the Themes folder (replace `mytheme` with your own, awesome theme name).
+If you want to create a theme it can be done rather easily by adding a `mytheme.psm1` file in the folder indicated in `$ThemeSettings.MyThemesLocation` (the folder defaults to `~\Documents\WindowsPowerShell\PoshThemes`, feel free to change it).
 The only required function is Write-Theme, you can use the following template to get started:
 
 ````bash
 #requires -Version 2 -Modules posh-git
 
-. "$PSScriptRoot\Tools.ps1"
-
 function Write-Theme
 {
     param(
         [bool]
-        $lastCommandFailed
+        $lastCommandFailed,
+        [string]
+        $with
     )
 
     # enter your prompt building logic here
@@ -201,11 +182,11 @@ function Write-Theme
 $sl = $global:ThemeSettings #local settings
 ````
 
-Feel free to use the helper functions in `Tools.ps1` or add your own logic completely.
+Feel free to use the public helper functions `Get-VCSStatus`, `Get-VcsInfo`, `Get-Drive`, `Get-ShortPath`, `Set-CursorForRightBlockWrite`, `Save-CursorPosition`, `Pop-CursorPosition`, `Set-CursorUp` or add your own logic completely.
 To test the output in ConEmu, just switch to your theme:
 
 ```bash
-$ThemeSettings.Theme = 'mytheme'
+Set-Theme mytheme
 ```
 
 If you want to include your theme in oh-my-posh, send me a PR and I'll try to give feedback ASAP.
