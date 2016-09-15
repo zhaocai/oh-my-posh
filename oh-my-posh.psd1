@@ -9,7 +9,7 @@
 @{
 
 # Version number of this module.
-ModuleVersion = '1.5.5'
+ModuleVersion = '1.5.6'
 
 # Script module or binary module file associated with this manifest.
 RootModule = 'oh-my-posh.psm1'
@@ -30,7 +30,7 @@ Copyright = '(c) 2016 JanJoris. All rights reserved.'
 Description = 'Theming capabilities for the PowerShell prompt in ConEmu'
 
 # Minimum version of the Windows PowerShell engine required by this module
-PowerShellVersion = '3.0'
+PowerShellVersion = '5.0'
 
 # List of all files packaged with this module
 FileList = @('defaults.ps1', 'Themes/Agnoster.psm1', 'Themes/Avit.psm1', 'Themes/Darkblood.psm1', 'Themes/Fish.psm1', 'Themes/Honukai.psm1', 'Themes/Paradox.psm1', 'Themes/Sorin.psm1', 'Themes/Tools.ps1')
