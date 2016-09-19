@@ -6,36 +6,47 @@
 $global:ThemeSettings = New-Object -TypeName PSObject -Property @{
     CurrentThemeLocation             = "$PSScriptRoot\Themes\Agnoster.psm1"
     MyThemesLocation                 = '~\Documents\WindowsPowerShell\PoshThemes'
-    GitBranchSymbol                  = [char]::ConvertFromUtf32(0xE0A0)
-    FailedCommandSymbol              = [char]::ConvertFromUtf32(0x2A2F)
-    TruncatedFolderSymbol            = '..'
-    BeforeStashSymbol                = '{'
-    AfterStashSymbol                 = '}'
-    DelimSymbol                      = '|'
-    LocalWorkingStatusSymbol         = '!'
-    LocalStagedStatusSymbol          = '~'
-    LocalDefaultStatusSymbol         = ''
-    BranchUntrackedSymbol            = [char]::ConvertFromUtf32(0x2262)
-    BranchIdenticalStatusToSymbol    = [char]::ConvertFromUtf32(0x2263)
-    BranchAheadStatusSymbol          = [char]::ConvertFromUtf32(0x2191)
-    BranchBehindStatusSymbol         = [char]::ConvertFromUtf32(0x2193)
-    ElevatedSymbol                   = [char]::ConvertFromUtf32(0x26A1)
-    GitDefaultColor                  = [ConsoleColor]::DarkGreen
-    GitLocalChangesColor             = [ConsoleColor]::DarkYellow
-    GitNoLocalChangesAndAheadColor   = [ConsoleColor]::DarkMagenta
-    PromptForegroundColor            = [ConsoleColor]::White
-    PromptHighlightColor             = [ConsoleColor]::DarkBlue
-    DriveForegroundColor             = [ConsoleColor]::DarkBlue
-    PromptBackgroundColor            = [ConsoleColor]::DarkBlue
-    PromptSymbolColor                = [ConsoleColor]::White
-    SessionInfoBackgroundColor       = [ConsoleColor]::Magenta
-    SessionInfoForegroundColor       = [ConsoleColor]::White
-    CommandFailedIconForegroundColor = [ConsoleColor]::DarkRed
-    AdminIconForegroundColor         = [ConsoleColor]::DarkYellow
-    WithBackgroundColor              = [ConsoleColor]::DarkRed
-    WithForegroundColor              = [ConsoleColor]::White
-    GitForegroundColor               = [ConsoleColor]::Black
     ErrorCount                       = 0
+    GitSymbols                       = @{
+        GitBranchSymbol                  = [char]::ConvertFromUtf32(0xE0A0)
+        TruncatedFolderSymbol            = '..'
+        BeforeStashSymbol                = '{'
+        AfterStashSymbol                 = '}'
+        DelimSymbol                      = '|'
+        LocalWorkingStatusSymbol         = '!'
+        LocalStagedStatusSymbol          = '~'
+        LocalDefaultStatusSymbol         = ''
+        BranchUntrackedSymbol            = [char]::ConvertFromUtf32(0x2262)
+        BranchIdenticalStatusToSymbol    = [char]::ConvertFromUtf32(0x2263)
+        BranchAheadStatusSymbol          = [char]::ConvertFromUtf32(0x2191)
+        BranchBehindStatusSymbol         = [char]::ConvertFromUtf32(0x2193)
+    }
+    PromptSymbols                    = @{
+        PromptIndicator                  = [char]::ConvertFromUtf32(0x25B6)  
+        FailedCommandSymbol              = [char]::ConvertFromUtf32(0x2A2F)        
+        ElevatedSymbol                   = [char]::ConvertFromUtf32(0x26A1)
+        SegmentForwardSymbol             = [char]::ConvertFromUtf32(0xE0B0)
+        SegmentBackwardSymbol            = [char]::ConvertFromUtf32(0x26A1)
+        SegmentSeparatorForwardSymbol    = [char]::ConvertFromUtf32(0x26A1)
+        SegmentSeparatorBackwardSymbol   = [char]::ConvertFromUtf32(0x26A1)
+    }
+    Colors                           = @{
+        GitDefaultColor                  = [ConsoleColor]::DarkGreen
+        GitLocalChangesColor             = [ConsoleColor]::DarkYellow
+        GitNoLocalChangesAndAheadColor   = [ConsoleColor]::DarkMagenta
+        PromptForegroundColor            = [ConsoleColor]::White
+        PromptHighlightColor             = [ConsoleColor]::DarkBlue
+        DriveForegroundColor             = [ConsoleColor]::DarkBlue
+        PromptBackgroundColor            = [ConsoleColor]::DarkBlue
+        PromptSymbolColor                = [ConsoleColor]::White
+        SessionInfoBackgroundColor       = [ConsoleColor]::Magenta
+        SessionInfoForegroundColor       = [ConsoleColor]::White
+        CommandFailedIconForegroundColor = [ConsoleColor]::DarkRed
+        AdminIconForegroundColor         = [ConsoleColor]::DarkYellow
+        WithBackgroundColor              = [ConsoleColor]::DarkRed
+        WithForegroundColor              = [ConsoleColor]::White
+        GitForegroundColor               = [ConsoleColor]::Black
+    }    
 }
 
 <#
@@ -107,20 +118,20 @@ function global:Write-WithPrompt()
 function Show-ThemeColors
 {
     Write-Host -Object ''
-    Write-ColorPreview -text 'GitDefaultColor                  ' -color $sl.GitDefaultColor
-    Write-ColorPreview -text 'GitLocalChangesColor             ' -color $sl.GitLocalChangesColor
-    Write-ColorPreview -text 'GitNoLocalChangesAndAheadColor   ' -color $sl.GitNoLocalChangesAndAheadColor
-    Write-ColorPreview -text 'GitForegroundColor               ' -color $sl.GitForegroundColor
-    Write-ColorPreview -text 'PromptForegroundColor            ' -color $sl.PromptForegroundColor
-    Write-ColorPreview -text 'PromptBackgroundColor            ' -color $sl.PromptBackgroundColor
-    Write-ColorPreview -text 'PromptSymbolColor                ' -color $sl.PromptSymbolColor
-    Write-ColorPreview -text 'PromptHighlightColor             ' -color $sl.PromptHighlightColor
-    Write-ColorPreview -text 'SessionInfoBackgroundColor       ' -color $sl.SessionInfoBackgroundColor
-    Write-ColorPreview -text 'SessionInfoForegroundColor       ' -color $sl.SessionInfoForegroundColor
-    Write-ColorPreview -text 'CommandFailedIconForegroundColor ' -color $sl.CommandFailedIconForegroundColor
-    Write-ColorPreview -text 'AdminIconForegroundColor         ' -color $sl.AdminIconForegroundColor
-    Write-ColorPreview -text 'WithBackgroundColor              ' -color $sl.WithBackgroundColor
-    Write-ColorPreview -text 'WithForegroundColor              ' -color $sl.WithForegroundColor
+    Write-ColorPreview -text 'GitDefaultColor                  ' -color $sl.Colors.GitDefaultColor
+    Write-ColorPreview -text 'GitLocalChangesColor             ' -color $sl.Colors.GitLocalChangesColor
+    Write-ColorPreview -text 'GitNoLocalChangesAndAheadColor   ' -color $sl.Colors.GitNoLocalChangesAndAheadColor
+    Write-ColorPreview -text 'GitForegroundColor               ' -color $sl.Colors.GitForegroundColor
+    Write-ColorPreview -text 'PromptForegroundColor            ' -color $sl.Colors.PromptForegroundColor
+    Write-ColorPreview -text 'PromptBackgroundColor            ' -color $sl.Colors.PromptBackgroundColor
+    Write-ColorPreview -text 'PromptSymbolColor                ' -color $sl.Colors.PromptSymbolColor
+    Write-ColorPreview -text 'PromptHighlightColor             ' -color $sl.Colors.PromptHighlightColor
+    Write-ColorPreview -text 'SessionInfoBackgroundColor       ' -color $sl.Colors.SessionInfoBackgroundColor
+    Write-ColorPreview -text 'SessionInfoForegroundColor       ' -color $sl.Colors.SessionInfoForegroundColor
+    Write-ColorPreview -text 'CommandFailedIconForegroundColor ' -color $sl.Colors.CommandFailedIconForegroundColor
+    Write-ColorPreview -text 'AdminIconForegroundColor         ' -color $sl.Colors.AdminIconForegroundColor
+    Write-ColorPreview -text 'WithBackgroundColor              ' -color $sl.Colors.WithBackgroundColor
+    Write-ColorPreview -text 'WithForegroundColor              ' -color $sl.Colors.WithForegroundColor
     Write-Host -Object ''
 }
 

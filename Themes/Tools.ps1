@@ -36,7 +36,7 @@ function Get-VcsInfo
 
     if ($status)
     {
-        $branchStatusBackgroundColor = $sl.GitDefaultColor
+        $branchStatusBackgroundColor = $sl.Colors.GitDefaultColor
 
         # Determine Colors
         $localChanges = ($status.HasIndex -or $status.HasUntracked -or $status.HasWorking)
@@ -46,40 +46,40 @@ function Get-VcsInfo
 
         if($localChanges)
         {
-            $branchStatusBackgroundColor = $sl.GitLocalChangesColor
+            $branchStatusBackgroundColor = $sl.Colors.GitLocalChangesColor
         }
         if(-not ($localChanges) -and ($status.AheadBy -gt 0))
         {
-            $branchStatusBackgroundColor = $sl.GitNoLocalChangesAndAheadColor
+            $branchStatusBackgroundColor = $sl.Colors.GitNoLocalChangesAndAheadColor
         }
 
-        $vcInfo = $sl.GitBranchSymbol;
+        $vcInfo = $sl.GitSymbols.GitBranchSymbol;
         
         $branchStatusSymbol = $null
 
         if (!$status.Upstream)
         {
-            $branchStatusSymbol = $sl.BranchUntrackedSymbol
+            $branchStatusSymbol = $sl.GitSymbols.BranchUntrackedSymbol
         }
         elseif ($status.BehindBy -eq 0 -and $status.AheadBy -eq 0)
         {
             # We are aligned with remote
-            $branchStatusSymbol = $sl.BranchIdenticalStatusToSymbol
+            $branchStatusSymbol = $sl.GitSymbols.BranchIdenticalStatusToSymbol
         }
         elseif ($status.BehindBy -ge 1 -and $status.AheadBy -ge 1)
         {
             # We are both behind and ahead of remote
-            $branchStatusSymbol = "$($sl.BranchAheadStatusSymbol)$($status.AheadBy) $($sl.BranchBehindStatusSymbol)$($status.BehindBy)"
+            $branchStatusSymbol = "$($sl.GitSymbols.BranchAheadStatusSymbol)$($status.AheadBy) $($sl.GitSymbols.BranchBehindStatusSymbol)$($status.BehindBy)"
         }
         elseif ($status.BehindBy -ge 1)
         {
             # We are behind remote
-            $branchStatusSymbol = "$($sl.BranchBehindStatusSymbol)$($status.BehindBy)"
+            $branchStatusSymbol = "$($sl.GitSymbols.BranchBehindStatusSymbol)$($status.BehindBy)"
         }
         elseif ($status.AheadBy -ge 1)
         {
             # We are ahead of remote
-            $branchStatusSymbol = "$($sl.BranchAheadStatusSymbol)$($status.AheadBy)"
+            $branchStatusSymbol = "$($sl.GitSymbols.BranchAheadStatusSymbol)$($status.AheadBy)"
         }
         else
         {
@@ -118,7 +118,7 @@ function Get-VcsInfo
 
             if($status.HasWorking)
             {
-                $vcInfo = $vcInfo +  "$($sl.DelimSymbol) "
+                $vcInfo = $vcInfo +  "$($sl.GitSymbols.DelimSymbol) "
             }
         }
 
@@ -145,17 +145,17 @@ function Get-VcsInfo
         if ($status.HasWorking)
         {
             # We have un-staged files in the working tree
-            $localStatusSymbol = $sl.LocalWorkingStatusSymbol
+            $localStatusSymbol = $sl.GitSymbols.LocalWorkingStatusSymbol
         }
         elseif ($status.HasIndex)
         {
             # We have staged but uncommited files
-            $localStatusSymbol = $sl.LocalStagedStatusSymbol
+            $localStatusSymbol = $sl.GitSymbols.LocalStagedStatusSymbol
         }
         else
         {
             # No uncommited changes
-            $localStatusSymbol = $sl.LocalDefaultStatusSymbol
+            $localStatusSymbol = $sl.GitSymbols.LocalDefaultStatusSymbol
         }
 
         if ($localStatusSymbol)
@@ -165,7 +165,7 @@ function Get-VcsInfo
 
         if ($status.StashCount -gt 0)
         {
-            $vcInfo = $vcInfo +  "$($sl.BeforeStashSymbol)$($status.StashCount)$($sl.AfterStashSymbol) "
+            $vcInfo = $vcInfo +  "$($sl.GitSymbols.BeforeStashSymbol)$($status.StashCount)$($sl.GitSymbols.AfterStashSymbol) "
         }
 
         if ($WindowTitleSupported -and $spg.EnableWindowTitle)
@@ -314,7 +314,7 @@ function Get-ShortPath
             }
             else
             {
-                $result = ,$sl.TruncatedFolderSymbol + $result
+                $result = ,$sl.GitSymbols.TruncatedFolderSymbol + $result
             }
 
             $dir = $dir.Parent

@@ -15,7 +15,7 @@ function Write-Theme
         $prompt = $prompt + '\'
     }
 
-    Write-Prompt -Object $prompt -ForegroundColor $sl.PromptForegroundColor
+    Write-Prompt -Object $prompt -ForegroundColor $sl.Colors.PromptForegroundColor
     
     $status = Get-VCSStatus
     if ($status)
@@ -28,13 +28,13 @@ function Write-Theme
     #check for elevated prompt
     If (([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator'))
     {
-        Write-Prompt -Object " $($sl.ElevatedSymbol)" -ForegroundColor $sl.AdminIconForegroundColor
+        Write-Prompt -Object " $($sl.PromptSymbols.ElevatedSymbol)" -ForegroundColor $sl.Colors.AdminIconForegroundColor
     }
 
     #check the last command state and indicate if failed
     If ($lastCommandFailed)
     {
-        Write-Prompt -Object " $($sl.FailedCommandSymbol)" -ForegroundColor $sl.CommandFailedIconForegroundColor
+        Write-Prompt -Object " $($sl.PromptSymbols.FailedCommandSymbol)" -ForegroundColor $sl.Colors.CommandFailedIconForegroundColor
     }
 
     $timeStamp = Get-Date -Format T
@@ -47,15 +47,14 @@ function Write-Theme
     }
 
     Set-CursorForRightBlockWrite -textLength $timestamp.Length
-    Write-Host $timeStamp -ForegroundColor $sl.PromptBackgroundColor
+    Write-Host $timeStamp -ForegroundColor $sl.Colors.PromptBackgroundColor
   
     if ($with)
     {
-        Write-Prompt -Object "$($with.ToUpper()) " -BackgroundColor $sl.WithBackgroundColor -ForegroundColor $sl.WithForegroundColor
+        Write-Prompt -Object "$($with.ToUpper()) " -BackgroundColor $sl.Colors.WithBackgroundColor -ForegroundColor $sl.Colors.WithForegroundColor
     }
 
-    $promptSymbol = [char]::ConvertFromUtf32(0x25B6)
-    Write-Prompt -Object "$promptSymbol" -ForegroundColor $sl.PromptBackgroundColor
+    Write-Prompt -Object $sl.PromptSymbols.PromptIndicator -ForegroundColor $sl.Colors.PromptBackgroundColor
 }
 
 function Get-TimeSinceLastCommit
@@ -64,8 +63,9 @@ function Get-TimeSinceLastCommit
 }
 
 $sl = $global:ThemeSettings #local settings
-$sl.PromptForegroundColor = [ConsoleColor]::DarkBlue
-$sl.WithForegroundColor = [ConsoleColor]::DarkRed
-$sl.PromptHighlightColor = [ConsoleColor]::DarkBlue
-$sl.WithBackgroundColor = [ConsoleColor]::Magenta
-$sl.PromptSymbolColor = [ConsoleColor]::White
+$sl.PromptSymbols.PromptIndicator = [char]::ConvertFromUtf32(0x25B6)
+$sl.Colors.PromptForegroundColor = [ConsoleColor]::DarkBlue
+$sl.Colors.WithForegroundColor = [ConsoleColor]::DarkRed
+$sl.Colors.PromptHighlightColor = [ConsoleColor]::DarkBlue
+$sl.Colors.WithBackgroundColor = [ConsoleColor]::Magenta
+$sl.Colors.PromptSymbolColor = [ConsoleColor]::White

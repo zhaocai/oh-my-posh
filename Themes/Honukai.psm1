@@ -10,49 +10,48 @@ function Write-Theme
     )
     
     # write # and space
-    Write-Prompt -Object '#' -ForegroundColor $sl.PromptHighlightColor
+    Write-Prompt -Object '#' -ForegroundColor $sl.Colors.PromptHighlightColor
     # write user
     $user = [Environment]::UserName
-    Write-Prompt -Object " $user" -ForegroundColor $sl.PromptHighlightColor
+    Write-Prompt -Object " $user" -ForegroundColor $sl.Colors.PromptHighlightColor
     # write at (devicename)
     $device = $env:computername
-    Write-Prompt -Object " at" -ForegroundColor $sl.PromptForegroundColor
-    Write-Prompt -Object " $device" -ForegroundColor $sl.GitDefaultColor
+    Write-Prompt -Object " at" -ForegroundColor $sl.Colors.PromptForegroundColor
+    Write-Prompt -Object " $device" -ForegroundColor $sl.Colors.GitDefaultColor
     # write in (folder)
-    Write-Prompt -Object " in" -ForegroundColor $sl.PromptForegroundColor
+    Write-Prompt -Object " in" -ForegroundColor $sl.Colors.PromptForegroundColor
     $prompt = (Get-Location).Path.Replace($HOME,'~')
-    Write-Prompt -Object " $prompt" -ForegroundColor $sl.AdminIconForegroundColor
+    Write-Prompt -Object " $prompt" -ForegroundColor $sl.Colors.AdminIconForegroundColor
     # write on (git:branchname status)    
     $status = Get-VCSStatus
     if ($status)
     {
-        $sl.GitBranchSymbol = ''
+        $sl.GitSymbols.GitBranchSymbol = ''
         $themeInfo = Get-VcsInfo -status ($status)
-        Write-Prompt -Object ' on git:' -ForegroundColor $sl.PromptForegroundColor
+        Write-Prompt -Object ' on git:' -ForegroundColor $sl.Colors.PromptForegroundColor
         Write-Prompt -Object "$($themeInfo.VcInfo) " -ForegroundColor $themeInfo.BackgroundColor 
     }
     # write [time]
     $timeStamp = Get-Date -Format T
-    Write-Host " [$timeStamp]" -ForegroundColor $sl.PromptForegroundColor
+    Write-Host " [$timeStamp]" -ForegroundColor $sl.Colors.PromptForegroundColor
     # check for elevated prompt
     If (([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator'))
     {
-        Write-Prompt -Object "$($sl.ElevatedSymbol) " -ForegroundColor $sl.AdminIconForegroundColor
+        Write-Prompt -Object "$($sl.PromptSymbols.ElevatedSymbol) " -ForegroundColor $sl.Colors.AdminIconForegroundColor
     }
     # check the last command state and indicate if failed
-    $foregroundColor = $sl.PromptHighlightColor
+    $foregroundColor = $sl.Colors.PromptHighlightColor
     If ($lastCommandFailed)
     {
-        $foregroundColor = $sl.CommandFailedIconForegroundColor
+        $foregroundColor = $sl.Colors.CommandFailedIconForegroundColor
     }
 
     if ($with)
     {
-        Write-Prompt -Object "$($with.ToUpper()) " -BackgroundColor $sl.WithBackgroundColor -ForegroundColor $sl.WithForegroundColor
+        Write-Prompt -Object "$($with.ToUpper()) " -BackgroundColor $sl.Colors.WithBackgroundColor -ForegroundColor $sl.Colors.WithForegroundColor
     }
 
-    $promptSymbol = [char]::ConvertFromUtf32(0x279C)
-    Write-Prompt -Object "$promptSymbol" -ForegroundColor $foregroundColor
+    Write-Prompt -Object $sl.PromptSymbols.PromptIndicator -ForegroundColor $foregroundColor
 }
 
 function Get-TimeSinceLastCommit
@@ -61,8 +60,9 @@ function Get-TimeSinceLastCommit
 }
 
 $sl = $global:ThemeSettings #local settings
-$sl.PromptHighlightColor = [ConsoleColor]::DarkBlue
-$sl.PromptForegroundColor = [ConsoleColor]::White
-$sl.PromptHighlightColor = [ConsoleColor]::DarkBlue
-$sl.WithForegroundColor = [ConsoleColor]::DarkRed
-$sl.WithBackgroundColor = [ConsoleColor]::Magenta
+$sl.PromptSymbols.PromptIndicator = [char]::ConvertFromUtf32(0x279C)
+$sl.Colors.PromptHighlightColor = [ConsoleColor]::DarkBlue
+$sl.Colors.PromptForegroundColor = [ConsoleColor]::White
+$sl.Colors.PromptHighlightColor = [ConsoleColor]::DarkBlue
+$sl.Colors.WithForegroundColor = [ConsoleColor]::DarkRed
+$sl.Colors.WithBackgroundColor = [ConsoleColor]::Magenta

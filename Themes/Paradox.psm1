@@ -8,67 +8,66 @@ function Write-Theme
         [string]
         $with
     )
-    
-    $fancySpacerSymbol = [char]::ConvertFromUtf32(0xE0B0)
       
-    $lastColor = $sl.PromptBackgroundColor
+    $lastColor = $sl.Colors.PromptBackgroundColor
     # PowerLine starts with a space
-    Write-Prompt -Object ' ' -ForegroundColor $sl.PromptForegroundColor -BackgroundColor $sl.SessionInfoBackgroundColor
+    Write-Prompt -Object ' ' -ForegroundColor $sl.Colors.PromptForegroundColor -BackgroundColor $sl.Colors.SessionInfoBackgroundColor
 
     #check the last command state and indicate if failed
     If ($lastCommandFailed)
     {
-        Write-Prompt -Object "$($sl.FailedCommandSymbol) " -ForegroundColor $sl.CommandFailedIconForegroundColor -BackgroundColor $sl.SessionInfoBackgroundColor
+        Write-Prompt -Object "$($sl.PromptSymbols.FailedCommandSymbol) " -ForegroundColor $sl.Colors.CommandFailedIconForegroundColor -BackgroundColor $sl.Colors.SessionInfoBackgroundColor
     }
 
     #check for elevated prompt
     If (([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator'))
     {
-        Write-Prompt -Object "$($sl.ElevatedSymbol) " -ForegroundColor $sl.AdminIconForegroundColor -BackgroundColor $sl.SessionInfoBackgroundColor
+        Write-Prompt -Object "$($sl.PromptSymbols.ElevatedSymbol) " -ForegroundColor $sl.Colors.AdminIconForegroundColor -BackgroundColor $sl.Colors.SessionInfoBackgroundColor
     }
 
     $user = [Environment]::UserName
     $computer = $env:computername
     $path = (Get-Location).Path.Replace($HOME,'~')
     
-    Write-Prompt -Object "$user@$computer " -ForegroundColor $sl.SessionInfoForegroundColor -BackgroundColor $sl.SessionInfoBackgroundColor
-    Write-Prompt -Object "$fancySpacerSymbol " -ForegroundColor $sl.SessionInfoBackgroundColor -BackgroundColor $sl.PromptBackgroundColor
+    Write-Prompt -Object "$user@$computer " -ForegroundColor $sl.Colors.SessionInfoForegroundColor -BackgroundColor $sl.Colors.SessionInfoBackgroundColor
+    Write-Prompt -Object "$($sl.PromptSymbols.SegmentForwardSymbol) " -ForegroundColor $sl.Colors.SessionInfoBackgroundColor -BackgroundColor $sl.Colors.PromptBackgroundColor
 
     # Writes the drive portion
-    Write-Prompt -Object "$path " -ForegroundColor $sl.PromptForegroundColor -BackgroundColor $sl.PromptBackgroundColor
+    Write-Prompt -Object "$path " -ForegroundColor $sl.Colors.PromptForegroundColor -BackgroundColor $sl.Colors.PromptBackgroundColor
 
     $status = Get-VCSStatus
     if ($status)
     {
         $themeInfo = Get-VcsInfo -status ($status)
         $lastColor = $themeInfo.BackgroundColor
-        Write-Prompt -Object $fancySpacerSymbol -ForegroundColor $sl.PromptBackgroundColor -BackgroundColor $lastColor
-        Write-Prompt -Object " $($themeInfo.VcInfo) " -BackgroundColor $lastColor -ForegroundColor $sl.GitForegroundColor        
+        Write-Prompt -Object $($sl.PromptSymbols.SegmentForwardSymbol) -ForegroundColor $sl.Colors.PromptBackgroundColor -BackgroundColor $lastColor
+        Write-Prompt -Object " $($themeInfo.VcInfo) " -BackgroundColor $lastColor -ForegroundColor $sl.Colors.GitForegroundColor        
     }
 
     # Writes the postfix to the prompt
-    Write-Prompt -Object $fancySpacerSymbol -ForegroundColor $lastColor
+    Write-Prompt -Object $sl.PromptSymbols.SegmentForwardSymbol -ForegroundColor $lastColor
 
     $timeStamp = Get-Date -UFormat %r
     $timestamp = "[$timeStamp]"
 
     Set-CursorForRightBlockWrite -textLength $timestamp.Length
 
-    Write-Host $timeStamp -ForegroundColor $sl.PromptForegroundColor
+    Write-Host $timeStamp -ForegroundColor $sl.Colors.PromptForegroundColor
 
     if ($with)
     {
-        Write-Prompt -Object "$($with.ToUpper()) " -BackgroundColor $sl.WithBackgroundColor -ForegroundColor $sl.WithForegroundColor
+        Write-Prompt -Object "$($with.ToUpper()) " -BackgroundColor $sl.Colors.WithBackgroundColor -ForegroundColor $sl.Colors.WithForegroundColor
     }
 
-    $promptSymbol = [char]::ConvertFromUtf32(0x276F)
-    Write-Prompt -Object $promptSymbol -ForegroundColor $sl.PromptBackgroundColor
+    Write-Prompt -Object $sl.PromptSymbols.PromptIndicator -ForegroundColor $sl.Colors.PromptBackgroundColor
 }
 
 $sl = $global:ThemeSettings #local settings
-$sl.PromptForegroundColor = [ConsoleColor]::White
-$sl.PromptSymbolColor = [ConsoleColor]::White
-$sl.PromptHighlightColor = [ConsoleColor]::DarkBlue
-$sl.GitForegroundColor = [ConsoleColor]::Black
-$sl.WithForegroundColor = [ConsoleColor]::DarkRed
-$sl.WithBackgroundColor = [ConsoleColor]::Magenta
+$sl.PromptSymbols.PromptIndicator = [char]::ConvertFromUtf32(0x276F)
+$sl.PromptSymbols.SegmentForwardSymbol = [char]::ConvertFromUtf32(0xE0B0)
+$sl.Colors.PromptForegroundColor = [ConsoleColor]::White
+$sl.Colors.PromptSymbolColor = [ConsoleColor]::White
+$sl.Colors.PromptHighlightColor = [ConsoleColor]::DarkBlue
+$sl.Colors.GitForegroundColor = [ConsoleColor]::Black
+$sl.Colors.WithForegroundColor = [ConsoleColor]::DarkRed
+$sl.Colors.WithBackgroundColor = [ConsoleColor]::Magenta
