@@ -55,12 +55,6 @@ function Start-Up
 
     # Makes git diff work
     $env:TERM = 'msys'
-
-    if(Get-Module -Name Posh-Git)
-    {
-        Start-SshAgent -Quiet
-    }
-
     Set-Prompt
 }
 
