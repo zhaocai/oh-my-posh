@@ -8,13 +8,6 @@ function Write-Theme
         [string]
         $with
     )
-    $drive = (Get-Drive -path (Get-Location).Path)
-    $location = (Get-ShortPath -path (Get-Location).Path)
-    # remove the trailing slash for the HOME folder
-    if ($location -eq '' -and $drive -eq '~\')
-    {
-        $drive = '~'
-    }
 
     $lastColor = $sl.Colors.PromptBackgroundColor
 
@@ -39,8 +32,7 @@ function Write-Theme
     Write-Prompt -Object "$($sl.PromptSymbols.SegmentForwardSymbol) " -ForegroundColor $sl.Colors.SessionInfoBackgroundColor -BackgroundColor $sl.Colors.PromptBackgroundColor
 
     # Writes the drive portion
-    Write-Prompt -Object "$drive" -ForegroundColor $sl.Colors.PromptForegroundColor -BackgroundColor $sl.Colors.PromptBackgroundColor
-    Write-Prompt -Object (Get-ShortPath -path (Get-Location).Path) -ForegroundColor $sl.Colors.PromptForegroundColor -BackgroundColor $sl.Colors.PromptBackgroundColor
+    Write-Prompt -Object (Get-ShortPath -dir $pwd) -ForegroundColor $sl.Colors.PromptForegroundColor -BackgroundColor $sl.Colors.PromptBackgroundColor
     Write-Prompt -Object ' ' -ForegroundColor $sl.Colors.PromptForegroundColor -BackgroundColor $sl.Colors.PromptBackgroundColor
 
     $status = Get-VCSStatus

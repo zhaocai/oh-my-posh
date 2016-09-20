@@ -20,7 +20,7 @@ function Write-Theme
     Write-Prompt -Object " $device" -ForegroundColor $sl.Colors.GitDefaultColor
     # write in (folder)
     Write-Prompt -Object " in" -ForegroundColor $sl.Colors.PromptForegroundColor
-    $prompt = (Get-Location).Path.Replace($HOME,'~')
+    $prompt = Get-FullPath -dir $pwd
     Write-Prompt -Object " $prompt" -ForegroundColor $sl.Colors.AdminIconForegroundColor
     # write on (git:branchname status)    
     $status = Get-VCSStatus

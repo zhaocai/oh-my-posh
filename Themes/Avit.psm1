@@ -9,11 +9,7 @@ function Write-Theme
         $with
     )
 
-    $prompt = (Get-Location).Path.Replace($HOME,'~')
-    if ($prompt -eq '~')
-    {
-        $prompt = $prompt + '\'
-    }
+    $prompt = Get-FullPath -dir $pwd
 
     Write-Prompt -Object $prompt -ForegroundColor $sl.Colors.PromptForegroundColor
     

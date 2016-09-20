@@ -8,8 +8,6 @@ function Write-Theme
         [string]
         $with
     )
-    
-    $drive = (Get-Drive -path (Get-Location).Path)
 
     #check the last command state and indicate if failed
     If ($lastCommandFailed)
@@ -27,8 +25,7 @@ function Write-Theme
     Write-Prompt -Object "$user " -ForegroundColor $sl.Colors.PromptForegroundColor
 
     # Writes the drive portion
-    Write-Prompt -Object "$drive" -ForegroundColor $sl.Colors.DriveForegroundColor
-    Write-Prompt -Object (Get-ShortPath -path (Get-Location).Path) -ForegroundColor $sl.Colors.DriveForegroundColor
+    Write-Prompt -Object (Get-ShortPath -dir $pwd) -ForegroundColor $sl.Colors.DriveForegroundColor
     Write-Prompt -Object ' ' -ForegroundColor $sl.Colors.DriveForegroundColor
 
     $status = Get-VCSStatus

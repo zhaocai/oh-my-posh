@@ -38,12 +38,7 @@ function Write-Theme
 
     # SECOND LINE
     Write-Prompt -Object ([char]::ConvertFromUtf32(0x2514)) -ForegroundColor $sl.Colors.PromptSymbolColor
-    $prompt = (Get-Location).Path.Replace($HOME,'~')
-    if ($prompt -eq '~')
-    {
-        $prompt = $prompt + '\'
-    }
-
+    $prompt = Get-FullPath -dir $pwd
     Write-Prompt -Object $sl.PromptSymbols.SegmentBackwardSymbol -ForegroundColor $sl.Colors.PromptSymbolColor
     Write-Prompt -Object $prompt -ForegroundColor $sl.Colors.PromptForegroundColor
 
@@ -62,7 +57,7 @@ function Write-Segment
         $content,
         $foregroundColor
     )
-    Write-Prompt -Object $sl.PromptSymbols.SegmentForwardSymbol -ForegroundColor $sl.Colors.PromptSymbolColor
+    Write-Prompt -Object $sl.PromptSymbols.SegmentBackwardSymbol -ForegroundColor $sl.Colors.PromptSymbolColor
     Write-Prompt -Object $content -ForegroundColor $foregroundColor
     Write-Prompt -Object "$($sl.PromptSymbols.SegmentForwardSymbol) " -ForegroundColor $sl.Colors.PromptSymbolColor
 }

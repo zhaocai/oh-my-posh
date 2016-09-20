@@ -252,31 +252,31 @@ function Get-Drive
     if($provider -eq 'FileSystem')
     {
         $homedir = Get-Home
-        if( $path.StartsWith( $homedir ) )
+        if($path -eq $homedir)
         {
-            return '~\'
+            return '~'
         }
         elseif( $path.StartsWith( 'Microsoft.PowerShell.Core' ) )
         {
             $parts = $path.Replace('Microsoft.PowerShell.Core\FileSystem::\\','').Split('\')
-            return "\\$($parts[0])\$($parts[1])\"
+            return "$($parts[0])$($sl.PromptSymbols.PathSeparator)$($parts[1])$($sl.PromptSymbols.PathSeparator)"
         }
         else
         {
-            $root = (Get-Item $path).Root
+            $root = $path.Drive.Name
             if($root)
             {
                 return $root
             }
             else
             {
-                return $path.Split(':\')[0] + ':\'
+                return $path.Split(':\')[0] + ':'
             }
         }
     }
     else
     {
-        return (Get-Item $path).PSDrive.Name + ':\'
+        return $path.Drive.Name
     }
 }
 
@@ -291,39 +291,68 @@ function Test-IsVCSRoot
     return (Test-Path -Path "$($dir.FullName)\.git") -Or (Test-Path -Path "$($dir.FullName)\.hg") -Or (Test-Path -Path "$($dir.FullName)\.svn")
 }
 
+function Get-FullPath
+{
+    param
+    (
+        [System.Management.Automation.PathInfo]
+        $dir
+    )
+
+    if ($dir.path -eq "$($dir.Drive.Name):\")
+    {
+        return "$($dir.Drive.Name):"
+    }
+    $path = $dir.path.Replace($HOME,'~').Replace('\', $sl.PromptSymbols.PathSeparator)
+    return $path
+}
+
 function Get-ShortPath
 {
     param
     (
-        [string]
-        $path
+        [System.Management.Automation.PathInfo]
+        $dir
     )
 
-    $provider = Get-Provider -path $path
+    $provider = Get-Provider -path $dir.path
 
     if($provider -eq 'FileSystem')
     {
         $result = @()
-        $dir = Get-Item $path
+        $currentDir = Get-Item $dir.path
 
-        while( ($dir.Parent) -And ($dir.FullName -ne $HOME) )
+        while( ($currentDir.Parent) -And ($currentDir.FullName -ne $HOME) )
         {
-            if( (Test-IsVCSRoot -dir $dir) -Or ($result.length -eq 0) )
+            if( (Test-IsVCSRoot -dir $currentDir) -Or ($result.length -eq 0) )
             {
-                $result = ,$dir.Name + $result
+                $result = ,$currentDir.Name + $result
             }
             else
             {
                 $result = ,$sl.GitSymbols.TruncatedFolderSymbol + $result
             }
 
-            $dir = $dir.Parent
+            $currentDir = $currentDir.Parent
         }
-        return $result -join '\'
+        $shortPath =  $result -join $sl.PromptSymbols.PathSeparator
+        if ($shortPath)
+        {
+            $drive = (Get-Drive -path $dir.path)
+            return "$drive$($sl.PromptSymbols.PathSeparator)$shortPath"
+        } 
+        else 
+        {
+            if ($dir.path -eq $HOME)
+            {
+                return '~'
+            }
+            return "$($dir.Drive.Name):"
+        }
     }
     else
     {
-        return $path.Replace((Get-Drive -path $path), '')
+        return $dir.path.Replace((Get-Drive -path $dir.path), '')
     }
 }
 
