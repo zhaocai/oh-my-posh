@@ -10,7 +10,7 @@ function Write-Theme
     )
     
     # write # and space
-    Write-Prompt -Object '#' -ForegroundColor $sl.Colors.PromptHighlightColor
+    Write-Prompt -Object $sl.PromptSymbols.StartSymbol -ForegroundColor $sl.Colors.PromptHighlightColor
     # write user
     $user = [Environment]::UserName
     Write-Prompt -Object " $user" -ForegroundColor $sl.Colors.PromptHighlightColor
@@ -60,6 +60,7 @@ function Get-TimeSinceLastCommit
 }
 
 $sl = $global:ThemeSettings #local settings
+$sl.PromptSymbols.StartSymbol = '#'
 $sl.PromptSymbols.PromptIndicator = [char]::ConvertFromUtf32(0x279C)
 $sl.Colors.PromptHighlightColor = [ConsoleColor]::DarkBlue
 $sl.Colors.PromptForegroundColor = [ConsoleColor]::White

@@ -11,8 +11,7 @@ function Write-Theme
 
     $lastColor = $sl.Colors.PromptBackgroundColor
 
-    # PowerLine starts with a space
-    Write-Prompt -Object ' ' -ForegroundColor $sl.Colors.SessionInfoForegroundColor -BackgroundColor $sl.Colors.SessionInfoBackgroundColor
+    Write-Prompt -Object $sl.PromptSymbols.StartSymbol -ForegroundColor $sl.Colors.SessionInfoForegroundColor -BackgroundColor $sl.Colors.SessionInfoBackgroundColor
 
     #check the last command state and indicate if failed
     If ($lastCommandFailed)

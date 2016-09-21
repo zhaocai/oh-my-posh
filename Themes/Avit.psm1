@@ -9,6 +9,8 @@ function Write-Theme
         $with
     )
 
+    Write-Prompt -Object $sl.PromptSymbols.StartSymbol -ForegroundColor $sl.Colors.PromptForegroundColor
+
     $prompt = Get-FullPath -dir $pwd
 
     Write-Prompt -Object $prompt -ForegroundColor $sl.Colors.PromptForegroundColor
@@ -59,6 +61,7 @@ function Get-TimeSinceLastCommit
 }
 
 $sl = $global:ThemeSettings #local settings
+$sl.PromptSymbols.StartSymbol = ''
 $sl.PromptSymbols.PromptIndicator = [char]::ConvertFromUtf32(0x25B6)
 $sl.Colors.PromptForegroundColor = [ConsoleColor]::DarkBlue
 $sl.Colors.WithForegroundColor = [ConsoleColor]::DarkRed

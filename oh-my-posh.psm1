@@ -22,6 +22,7 @@ $global:ThemeSettings = New-Object -TypeName PSObject -Property @{
         BranchBehindStatusSymbol         = [char]::ConvertFromUtf32(0x2193)
     }
     PromptSymbols                    = @{
+        StartSymbol                      = ' '
         PromptIndicator                  = [char]::ConvertFromUtf32(0x25B6)  
         FailedCommandSymbol              = [char]::ConvertFromUtf32(0x2A2F)        
         ElevatedSymbol                   = [char]::ConvertFromUtf32(0x26A1)

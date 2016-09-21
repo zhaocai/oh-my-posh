@@ -10,8 +10,7 @@ function Write-Theme
     )
       
     $lastColor = $sl.Colors.PromptBackgroundColor
-    # PowerLine starts with a space
-    Write-Prompt -Object ' ' -ForegroundColor $sl.Colors.PromptForegroundColor -BackgroundColor $sl.Colors.SessionInfoBackgroundColor
+    Write-Prompt -Object $sl.PromptSymbols.StartSymbol -ForegroundColor $sl.Colors.PromptForegroundColor -BackgroundColor $sl.Colors.SessionInfoBackgroundColor
 
     #check the last command state and indicate if failed
     If ($lastCommandFailed)
@@ -63,6 +62,7 @@ function Write-Theme
 }
 
 $sl = $global:ThemeSettings #local settings
+$sl.PromptSymbols.StartSymbol = ' '
 $sl.PromptSymbols.PromptIndicator = [char]::ConvertFromUtf32(0x276F)
 $sl.PromptSymbols.SegmentForwardSymbol = [char]::ConvertFromUtf32(0xE0B0)
 $sl.Colors.PromptForegroundColor = [ConsoleColor]::White
