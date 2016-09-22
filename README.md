@@ -94,7 +94,7 @@ You can tweak the settings by manipulating `$ThemeSettings`.
 This example allows you to tweak the branch symbol using a unicode character:
 
 ````bash
-$ThemeSettings.GitBranchSymbol = [char]::ConvertFromUtf32(0xE0A0)
+$ThemeSettings.GitSymbols.BranchSymbol = [char]::ConvertFromUtf32(0xE0A0)
 ````
 
 Also do not forget the Posh-Git settings itself (enable the stash indication for example):
