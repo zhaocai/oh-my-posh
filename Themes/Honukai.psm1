@@ -26,7 +26,7 @@ function Write-Theme
     $status = Get-VCSStatus
     if ($status)
     {
-        $sl.GitSymbols.GitBranchSymbol = ''
+        $sl.GitSymbols.BranchSymbol = ''
         $themeInfo = Get-VcsInfo -status ($status)
         Write-Prompt -Object ' on git:' -ForegroundColor $sl.Colors.PromptForegroundColor
         Write-Prompt -Object "$($themeInfo.VcInfo) " -ForegroundColor $themeInfo.BackgroundColor 

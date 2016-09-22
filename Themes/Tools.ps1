@@ -53,7 +53,7 @@ function Get-VcsInfo
             $branchStatusBackgroundColor = $sl.Colors.GitNoLocalChangesAndAheadColor
         }
 
-        $vcInfo = $sl.GitSymbols.GitBranchSymbol;
+        $vcInfo = $sl.GitSymbols.BranchSymbol;
         
         $branchStatusSymbol = $null
 
@@ -330,7 +330,7 @@ function Get-ShortPath
             }
             else
             {
-                $result = ,$sl.GitSymbols.TruncatedFolderSymbol + $result
+                $result = ,$sl.PromptSymbols.TruncatedFolderSymbol + $result
             }
 
             $currentDir = $currentDir.Parent
