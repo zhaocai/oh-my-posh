@@ -59,21 +59,23 @@ I use `Meslo LG M for Powerline` in my ConEmu setup together with custom colors 
 <details>
 <summary>Installation</summary>
 
-### PsGet
-
-Use [PsGet](http://psget.net/) to install oh-my-posh:
-
-```bash
-Install-Module oh-my-posh
-```
+You can choose between the [PowerShell Gallery](https://www.powershellgallery.com/packages/oh-my-posh/) (preferred) or [PsGet](http://psget.net/).
 
 ### PowerShell Gallery
 
-Use the Powershell Gallery to install posh-git and oh-my-posh:
+Install posh-git and oh-my-posh:
 
 ```bash
 Install-Module posh-git -Scope CurrentUser
 Install-Module oh-my-posh -Scope CurrentUser
+```
+
+### PsGet
+
+Fetch the URL to the latest `oh-my-posh.zip` [release](https://github.com/JanJoris/oh-my-posh/releases/latest) and use PsGet to install it.
+
+```bash
+Install-Module -ModuleUrl <link to latest oh-my-posh.zip>
 ```
 
 </details>

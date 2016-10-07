@@ -41,4 +41,28 @@ deploy_script:
           Body        = (ConvertTo-Json -InputObject $releaseData -Compress)
       }
 
-      Invoke-RestMethod @releaseParams
+      $result = Invoke-RestMethod @releaseParams
+
+      $uploadUri = $result | Select-Object -ExpandProperty upload_url
+
+      $uploadUri = $uploadUri -creplace '\{\?name,label\}'  #, '?name=oh-my-posh.zip'
+
+      $uploadUri = $uploadUri + '?name=oh-my-posh.zip'
+
+      Add-Type -assembly "system.io.compression.filesystem"
+
+      [io.compression.zipfile]::CreateFromDirectory($env:APPVEYOR_BUILD_FOLDER, "$HOME\Desktop\oh-my-posh.zip")
+
+      $uploadParams = @{
+          Uri         = $uploadUri
+          Method      = 'POST'
+          Headers     = @{
+              Authorization = $auth
+          }
+          ContentType = 'application/zip'
+          InFile      = "$HOME\Desktop\oh-my-posh.zip"
+      }
+
+      $result = Invoke-RestMethod @uploadParams
+
+      Write-Host 'GitHub release completed'
