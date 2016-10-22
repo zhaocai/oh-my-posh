@@ -33,7 +33,7 @@ Description = 'Theming capabilities for the PowerShell prompt in ConEmu'
 PowerShellVersion = '5.0'
 
 # List of all files packaged with this module
-FileList = @('defaults.ps1', 'Themes/Agnoster.psm1', 'Themes/Avit.psm1', 'Themes/Darkblood.psm1', 'Themes/Fish.psm1', 'Themes/Honukai.psm1', 'Themes/Paradox.psm1', 'Themes/Sorin.psm1', 'Themes/Tools.ps1')
+FileList = @('defaults.ps1', 'Themes/Agnoster.psm1', 'Themes/Avit.psm1', 'Themes/Darkblood.psm1', 'Themes/Fish.psm1', 'Themes/Honukai.psm1', 'Themes/Paradox.psm1', 'Themes/Sorin.psm1', 'Helpers/PoshGit.ps1', 'Helpers/Prompt.ps1')
 
 # Cmdlets to export from this module
 CmdletsToExport = @()
