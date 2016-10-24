@@ -22,6 +22,7 @@ function Get-Provider
 {
     param
     (
+        [Parameter(Mandatory = $true)]
         [string]
         $path
     )
@@ -33,40 +34,41 @@ function Get-Drive
 {
     param
     (
-        [string]
-        $path
+        [Parameter(Mandatory = $true)]
+        [System.Object]
+        $dir
     )
 
-    $provider = Get-Provider -path $path
+    $provider = Get-Provider -path $dir.Path
 
     if($provider -eq 'FileSystem')
     {
         $homedir = Get-Home
-        if($path -eq $homedir)
+        if($dir.Path -eq $homedir)
         {
             return '~'
         }
-        elseif( $path.StartsWith( 'Microsoft.PowerShell.Core' ) )
+        elseif($dir.Path.StartsWith('Microsoft.PowerShell.Core'))
         {
-            $parts = $path.Replace('Microsoft.PowerShell.Core\FileSystem::\\','').Split('\')
+            $parts = $dir.Path.Replace('Microsoft.PowerShell.Core\FileSystem::\\','').Split('\')
             return "$($parts[0])$($sl.PromptSymbols.PathSeparator)$($parts[1])$($sl.PromptSymbols.PathSeparator)"
         }
         else
         {
-            $root = $path.Drive.Name
+            $root = $dir.Drive.Name
             if($root)
             {
                 return $root
             }
             else
             {
-                return $path.Split(':\')[0] + ':'
+                return $dir.Path.Split(':\')[0] + ':'
             }
         }
     }
     else
     {
-        return $path.Drive.Name
+        return $dir.Drive.Name
     }
 }
 
@@ -85,6 +87,7 @@ function Get-FullPath
 {
     param
     (
+        [Parameter(Mandatory = $true)]
         [System.Management.Automation.PathInfo]
         $dir
     )
@@ -101,6 +104,7 @@ function Get-ShortPath
 {
     param
     (
+        [Parameter(Mandatory = $true)]
         [System.Management.Automation.PathInfo]
         $dir
     )
@@ -128,7 +132,7 @@ function Get-ShortPath
         $shortPath =  $result -join $sl.PromptSymbols.PathSeparator
         if ($shortPath)
         {
-            $drive = (Get-Drive -path $currentDir.FullName)
+            $drive = (Get-Drive -dir $dir)
             return "$drive$($sl.PromptSymbols.PathSeparator)$shortPath"
         } 
         else 
@@ -142,7 +146,7 @@ function Get-ShortPath
     }
     else
     {
-        return $dir.path.Replace((Get-Drive -path $dir.path), '')
+        return $dir.path.Replace((Get-Drive -dir $dir), '')
     }
 }
 
