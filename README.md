@@ -19,7 +19,7 @@ About
 A theme engine for Powershell in ConEmu inspired by the work done by Chris Benti on [PS-Config](https://github.com/chrisbenti/PS-Config). And [Oh-My-ZSH](https://github.com/robbyrussell/oh-my-zsh) on OSX and Linux (hence the name)
 More information about why I made this can be found on my [blog](https://herebedragons.io/shell-shock/).
 
-![Theme](http://janjoris.github.com/img/indications.png)
+![Theme](https://herebedragons.io/img/indications.png)
 
 Features:
 
@@ -133,31 +133,31 @@ Set-Theme paradox
 
 ### Agnoster
 
-![Theme](http://janjoris.github.com/img/agnoster.png)
+![Theme](https://herebedragons.io/img/agnoster.png)
 
 ### Paradox
 
-![Theme](http://janjoris.github.com/img/paradox.png)
+![Theme](https://herebedragons.io/img/paradox.png)
 
 ### Sorin
 
-![Theme](http://janjoris.github.com/img/sorin.png)
+![Theme](https://herebedragons.io/img/sorin.png)
 
 ### Darkblood
 
-![Theme](http://janjoris.github.com/img/darkblood.png)
+![Theme](https://herebedragons.io/img/darkblood.png)
 
 ### Avit
 
-![Theme](http://janjoris.github.com/img/avit.png)
+![Theme](https://herebedragons.io/img/avit.png)
 
 ### Honukai
 
-![Theme](http://janjoris.github.com/img/honukai.png)
+![Theme](https://herebedragons.io/img/honukai.png)
 
 ### Fish
 
-![Theme](http://janjoris.github.com/img/fish.png)
+![Theme](https://herebedragons.io/img/fish.png)
 
 <div id='owntheme'/>
 Creating your own theme
