@@ -76,6 +76,11 @@ Describe "Get-Drive" {
            $path = @{Drive = @{Name = 'C:'}; Path = 'C:\Users\Jan'}
            Get-Drive $path | Should Be '~'
         }
+        It "is somewhere in the $HOME folder" {
+           Mock Get-Home {return 'C:\Users\Jan'}
+           $path = @{Drive = @{Name = 'C:'}; Path = 'C:\Users\Jan\Git\Somewhere'}
+           Get-Drive $path | Should Be '~'
+        }
         It "is in 'Microsoft.PowerShell.Core\FileSystem::\\Test\Hello' with provider X:" {
            $path = @{Drive = @{Name = 'X:'}; Path = 'Microsoft.PowerShell.Core\FileSystem::\\Test\Hello'}
            Get-Drive $path | Should Be "Test$($ThemeSettings.PromptSymbols.PathSeparator)Hello$($ThemeSettings.PromptSymbols.PathSeparator)"

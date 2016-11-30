@@ -44,7 +44,7 @@ function Get-Drive
     if($provider -eq 'FileSystem')
     {
         $homedir = Get-Home
-        if($dir.Path -eq $homedir)
+        if($dir.Path.StartsWith($homedir))
         {
             return '~'
         }
