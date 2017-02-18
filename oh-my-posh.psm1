@@ -32,8 +32,7 @@ function Set-Prompt
 {
     Import-Module $sl.CurrentThemeLocation
 
-    function global:prompt
-    {
+    [ScriptBlock]$Prompt = {
         $lastCommandFailed = $global:error.Count -gt $sl.ErrorCount
         $sl.ErrorCount = $global:error.Count
 
@@ -48,6 +47,8 @@ function Set-Prompt
         Write-Theme -lastCommandFailed $lastCommandFailed
         return ' '
     }
+
+    Set-Item -Path Function:prompt -Value $Prompt -Force
 }
 
 function global:Write-WithPrompt()
