@@ -22,7 +22,8 @@ $sut = (Split-Path -Leaf $MyInvocation.MyCommand.Path).Replace(".Tests.", ".")
 
 Describe "Test-IsVanillaWindow" {
     BeforeEach { Remove-Item Env:\PROMPT -ErrorAction SilentlyContinue
-                 Remove-Item Env:\ConEmuANSI -ErrorAction SilentlyContinue }
+                 Remove-Item Env:\ConEmuANSI -ErrorAction SilentlyContinue
+                 Remove-Item Env:\TERM_PROGRAM -ErrorAction SilentlyContinue }
     Context "Running in a non-vanilla window" {
         It "runs in ConEmu and outputs 'false'" {
         $env:PROMPT = $false
@@ -45,6 +46,10 @@ Describe "Test-IsVanillaWindow" {
         It "runs in cmder and conemu and outputs 'false'" {
             $env:PROMPT = $true
             $env:ConEmuANSI = $true
+            Test-IsVanillaWindow | Should Be $false
+        }
+        It "runs in Hyper.js and outputs 'false'" {
+            $env:TERM_PROGRAM = "Hyper"
             Test-IsVanillaWindow | Should Be $false
         }
     }
