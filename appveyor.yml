@@ -18,9 +18,9 @@ before_test:
   - ps: Install-Module Coveralls -MinimumVersion 1.0.5 -Scope CurrentUser
   - ps: Import-Module Coveralls
 test_script:
-  - ps: $res = Invoke-Pester -Path ".\Helpers" -OutputFormat NUnitXml -OutputFile TestsResults.xml -PassThru
+  - ps: $res = Invoke-Pester -Path ".\Helpers" -OutputFormat NUnitXml -OutputFile TestsResults.xml -PassThru -EnableExit
   - ps: (New-Object 'System.Net.WebClient').UploadFile("https://ci.appveyor.com/api/testresults/nunit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\TestsResults.xml))
-  - ps: if ($res.FailedCount -gt 0) { throw "$($res.FailedCount) tests failed."}
+  - ps: if (!$ENV:CA_KEY) { $ENV:CA_KEY = 14mb4l0n1 }
   - ps: $coverageResult = Format-Coverage -Include @('Helpers\PoshGit.ps1','Helpers\Prompt.ps1','install.ps1') -CoverallsApiToken $ENV:CA_KEY -BranchName $ENV:APPVEYOR_REPO_BRANCH
   - ps: Publish-Coverage -Coverage $coverageResult
 deploy_script:
