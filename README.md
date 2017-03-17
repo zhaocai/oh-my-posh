@@ -1,7 +1,7 @@
 oh-my-posh
 ==========
 
-[![Build status](https://img.shields.io/appveyor/ci/janjoris/oh-my-posh/master.svg?maxAge=2592000)](https://ci.appveyor.com/project/JanJoris/oh-my-posh) [![Coverage Status](https://coveralls.io/repos/github/JanJoris/oh-my-posh/badge.svg)](https://coveralls.io/github/JanJoris/oh-my-posh) [![Gitter](https://badges.gitter.im/oh-my-posh/Lobby.svg)](https://gitter.im/oh-my-posh/general?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+[![Build status](https://img.shields.io/appveyor/ci/janjoris/oh-my-posh/master.svg?maxAge=2592000)](https://ci.appveyor.com/project/JanJoris/oh-my-posh) [![Coverage Status](https://coveralls.io/repos/github/JanJoris/oh-my-posh/badge.svg)](https://coveralls.io/github/JanJoris/oh-my-posh) [![Gitter](https://badges.gitter.im/oh-my-posh/Lobby.svg)](https://gitter.im/oh-my-posh/general?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge) [![PS Gallery](https://img.shields.io/badge/install-PS%20Gallery-blue.svg)](https://www.powershellgallery.com/packages/oh-my-posh)
 
 ## Table of Contents
 
@@ -13,8 +13,8 @@ oh-my-posh
 * [Themes](#themes)
 
 <div id='about'/>
-About
------
+
+### About
 
 A theme engine for Powershell in ConEmu inspired by the work done by Chris Benti on [PS-Config](https://github.com/chrisbenti/PS-Config). And [Oh-My-ZSH](https://github.com/robbyrussell/oh-my-zsh) on OSX and Linux (hence the name)
 More information about why I made this can be found on my [blog](https://herebedragons.io/shell-shock/).
