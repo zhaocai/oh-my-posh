@@ -53,23 +53,13 @@ I use `Meslo LG M Regular for Powerline Nerd Font` in my ConEmu setup together w
 <details>
 <summary>Installation</summary>
 
-You can choose between the [PowerShell Gallery](https://www.powershellgallery.com/packages/oh-my-posh/) (preferred) or [PsGet](http://psget.net/).
-
-### PowerShell Gallery
+You need to use the the [PowerShell Gallery](https://www.powershellgallery.com/packages/oh-my-posh/) to install oh-my-posh.
 
 Install posh-git and oh-my-posh:
 
 ```bash
 Install-Module posh-git -Scope CurrentUser
 Install-Module oh-my-posh -Scope CurrentUser
-```
-
-### PsGet
-
-Fetch the URL to the latest `oh-my-posh.zip` [release](https://github.com/JanJoris/oh-my-posh/releases/latest) and use PsGet to install it.
-
-```bash
-Install-Module -ModuleUrl <link to latest oh-my-posh.zip>
 ```
 
 </details>
