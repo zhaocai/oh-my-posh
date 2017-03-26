@@ -1,7 +1,5 @@
-function Test-IsVanillaWindow
-{
-    if($env:PROMPT -or $env:ConEmuANSI)
-    {
+function Test-IsVanillaWindow {
+    if($env:PROMPT -or $env:ConEmuANSI) {
         # Console
         return $false
     }
@@ -9,23 +7,19 @@ function Test-IsVanillaWindow
         # Hyper.is
         return $false
     }
-    else
-    {
+    else {
         # Powershell
         return $true
     }
 }
 
-function Get-Home
-{
+function Get-Home {
     return $HOME
 }
 
 
-function Get-Provider
-{
-    param
-    (
+function Get-Provider {
+    param(
         [Parameter(Mandatory = $true)]
         [string]
         $path
@@ -34,10 +28,8 @@ function Get-Provider
     return (Get-Item $path).PSProvider.Name
 }
 
-function Get-Drive
-{
-    param
-    (
+function Get-Drive {
+    param(
         [Parameter(Mandatory = $true)]
         [System.Object]
         $dir
@@ -45,41 +37,32 @@ function Get-Drive
 
     $provider = Get-Provider -path $dir.Path
 
-    if($provider -eq 'FileSystem')
-    {
+    if($provider -eq 'FileSystem') {
         $homedir = Get-Home
-        if($dir.Path.StartsWith($homedir))
-        {
+        if($dir.Path.StartsWith($homedir)) {
             return '~'
         }
-        elseif($dir.Path.StartsWith('Microsoft.PowerShell.Core'))
-        {
+        elseif($dir.Path.StartsWith('Microsoft.PowerShell.Core')) {
             $parts = $dir.Path.Replace('Microsoft.PowerShell.Core\FileSystem::\\','').Split('\')
             return "$($parts[0])$($sl.PromptSymbols.PathSeparator)$($parts[1])$($sl.PromptSymbols.PathSeparator)"
         }
-        else
-        {
+        else {
             $root = $dir.Drive.Name
-            if($root)
-            {
+            if($root) {
                 return $root
             }
-            else
-            {
+            else {
                 return $dir.Path.Split(':\')[0] + ':'
             }
         }
     }
-    else
-    {
+    else {
         return $dir.Drive.Name
     }
 }
 
-function Test-IsVCSRoot
-{
-    param
-    (
+function Test-IsVCSRoot {
+    param(
         [object]
         $dir
     )
@@ -87,27 +70,22 @@ function Test-IsVCSRoot
     return (Test-Path -Path "$($dir.FullName)\.git") -Or (Test-Path -Path "$($dir.FullName)\.hg") -Or (Test-Path -Path "$($dir.FullName)\.svn")
 }
 
-function Get-FullPath
-{
-    param
-    (
+function Get-FullPath {
+    param(
         [Parameter(Mandatory = $true)]
         [System.Management.Automation.PathInfo]
         $dir
     )
 
-    if ($dir.path -eq "$($dir.Drive.Name):\")
-    {
+    if ($dir.path -eq "$($dir.Drive.Name):\") {
         return "$($dir.Drive.Name):"
     }
     $path = $dir.path.Replace($HOME,'~').Replace('\', $sl.PromptSymbols.PathSeparator)
     return $path
 }
 
-function Get-ShortPath
-{
-    param
-    (
+function Get-ShortPath {
+    param(
         [Parameter(Mandatory = $true)]
         [System.Management.Automation.PathInfo]
         $dir
@@ -115,47 +93,38 @@ function Get-ShortPath
 
     $provider = Get-Provider -path $dir.path
 
-    if($provider -eq 'FileSystem')
-    {
+    if($provider -eq 'FileSystem') {
         $result = @()
         $currentDir = Get-Item $dir.path
 
-        while( ($currentDir.Parent) -And ($currentDir.FullName -ne $HOME) )
-        {
-            if( (Test-IsVCSRoot -dir $currentDir) -Or ($result.length -eq 0) )
-            {
+        while( ($currentDir.Parent) -And ($currentDir.FullName -ne $HOME) ) {
+            if( (Test-IsVCSRoot -dir $currentDir) -Or ($result.length -eq 0) ) {
                 $result = ,$currentDir.Name + $result
             }
-            else
-            {
+            else {
                 $result = ,$sl.PromptSymbols.TruncatedFolderSymbol + $result
             }
 
             $currentDir = $currentDir.Parent
         }
         $shortPath =  $result -join $sl.PromptSymbols.PathSeparator
-        if ($shortPath)
-        {
+        if ($shortPath) {
             $drive = (Get-Drive -dir $dir)
             return "$drive$($sl.PromptSymbols.PathSeparator)$shortPath"
         } 
-        else 
-        {
-            if ($dir.path -eq $HOME)
-            {
+        else {
+            if ($dir.path -eq $HOME) {
                 return '~'
             }
             return "$($dir.Drive.Name):"
         }
     }
-    else
-    {
+    else {
         return $dir.path.Replace((Get-Drive -dir $dir), '')
     }
 }
 
-function Set-CursorForRightBlockWrite
-{
+function Set-CursorForRightBlockWrite {
     param(
         [int]
         $textLength
@@ -167,18 +136,15 @@ function Set-CursorForRightBlockWrite
     Write-Host "$escapeChar[$($space)G" -NoNewline
 }
 
-function Save-CursorPosition
-{
+function Save-CursorPosition {
     Write-Host "$escapeChar[s" -NoNewline
 }
 
-function Pop-CursorPosition
-{
+function Pop-CursorPosition {
     Write-Host "$escapeChar[u" -NoNewline
 }
 
-function Set-CursorUp
-{
+function Set-CursorUp {
     param(
         [int]
         $lines

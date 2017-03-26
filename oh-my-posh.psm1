@@ -11,10 +11,8 @@
         .DESCRIPTION
         Sets up things needed in each console session, aside from prompt
 #>
-function Start-Up
-{
-    if(Test-Path -Path ~\.last)
-    {
+function Start-Up {
+    if(Test-Path -Path ~\.last) {
         (Get-Content -Path ~\.last) | Set-Location
         Remove-Item -Path ~\.last
     }
@@ -28,8 +26,7 @@ function Start-Up
         .SYNOPSIS
         Generates the prompt before each line in the console
 #>
-function Set-Prompt
-{
+function Set-Prompt {
     Import-Module $sl.CurrentThemeLocation
 
     [ScriptBlock]$Prompt = {
@@ -37,8 +34,7 @@ function Set-Prompt
         $sl.ErrorCount = $global:error.Count
 
         #Start the vanilla posh-git when in a vanilla window, else: go nuts
-        if(Test-IsVanillaWindow)
-        {
+        if(Test-IsVanillaWindow) {
             Write-Host -Object ($pwd.ProviderPath) -NoNewline
             Write-VcsStatus
             return '> '
@@ -51,8 +47,7 @@ function Set-Prompt
     Set-Item -Path Function:prompt -Value $Prompt -Force
 }
 
-function global:Write-WithPrompt()
-{
+function global:Write-WithPrompt() {
     param(
         [string]
         $command
@@ -61,8 +56,7 @@ function global:Write-WithPrompt()
     $lastCommandFailed = $global:error.Count -gt $sl.ErrorCount
     $sl.ErrorCount = $global:error.Count
 
-    if(Test-IsVanillaWindow)
-    {
+    if(Test-IsVanillaWindow) {
         Write-ClassicPrompt -command $command 
         return
     }
@@ -71,8 +65,7 @@ function global:Write-WithPrompt()
     Write-Host ' ' -NoNewline
 }
 
-function Show-ThemeColors
-{
+function Show-ThemeColors {
     Write-Host -Object ''
     Write-ColorPreview -text 'GitDefaultColor                  ' -color $sl.Colors.GitDefaultColor
     Write-ColorPreview -text 'GitLocalChangesColor             ' -color $sl.Colors.GitLocalChangesColor
@@ -91,8 +84,7 @@ function Show-ThemeColors
     Write-Host -Object ''
 }
 
-function Write-ColorPreview
-{
+function Write-ColorPreview {
     param
     (
         [string]
@@ -105,33 +97,27 @@ function Write-ColorPreview
     Write-Host -Object '       ' -BackgroundColor $color
 }
 
-function Show-Colors
-{
-    for($i = 0; $i -lt 16; $i++)
-    {
+function Show-Colors {
+    for($i = 0; $i -lt 16; $i++) {
         $color = [ConsoleColor]$i
         Write-Host -Object $color -BackgroundColor $i
     }
 }
 
-function Set-Theme
-{
+function Set-Theme {
     param(
         [Parameter(Mandatory=$true)]
         [string]
         $name
     )
 
-    if (Test-Path "$($sl.MyThemesLocation)\$($name).psm1")
-    {
+    if (Test-Path "$($sl.MyThemesLocation)\$($name).psm1") {
         $sl.CurrentThemeLocation = "$($sl.MyThemesLocation)\$($name).psm1"
     }
-    elseif (Test-Path "$PSScriptRoot\Themes\$($name).psm1")
-    {
+    elseif (Test-Path "$PSScriptRoot\Themes\$($name).psm1") {
         $sl.CurrentThemeLocation = "$PSScriptRoot\Themes\$($name).psm1"
     }
-    else
-    {
+    else {
         Write-Host ''
         Write-Host "Theme $name not found. Available themes are:"
         Show-Themes
@@ -141,8 +127,7 @@ function Set-Theme
 }
 
 # Helper function to create argument completion results
-function New-CompletionResult
-{
+function New-CompletionResult {
     param(
         [Parameter(Mandatory)]
         [string]$CompletionText,
@@ -154,8 +139,7 @@ function New-CompletionResult
     New-Object System.Management.Automation.CompletionResult $CompletionText, $ListItemText, $CompletionResultType, $ToolTip
 }
 
-function ThemeCompletion 
-{
+function ThemeCompletion {
     param(
         $commandName, 
         $parameterName, 
