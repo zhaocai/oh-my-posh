@@ -40,6 +40,7 @@ function Set-Prompt {
             return '> '
         }
 
+        Reset-CursorPosition
         Write-Theme -lastCommandFailed $lastCommandFailed
         return ' '
     }

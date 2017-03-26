@@ -136,6 +136,12 @@ function Set-CursorForRightBlockWrite {
     Write-Host "$escapeChar[$($space)G" -NoNewline
 }
 
+function Reset-CursorPosition {
+    $postion = $host.UI.RawUI.CursorPosition
+    $postion.X = 0
+    $host.UI.RawUI.CursorPosition = $postion
+}
+
 function Save-CursorPosition {
     Write-Host "$escapeChar[s" -NoNewline
 }
