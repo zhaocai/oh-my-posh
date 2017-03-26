@@ -1,7 +1,7 @@
 #requires -Version 2 -Modules posh-git
 
-function Write-Theme
-{
+function Write-Theme {
+    
     param(
         [bool]
         $lastCommandFailed,
@@ -16,22 +16,19 @@ function Write-Theme
     Write-Prompt -Object $prompt -ForegroundColor $sl.Colors.PromptForegroundColor
     
     $status = Get-VCSStatus
-    if ($status)
-    {
+    if ($status) {
         $vcsInfo = Get-VcsInfo -status ($status)
         $info = $vcsInfo.VcInfo
         Write-Prompt -Object " $info" -ForegroundColor $vcsInfo.BackgroundColor
     }
     
     #check for elevated prompt
-    If (([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator'))
-    {
+    If (([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
         Write-Prompt -Object " $($sl.PromptSymbols.ElevatedSymbol)" -ForegroundColor $sl.Colors.AdminIconForegroundColor
     }
 
     #check the last command state and indicate if failed
-    If ($lastCommandFailed)
-    {
+    If ($lastCommandFailed) {
         Write-Prompt -Object " $($sl.PromptSymbols.FailedCommandSymbol)" -ForegroundColor $sl.Colors.CommandFailedIconForegroundColor
     }
 
@@ -39,24 +36,25 @@ function Write-Theme
     $clock = [char]::ConvertFromUtf32(0x25F7)
     $timestamp = "$clock $timeStamp"
 
-    if ($status)
-    {
+    if ($status) {
         $timeStamp = Get-TimeSinceLastCommit
     }
 
     Set-CursorForRightBlockWrite -textLength $timestamp.Length
-    Write-Host $timeStamp -ForegroundColor $sl.Colors.PromptBackgroundColor
+    Write-Host $timeStamp -ForegroundColor $sl.Colors.PromptBackgroundColor 
+
+    if (Test-VirtualEnv) {
+        Write-Prompt -Object "$($sl.PromptSymbols.VirtualEnvSymbol) $(Get-VirtualEnvName) " -BackgroundColor $sl.Colors.VirtualEnvBackgroundColor -ForegroundColor $sl.Colors.VirtualEnvForegroundColor
+    }
   
-    if ($with)
-    {
+    if ($with) {
         Write-Prompt -Object "$($with.ToUpper()) " -BackgroundColor $sl.Colors.WithBackgroundColor -ForegroundColor $sl.Colors.WithForegroundColor
     }
 
     Write-Prompt -Object $sl.PromptSymbols.PromptIndicator -ForegroundColor $sl.Colors.PromptBackgroundColor
 }
 
-function Get-TimeSinceLastCommit
-{
+function Get-TimeSinceLastCommit {
     return (git log --pretty=format:'%cr' -1)
 }
 
@@ -68,3 +66,5 @@ $sl.Colors.WithForegroundColor = [ConsoleColor]::DarkRed
 $sl.Colors.PromptHighlightColor = [ConsoleColor]::DarkBlue
 $sl.Colors.WithBackgroundColor = [ConsoleColor]::Magenta
 $sl.Colors.PromptSymbolColor = [ConsoleColor]::White
+$sl.Colors.VirtualEnvBackgroundColor = [System.ConsoleColor]::Magenta
+$sl.Colors.VirtualEnvForegroundColor = [System.ConsoleColor]::Red

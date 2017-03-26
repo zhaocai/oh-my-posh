@@ -1,7 +1,6 @@
 #requires -Version 2 -Modules posh-git
 
-function Write-Theme
-{
+function Write-Theme {
     param(
         [bool]
         $lastCommandFailed,
@@ -10,14 +9,12 @@ function Write-Theme
     )
 
     #check the last command state and indicate if failed
-    If ($lastCommandFailed)
-    {
+    If ($lastCommandFailed) {
         Write-Prompt -Object "$($sl.PromptSymbols.FailedCommandSymbol) " -ForegroundColor $sl.Colors.CommandFailedIconForegroundColor
     }
 
     #check for elevated prompt
-    If (([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator'))
-    {
+    If (([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
         Write-Prompt -Object "$($sl.PromptSymbols.ElevatedSymbol) " -ForegroundColor $sl.Colors.AdminIconForegroundColor
     }
 
@@ -25,19 +22,22 @@ function Write-Theme
     Write-Prompt -Object "$user " -ForegroundColor $sl.Colors.PromptForegroundColor
 
     # Writes the drive portion
-    Write-Prompt -Object (Get-ShortPath -dir $pwd) -ForegroundColor $sl.Colors.DriveForegroundColor
-    Write-Prompt -Object ' ' -ForegroundColor $sl.Colors.DriveForegroundColor
+    Write-Prompt -Object "$(Get-ShortPath -dir $pwd) " -ForegroundColor $sl.Colors.DriveForegroundColor
 
     $status = Get-VCSStatus
-    if ($status)
-    {
+    if ($status) {
         $themeInfo = Get-VcsInfo -status ($status)
         Write-Prompt -Object "git:" -ForegroundColor $sl.Colors.PromptForegroundColor
         Write-Prompt -Object "$($themeInfo.VcInfo) " -ForegroundColor $themeInfo.BackgroundColor 
+    }    
+
+    # write virtualenv
+    if (Test-VirtualEnv) {
+        Write-Prompt -Object 'env:' -ForegroundColor $sl.Colors.PromptForegroundColor
+        Write-Prompt -Object "$(Get-VirtualEnvName) " -ForegroundColor $themeInfo.VirtualEnvForegroundColor 
     }
 
-    if ($with)
-    {
+    if ($with) {
         Write-Prompt -Object "$($with.ToUpper()) " -BackgroundColor $sl.Colors.WithBackgroundColor -ForegroundColor $sl.Colors.WithForegroundColor
     }
 
