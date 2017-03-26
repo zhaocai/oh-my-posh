@@ -27,6 +27,7 @@ $global:ThemeSettings = New-Object -TypeName PSObject -Property @{
         SegmentSeparatorForwardSymbol    = [char]::ConvertFromUtf32(0x26A1)
         SegmentSeparatorBackwardSymbol   = [char]::ConvertFromUtf32(0x26A1)
         PathSeparator                    = '\'
+        VirtualEnvSymbol                 = [char]::ConvertFromUtf32(0xE606)
     }
     Colors                           = @{
         GitDefaultColor                  = [ConsoleColor]::DarkGreen
@@ -44,6 +45,8 @@ $global:ThemeSettings = New-Object -TypeName PSObject -Property @{
         WithBackgroundColor              = [ConsoleColor]::DarkRed
         WithForegroundColor              = [ConsoleColor]::White
         GitForegroundColor               = [ConsoleColor]::Black
+        VirtualEnvForegroundColor        = [ConsoleColor]::White
+        VirtualEnvBackgroundColor        = [ConsoleColor]::Red
     }    
 }
 
