@@ -124,6 +124,18 @@ function Get-ShortPath {
     }
 }
 
+function Test-VirtualEnv {
+    if ($env:VIRTUAL_ENV) {
+        return $true
+    }
+    return $false
+}
+
+function Get-VirtualEnvName {
+    $virtualEnvName = ($env:VIRTUAL_ENV -split '\\')[-1]
+    return $virtualEnvName
+}
+
 function Set-CursorForRightBlockWrite {
     param(
         [int]
