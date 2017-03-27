@@ -143,13 +143,15 @@ function New-CompletionResult {
 function ThemeCompletion {
     param(
         $commandName, 
-        $parameterName, 
-        $wordToComplete, 
-        $commandAst, 
+        $parameterName,
+        $wordToComplete,
+        $commandAst,
         $fakeBoundParameter
     )
     $themes = @()
-    Get-ChildItem -Path "$($ThemeSettings.MyThemesLocation)\*" -Include '*.psm1' -Exclude Tools.ps1 | ForEach-Object -Process { $themes += $_.BaseName }
+    if (Test-Path "$($ThemeSettings.MyThemesLocation)\*") {
+        Get-ChildItem -Path "$($ThemeSettings.MyThemesLocation)\*" -Include '*.psm1' -Exclude Tools.ps1 | ForEach-Object -Process { $themes += $_.BaseName }
+    }    
     Get-ChildItem -Path "$PSScriptRoot\Themes\*" -Include '*.psm1' -Exclude Tools.ps1 | Sort-Object Name | ForEach-Object -Process { $themes += $_.BaseName }
     $themes | Where-Object {$_.ToLower().StartsWith($wordToComplete)} | ForEach-Object { New-CompletionResult -CompletionText $_  }
 }
