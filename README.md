@@ -9,7 +9,7 @@ oh-my-posh
 * [Prerequisites](#prerequisites)
 * [Installation](#installation)
 * [Configuration](#configuration)
-* [Helper functions](#helper)
+* [Helper functions](#helper-functions)
 * [Themes](#themes)
 
 ## About
