@@ -1,7 +1,10 @@
 oh-my-posh
 ==========
 
-[![Build status](https://img.shields.io/appveyor/ci/janjoris/oh-my-posh/master.svg?maxAge=2592000)](https://ci.appveyor.com/project/JanJoris/oh-my-posh) [![Coverage Status](https://coveralls.io/repos/github/JanJoris/oh-my-posh/badge.svg)](https://coveralls.io/github/JanJoris/oh-my-posh) [![Gitter](https://badges.gitter.im/oh-my-posh/Lobby.svg)](https://gitter.im/oh-my-posh/general?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge) [![PS Gallery](https://img.shields.io/badge/install-PS%20Gallery-blue.svg)](https://www.powershellgallery.com/packages/oh-my-posh)
+[![Build status][build-status-badge]][build-status]
+[![Coverage Status][coverage-status-badge]][coverage-status]
+[![Gitter][gitter-badge]][gitter]
+[![PS Gallery][psgallery-badge]][powershell-gallery]
 
 ## Table of Contents
 
@@ -14,10 +17,11 @@ oh-my-posh
 
 ## About
 
-A theme engine for Powershell in ConEmu inspired by the work done by Chris Benti on [PS-Config](https://github.com/chrisbenti/PS-Config). And [Oh-My-ZSH](https://github.com/robbyrussell/oh-my-zsh) on OSX and Linux (hence the name)
-More information about why I made this can be found on my [blog](https://herebedragons.io/shell-shock/).
+A theme engine for Powershell in ConEmu inspired by the work done by Chris Benti on [PS-Config][chrisbenti-psconfig] and [Oh-My-ZSH][oh-my-zsh] on OSX and Linux (hence the name).
 
-![Theme](https://herebedragons.io/img/indications.png)
+More information about why I made this can be found on my [blog].
+
+![Theme][img-indications]
 
 Features:
 
@@ -34,18 +38,18 @@ Features:
 
 ## Prerequisites
 
-You should use ConEmu to have a brilliant terminal experience on Windows. You can install it using [Chocolatey](https://chocolatey.org/):
+You should use ConEmu to have a brilliant terminal experience on Windows. You can install it using [Chocolatey][chocolatey]:
 
 ```bash
 choco install ConEmu
 ```
 
-The fonts I use are Powerline fonts, there is a great [repository](https://github.com/ryanoasis/nerd-fonts) containing them.
-I use `Meslo LG M Regular for Powerline Nerd Font` in my ConEmu setup together with custom colors You can find my theme [here](https://gist.github.com/JanJoris/71c9f1361a562f337b855b75d7bbfd28).
+The fonts I use are Powerline fonts, there is a great [repository][nerdfonts] containing them.
+I use `Meslo LG M Regular for Powerline Nerd Font` in my ConEmu setup together with custom colors. You can find my theme [here][theme-gist].
 
 ## Installation
 
-You need to use the the [PowerShell Gallery](https://www.powershellgallery.com/packages/oh-my-posh/) to install oh-my-posh.
+You need to use the the [PowerShell Gallery][powershell-gallery] to install oh-my-posh.
 
 Install posh-git and oh-my-posh:
 
@@ -62,7 +66,7 @@ List the current configuration:
 $ThemeSettings
 ```
 
-![Theme](https://herebedragons.io/img/themesettings.png)
+![Theme][img-themesettings]
 
 You can tweak the settings by manipulating `$ThemeSettings`.
 This example allows you to tweak the branch symbol using a unicode character:
@@ -87,46 +91,47 @@ Set-Theme paradox
 
 `Show-ThemeColors`: display the colors used by the theme
 
-![Theme](https://herebedragons.io/img/themecolors.png)
+![Theme][img-themecolors]
 
 `Show-Colors`: display colors configured in ConEmu
 
-![Theme](https://herebedragons.io/img/showcolors.png)
+![Theme][img-showcolors]
 
 ## Themes
 
 ### Agnoster
 
-![Theme](https://herebedragons.io/img/agnoster.png)
+![Agnoster Theme][img-theme-agnoster]
 
 ### Paradox
 
-![Theme](https://herebedragons.io/img/paradox.png)
+![Paradox Theme][img-theme-paradox]
 
 ### Sorin
 
-![Theme](https://herebedragons.io/img/sorin.png)
+![Sorin Theme][img-theme-sorin]
 
 ### Darkblood
 
-![Theme](https://herebedragons.io/img/darkblood.png)
+![Darkblood Theme][img-theme-darkblood]
 
 ### Avit
 
-![Theme](https://herebedragons.io/img/avit.png)
+![Avit Theme][img-theme-avit]
 
 ### Honukai
 
-![Theme](https://herebedragons.io/img/honukai.png)
+![Honukai Theme][img-theme-honukai]
 
 ### Fish
 
-![Theme](https://herebedragons.io/img/fish.png)
+![Fish Theme][img-theme-fish]
 
 ## Creating your own theme
 
 If you want to create a theme it can be done rather easily by adding a `mytheme.psm1` file in the folder indicated in `$ThemeSettings.MyThemesLocation` (the folder defaults to `~\Documents\WindowsPowerShell\PoshThemes`, feel free to change it).
-The only required function is Write-Theme, you can use the following template to get started:
+
+The only required function is `Write-Theme`. You can use the following template to get started:
 
 ````bash
 #requires -Version 2 -Modules posh-git
@@ -147,6 +152,7 @@ $sl = $global:ThemeSettings #local settings
 ````
 
 Feel free to use the public helper functions `Get-VCSStatus`, `Get-VcsInfo`, `Get-Drive`, `Get-ShortPath`, `Set-CursorForRightBlockWrite`, `Save-CursorPosition`, `Pop-CursorPosition`, `Set-CursorUp` or add your own logic completely.
+
 To test the output in ConEmu, just switch to your theme:
 
 ```bash
@@ -159,5 +165,34 @@ Happy theming!
 
 ### Based on work by
 
-* [Chris Benti](https://github.com/chrisbenti/PS-Config)
-* [Keith Dahlby](https://github.com/dahlbyk/posh-git)
+* [Chris Benti][chrisbenti-psconfig]
+* [Keith Dahlby][keithdahlby-poshgit]
+
+
+
+[build-status-badge]: https://img.shields.io/appveyor/ci/janjoris/oh-my-posh/master.svg?maxAge=2592000
+[build-status]: https://ci.appveyor.com/project/JanJoris/oh-my-posh
+[coverage-status-badge]: https://coveralls.io/repos/github/JanJoris/oh-my-posh/badge.svg
+[coverage-status]: https://coveralls.io/github/JanJoris/oh-my-posh
+[gitter-badge]: https://badges.gitter.im/oh-my-posh/Lobby.svg
+[gitter]: https://gitter.im/oh-my-posh/general?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge
+[psgallery-badge]: https://img.shields.io/badge/install-PS%20Gallery-blue.svg
+[powershell-gallery]: https://www.powershellgallery.com/packages/oh-my-posh/
+[chrisbenti-psconfig]: https://github.com/chrisbenti/PS-Config
+[keithdahlby-poshgit]: https://github.com/dahlbyk/posh-git
+[oh-my-zsh]: https://github.com/robbyrussell/oh-my-zsh
+[blog]: https://herebedragons.io/shell-shock/
+[chocolatey]: https://chocolatey.org/
+[nerdfonts]: https://github.com/ryanoasis/nerd-fonts
+[theme-gist]: https://gist.github.com/JanJoris/71c9f1361a562f337b855b75d7bbfd28
+[img-indications]: https://herebedragons.io/img/indications.png
+[img-themesettings]: https://herebedragons.io/img/themesettings.png
+[img-themecolors]: https://herebedragons.io/img/themecolors.png
+[img-showcolors]: https://herebedragons.io/img/showcolors.png
+[img-theme-agnoster]: https://herebedragons.io/img/agnoster.png
+[img-theme-paradox]: https://herebedragons.io/img/paradox.png
+[img-theme-sorin]: https://herebedragons.io/img/sorin.png
+[img-theme-darkblood]: https://herebedragons.io/img/darkblood.png
+[img-theme-avit]: https://herebedragons.io/img/avit.png
+[img-theme-honukai]: https://herebedragons.io/img/honukai.png
+[img-theme-fish]: https://herebedragons.io/img/fish.png
