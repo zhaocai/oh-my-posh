@@ -67,21 +67,9 @@ function global:Write-WithPrompt() {
 }
 
 function Show-ThemeColors {
+    
     Write-Host -Object ''
-    Write-ColorPreview -text 'GitDefaultColor                  ' -color $sl.Colors.GitDefaultColor
-    Write-ColorPreview -text 'GitLocalChangesColor             ' -color $sl.Colors.GitLocalChangesColor
-    Write-ColorPreview -text 'GitNoLocalChangesAndAheadColor   ' -color $sl.Colors.GitNoLocalChangesAndAheadColor
-    Write-ColorPreview -text 'GitForegroundColor               ' -color $sl.Colors.GitForegroundColor
-    Write-ColorPreview -text 'PromptForegroundColor            ' -color $sl.Colors.PromptForegroundColor
-    Write-ColorPreview -text 'PromptBackgroundColor            ' -color $sl.Colors.PromptBackgroundColor
-    Write-ColorPreview -text 'PromptSymbolColor                ' -color $sl.Colors.PromptSymbolColor
-    Write-ColorPreview -text 'PromptHighlightColor             ' -color $sl.Colors.PromptHighlightColor
-    Write-ColorPreview -text 'SessionInfoBackgroundColor       ' -color $sl.Colors.SessionInfoBackgroundColor
-    Write-ColorPreview -text 'SessionInfoForegroundColor       ' -color $sl.Colors.SessionInfoForegroundColor
-    Write-ColorPreview -text 'CommandFailedIconForegroundColor ' -color $sl.Colors.CommandFailedIconForegroundColor
-    Write-ColorPreview -text 'AdminIconForegroundColor         ' -color $sl.Colors.AdminIconForegroundColor
-    Write-ColorPreview -text 'WithBackgroundColor              ' -color $sl.Colors.WithBackgroundColor
-    Write-ColorPreview -text 'WithForegroundColor              ' -color $sl.Colors.WithForegroundColor
+    $sl.Colors.Keys | Sort-Object | % { Write-ColorPreview -text ("{0,-35}" -f $_ ) -color $sl.Colors[$_] }
     Write-Host -Object ''
 }
 
