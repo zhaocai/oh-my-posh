@@ -195,7 +195,7 @@ function ThemeCompletion {
     )
     $themes = Get-Theme
     $themes | 
-        Where-Object { $_.Name.ToLower().StartsWith($wordToComplete.ToLower()); Write-Warning "$($_.Name.ToLower()) $wordToComplete" } | 
+        Where-Object { $_.Name.ToLower().StartsWith($wordToComplete.ToLower()); } | 
         Select-Object -Unique -ExpandProperty Name | 
         ForEach-Object { New-CompletionResult -CompletionText $_ }
 }
