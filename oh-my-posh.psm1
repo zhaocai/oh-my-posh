@@ -67,9 +67,35 @@ function global:Write-WithPrompt() {
 }
 
 function Show-ThemeColors {
-    
+    ##############################
+    #.SYNOPSIS
+    # Show Current Theme Colors
+    #
+    #.DESCRIPTION
+    # Good for checking if your current color mappings
+    # work well with the theme.
+    #
+    ############################## 
     Write-Host -Object ''
-    $sl.Colors.Keys | Sort-Object | % { Write-ColorPreview -text ("{0,-35}" -f $_ ) -color $sl.Colors[$_] }
+    $sl.Colors.Keys | Sort-Object | ForEach-Object { Write-ColorPreview -text ("{0,-35}" -f $_ ) -color $sl.Colors[$_] }
+    Write-Host -Object ''
+}
+
+function Show-ThemeSymbols {
+    ##############################
+    #.SYNOPSIS
+    # Show Current Theme Symbols
+    #
+    #.DESCRIPTION
+    # Good for checking if your current font supports
+    # all the symbols the theme uses.
+    #
+    ############################## 
+    Write-Host -Object "`n--PromptSymbols--`n"
+    $sl.PromptSymbols.Keys | Sort-Object | ForEach-Object { Write-Host -Object ("{0,3} {1}" -f $sl.PromptSymbols[$_], $_) }
+    Write-Host -Object ''
+    Write-Host -Object "`n--GitSymbols--`n"
+    $sl.GitSymbols.Keys | Sort-Object | ForEach-Object { Write-Host -Object ("{0,3} {1}" -f $sl.GitSymbols[$_], $_) }
     Write-Host -Object ''
 }
 
