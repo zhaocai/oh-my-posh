@@ -154,6 +154,37 @@ function New-CompletionResult {
     New-Object System.Management.Automation.CompletionResult $CompletionText, $ListItemText, $CompletionResultType, $ToolTip
 }
 
+function Get-Theme {
+    ##############################
+    #.SYNOPSIS
+    # Get available theme(s)
+    #.DESCRIPTION
+    # Shows available themes, as well as their type and location
+    # - Defaults (shipped with module)
+    # - User (user defined themes)
+    ############################## 
+    $themes = @()
+    
+    if (Test-Path "$($ThemeSettings.MyThemesLocation)\*") {
+        Get-ChildItem -Path "$($ThemeSettings.MyThemesLocation)\*" -Include '*.psm1' -Exclude Tools.ps1 | ForEach-Object -Process { 
+            $themes += [PSCustomObject]@{ 
+                Name = $_.BaseName
+                Type = "User"
+                Location = $_.FullName
+            }
+        }
+    }
+
+    Get-ChildItem -Path "$PSScriptRoot\Themes\*" -Include '*.psm1' -Exclude Tools.ps1 | Sort-Object Name | ForEach-Object -Process { 
+        $themes += [PSCustomObject]@{ 
+                Name = $_.BaseName
+                Type = "Defaults"
+                Location = $_.FullName
+        }
+    }
+    $themes
+}
+
 function ThemeCompletion {
     param(
         $commandName, 
@@ -162,12 +193,11 @@ function ThemeCompletion {
         $commandAst,
         $fakeBoundParameter
     )
-    $themes = @()
-    if (Test-Path "$($ThemeSettings.MyThemesLocation)\*") {
-        Get-ChildItem -Path "$($ThemeSettings.MyThemesLocation)\*" -Include '*.psm1' -Exclude Tools.ps1 | ForEach-Object -Process { $themes += $_.BaseName }
-    }    
-    Get-ChildItem -Path "$PSScriptRoot\Themes\*" -Include '*.psm1' -Exclude Tools.ps1 | Sort-Object Name | ForEach-Object -Process { $themes += $_.BaseName }
-    $themes | Where-Object {$_.ToLower().StartsWith($wordToComplete)} | ForEach-Object { New-CompletionResult -CompletionText $_  }
+    $themes = Get-Theme
+    $themes | 
+        Where-Object { $_.Name.ToLower().StartsWith($wordToComplete.ToLower()); Write-Warning "$($_.Name.ToLower()) $wordToComplete" } | 
+        Select-Object -Unique -ExpandProperty Name | 
+        ForEach-Object { New-CompletionResult -CompletionText $_ }
 }
 
 Register-ArgumentCompleter `
