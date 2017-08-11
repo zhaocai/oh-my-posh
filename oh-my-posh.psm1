@@ -27,7 +27,7 @@ function Start-Up {
         Generates the prompt before each line in the console
 #>
 function Set-Prompt {
-    Import-Module $sl.CurrentThemeLocation
+    Import-Module $sl.CurrentThemeLocation -Force
 
     [ScriptBlock]$Prompt = {
         $lastCommandFailed = $global:error.Count -gt $sl.ErrorCount
@@ -134,11 +134,11 @@ function Set-Theme {
     }
     else {
         Write-Host ''
-        Write-Host "Theme $name not found. Available themes are:"
-        Show-Themes
+        Write-Warning "Theme $name not found. Available themes are:"
+        Get-Theme
     }
 
-    Set-Prompt
+    Set-Prompt;
 }
 
 # Helper function to create argument completion results
