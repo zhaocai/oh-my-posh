@@ -138,7 +138,7 @@ function Set-Theme {
         Get-Theme
     }
 
-    Set-Prompt;
+    Set-Prompt
 }
 
 # Helper function to create argument completion results
