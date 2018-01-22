@@ -1,7 +1,7 @@
 #requires -Version 2 -Modules posh-git
 
 function Write-Theme {
-    
+
     param(
         [bool]
         $lastCommandFailed,
@@ -9,27 +9,27 @@ function Write-Theme {
         $with
     )
 
-    Write-Prompt -Object $sl.PromptSymbols.StartSymbol -ForegroundColor $sl.Colors.PromptForegroundColor
+    $prompt = Write-Prompt -Object $sl.PromptSymbols.StartSymbol -ForegroundColor $sl.Colors.PromptForegroundColor
 
     $prompt = Get-FullPath -dir $pwd
 
-    Write-Prompt -Object $prompt -ForegroundColor $sl.Colors.PromptForegroundColor
-    
+    $prompt += Write-Prompt -Object $prompt -ForegroundColor $sl.Colors.PromptForegroundColor
+
     $status = Get-VCSStatus
     if ($status) {
         $vcsInfo = Get-VcsInfo -status ($status)
         $info = $vcsInfo.VcInfo
-        Write-Prompt -Object " $info" -ForegroundColor $vcsInfo.BackgroundColor
+        $prompt += Write-Prompt -Object " $info" -ForegroundColor $vcsInfo.BackgroundColor
     }
-    
+
     #check for elevated prompt
-    If (([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
-        Write-Prompt -Object " $($sl.PromptSymbols.ElevatedSymbol)" -ForegroundColor $sl.Colors.AdminIconForegroundColor
+    If (Test-Administrator) {
+        $prompt += Write-Prompt -Object " $($sl.PromptSymbols.ElevatedSymbol)" -ForegroundColor $sl.Colors.AdminIconForegroundColor
     }
 
     #check the last command state and indicate if failed
     If ($lastCommandFailed) {
-        Write-Prompt -Object " $($sl.PromptSymbols.FailedCommandSymbol)" -ForegroundColor $sl.Colors.CommandFailedIconForegroundColor
+        $prompt += Write-Prompt -Object " $($sl.PromptSymbols.FailedCommandSymbol)" -ForegroundColor $sl.Colors.CommandFailedIconForegroundColor
     }
 
     $timeStamp = Get-Date -Format T
@@ -41,17 +41,19 @@ function Write-Theme {
     }
 
     Set-CursorForRightBlockWrite -textLength $timestamp.Length
-    Write-Host $timeStamp -ForegroundColor $sl.Colors.PromptBackgroundColor 
+    Write-Host $timeStamp -ForegroundColor $sl.Colors.PromptBackgroundColor
 
     if (Test-VirtualEnv) {
-        Write-Prompt -Object "$($sl.PromptSymbols.VirtualEnvSymbol) $(Get-VirtualEnvName) " -BackgroundColor $sl.Colors.VirtualEnvBackgroundColor -ForegroundColor $sl.Colors.VirtualEnvForegroundColor
-    }
-  
-    if ($with) {
-        Write-Prompt -Object "$($with.ToUpper()) " -BackgroundColor $sl.Colors.WithBackgroundColor -ForegroundColor $sl.Colors.WithForegroundColor
+        $prompt += Write-Prompt -Object "$($sl.PromptSymbols.VirtualEnvSymbol) $(Get-VirtualEnvName) " -BackgroundColor $sl.Colors.VirtualEnvBackgroundColor -ForegroundColor $sl.Colors.VirtualEnvForegroundColor
     }
 
-    Write-Prompt -Object $sl.PromptSymbols.PromptIndicator -ForegroundColor $sl.Colors.PromptBackgroundColor
+    if ($with) {
+        $prompt += Write-Prompt -Object "$($with.ToUpper()) " -BackgroundColor $sl.Colors.WithBackgroundColor -ForegroundColor $sl.Colors.WithForegroundColor
+    }
+
+    $prompt += Write-Prompt -Object $sl.PromptSymbols.PromptIndicator -ForegroundColor $sl.Colors.PromptBackgroundColor
+    $prompt += ' '
+    $prompt
 }
 
 function Get-TimeSinceLastCommit {

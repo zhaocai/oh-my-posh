@@ -1,24 +1,19 @@
 function Test-IsVanillaWindow {
-    if($env:PROMPT -or $env:ConEmuANSI) {
-        # Console
-        return $false
-    }
-    elseif ($env:TERM_PROGRAM -eq "Hyper") {
-        # Hyper.is
-        return $false
-    }
-    elseif ($env:TERM_PROGRAM -eq "vscode") {
-        # Visual Studio Code 
-        return $false
-    }
-    else {
-        # Powershell
-        return $true
-    }
+    return $GitPromptSettings.AnsiConsole
 }
 
 function Get-Home {
     return $HOME
+}
+
+function Test-Administrator {
+    if ($PSVersionTable.Platform -eq 'Unix') {
+        return $false #TO-DO: find out how to distinguish this one
+    } elseif ($PSVersionTable.Platform -eq 'Windows') {
+        return Test-Administrator
+    } else {
+        return $false
+    }
 }
 
 
@@ -115,7 +110,7 @@ function Get-ShortPath {
         if ($shortPath) {
             $drive = (Get-Drive -dir $dir)
             return "$drive$($sl.PromptSymbols.PathSeparator)$shortPath"
-        } 
+        }
         else {
             if ($dir.path -eq $HOME) {
                 return '~'
@@ -149,7 +144,7 @@ function Set-CursorForRightBlockWrite {
         [int]
         $textLength
     )
-    
+
     $rawUI = $Host.UI.RawUI
     $width = $rawUI.BufferSize.Width
     $space = $width - $textLength

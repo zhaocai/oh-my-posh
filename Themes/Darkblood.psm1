@@ -8,8 +8,8 @@ function Write-Theme {
         [string]
         $with
     )
-    
-    Write-Prompt -Object ([char]::ConvertFromUtf32(0x250C)) -ForegroundColor $sl.Colors.PromptSymbolColor
+
+    $prompt = Write-Prompt -Object ([char]::ConvertFromUtf32(0x250C)) -ForegroundColor $sl.Colors.PromptSymbolColor
     Write-Segment -content ([Environment]::UserName) -foregroundColor $sl.Colors.PromptForegroundColor
 
     $prompt = "$user$($sl.PromptSymbols.SegmentForwardSymbol) "
@@ -22,7 +22,7 @@ function Write-Theme {
     }
 
     #check for elevated prompt
-    If (([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
+    If (Test-Administrator) {
         Write-Segment -content $sl.PromptSymbols.ElevatedSymbol -foregroundColor $sl.Colors.AdminIconForegroundColor
     }
 
@@ -34,22 +34,24 @@ function Write-Theme {
     Write-Host ''
 
     # SECOND LINE
-    Write-Prompt -Object ([char]::ConvertFromUtf32(0x2514)) -ForegroundColor $sl.Colors.PromptSymbolColor
+    $prompt += Write-Prompt -Object ([char]::ConvertFromUtf32(0x2514)) -ForegroundColor $sl.Colors.PromptSymbolColor
     $prompt = Get-FullPath -dir $pwd
-    Write-Prompt -Object $sl.PromptSymbols.SegmentBackwardSymbol -ForegroundColor $sl.Colors.PromptSymbolColor
-    Write-Prompt -Object $prompt -ForegroundColor $sl.Colors.PromptForegroundColor
+    $prompt += Write-Prompt -Object $sl.PromptSymbols.SegmentBackwardSymbol -ForegroundColor $sl.Colors.PromptSymbolColor
+    $prompt += Write-Prompt -Object $prompt -ForegroundColor $sl.Colors.PromptForegroundColor
 
     if (Test-VirtualEnv) {
-        Write-Prompt -Object "$($sl.PromptSymbols.SegmentForwardSymbol) $($sl.PromptSymbols.SegmentBackwardSymbol)" -ForegroundColor $sl.Colors.PromptSymbolColor        
-        Write-Prompt -Object "$($sl.PromptSymbols.VirtualEnvSymbol) $(Get-VirtualEnvName)" -ForegroundColor $sl.Colors.VirtualEnvForegroundColor
+        $prompt += Write-Prompt -Object "$($sl.PromptSymbols.SegmentForwardSymbol) $($sl.PromptSymbols.SegmentBackwardSymbol)" -ForegroundColor $sl.Colors.PromptSymbolColor
+        $prompt += Write-Prompt -Object "$($sl.PromptSymbols.VirtualEnvSymbol) $(Get-VirtualEnvName)" -ForegroundColor $sl.Colors.VirtualEnvForegroundColor
     }
 
     if ($with) {
-        Write-Prompt -Object "$($sl.PromptSymbols.SegmentForwardSymbol) $($sl.PromptSymbols.SegmentBackwardSymbol)" -ForegroundColor $sl.Colors.PromptSymbolColor
-        Write-Prompt -Object "$($with.ToUpper())" -ForegroundColor $sl.Colors.WithForegroundColor
+        $prompt += Write-Prompt -Object "$($sl.PromptSymbols.SegmentForwardSymbol) $($sl.PromptSymbols.SegmentBackwardSymbol)" -ForegroundColor $sl.Colors.PromptSymbolColor
+        $prompt += Write-Prompt -Object "$($with.ToUpper())" -ForegroundColor $sl.Colors.WithForegroundColor
     }
 
-    Write-Prompt -Object "$($sl.PromptSymbols.SegmentForwardSymbol)$($sl.PromptSymbols.PromptIndicator)" -ForegroundColor $sl.Colors.PromptSymbolColor
+    $prompt += Write-Prompt -Object "$($sl.PromptSymbols.SegmentForwardSymbol)$($sl.PromptSymbols.PromptIndicator)" -ForegroundColor $sl.Colors.PromptSymbolColor
+    $prompt += ' '
+    $prompt
 }
 
 function Write-Segment {
@@ -59,9 +61,9 @@ function Write-Segment {
         $foregroundColor
     )
 
-    Write-Prompt -Object $sl.PromptSymbols.SegmentBackwardSymbol -ForegroundColor $sl.Colors.PromptSymbolColor
-    Write-Prompt -Object $content -ForegroundColor $foregroundColor
-    Write-Prompt -Object "$($sl.PromptSymbols.SegmentForwardSymbol) " -ForegroundColor $sl.Colors.PromptSymbolColor
+    $prompt += Write-Prompt -Object $sl.PromptSymbols.SegmentBackwardSymbol -ForegroundColor $sl.Colors.PromptSymbolColor
+    $prompt += Write-Prompt -Object $content -ForegroundColor $foregroundColor
+    $prompt += Write-Prompt -Object "$($sl.PromptSymbols.SegmentForwardSymbol) " -ForegroundColor $sl.Colors.PromptSymbolColor
 }
 
 $sl = $global:ThemeSettings #local settings
