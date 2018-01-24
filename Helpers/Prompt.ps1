@@ -1,5 +1,17 @@
+<#
+.SYNOPSIS
+    Defines whether or not the current terminal supports ANSI characters
+.DESCRIPTION
+    Logic taken from posh-git that sets the $GitPromptSettings.AnsiConsole bool:
+    [bool]$AnsiConsole = $Host.UI.SupportsVirtualTerminal -or ($Env:ConEmuANSI -eq "ON")
+#>
 function Test-IsVanillaWindow {
-    return $GitPromptSettings.AnsiConsole
+    $hasAnsiSupport = (Test-AnsiTerminal) -or ($Env:ConEmuANSI -eq "ON") -or ($env:PROMPT) -or ($env:TERM_PROGRAM -eq "Hyper") -or ($env:TERM_PROGRAM -eq "vscode")
+    return !$hasAnsiSupport
+}
+
+function Test-AnsiTerminal {
+    return $Host.UI.SupportsVirtualTerminal
 }
 
 function Get-Home {

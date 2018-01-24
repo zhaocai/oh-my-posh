@@ -3,10 +3,10 @@ $global:ThemeSettings = New-Object -TypeName PSObject -Property @{
     MyThemesLocation                 = '~\Documents\WindowsPowerShell\PoshThemes'
     ErrorCount                       = 0
     PromptSymbols                    = @{
-        StartSymbol                      = ' '        
+        StartSymbol                      = ' '
         TruncatedFolderSymbol            = '..'
-        PromptIndicator                  = '>' 
-        FailedCommandSymbol              = 'x'        
+        PromptIndicator                  = '>'
+        FailedCommandSymbol              = 'x'
         ElevatedSymbol                   = '!'
         SegmentForwardSymbol             = '>'
         SegmentBackwardSymbol            = '<'
@@ -21,18 +21,23 @@ $sut = (Split-Path -Leaf $MyInvocation.MyCommand.Path).Replace(".Tests.", ".")
 . "$here\$sut"
 
 Describe "Test-IsVanillaWindow" {
-    BeforeEach { Remove-Item Env:\PROMPT -ErrorAction SilentlyContinue
-                 Remove-Item Env:\ConEmuANSI -ErrorAction SilentlyContinue
+    BeforeEach { Remove-Item Env:\ConEmuANSI -ErrorAction SilentlyContinue
+                 Remove-Item Env:\PROMPT -ErrorAction SilentlyContinue
                  Remove-Item Env:\TERM_PROGRAM -ErrorAction SilentlyContinue }
     Context "Running in a non-vanilla window" {
         It "runs in ConEmu and outputs 'false'" {
-        $env:PROMPT = $false
-        $env:ConEmuANSI = $true
-        Test-IsVanillaWindow | Should Be $false
+            $env:ConEmuANSI = "ON"
+            Mock Test-AnsiTerminal { return $false }
+            Test-IsVanillaWindow | Should Be $false
         }
-        It "runs in cmder and outputs 'false'" {
+        It "runs in ConEmu and outputs 'false'" {
+            $env:ConEmuANSI = "ON"
+            Mock Test-AnsiTerminal { return $true }
+            Test-IsVanillaWindow | Should Be $false
+        }
+        It "runs in an ANSI supported terminal and outputs 'false'" {
             $env:ConEmuANSI = $false
-            $env:PROMPT = $true
+            Mock Test-AnsiTerminal { return $true }
             Test-IsVanillaWindow | Should Be $false
         }
         It "runs in ConEmu and outputs 'false'" {
@@ -41,21 +46,30 @@ Describe "Test-IsVanillaWindow" {
         }
         It "runs in cmder and outputs 'false'" {
             $env:PROMPT = $true
+            Mock Test-AnsiTerminal { return $false }
             Test-IsVanillaWindow | Should Be $false
         }
         It "runs in cmder and conemu and outputs 'false'" {
             $env:PROMPT = $true
             $env:ConEmuANSI = $true
+            Mock Test-AnsiTerminal { return $false }
             Test-IsVanillaWindow | Should Be $false
         }
         It "runs in Hyper.js and outputs 'false'" {
             $env:TERM_PROGRAM = "Hyper"
+            Mock Test-AnsiTerminal { return $false }
+            Test-IsVanillaWindow | Should Be $false
+        }
+        It "runs in vscode and outputs 'false'" {
+            $env:TERM_PROGRAM = "vscode"
+            Mock Test-AnsiTerminal { return $false }
             Test-IsVanillaWindow | Should Be $false
         }
     }
     Context "Running in a vanilla window" {
         It "runs in a vanilla window and outputs 'true'" {
-           Test-IsVanillaWindow | Should Be $true
+            Mock Test-AnsiTerminal { return $false }
+            Test-IsVanillaWindow | Should Be $true
         }
     }
 }
@@ -124,7 +138,7 @@ Describe "Test-NotDefaultUser" {
             Test-NotDefaultUser($user) | Should Be $true
         }
         It "same username and outside VirtualEnv gives 'false'" {
-            Mock Test-VirtualEnv { return $false }            
+            Mock Test-VirtualEnv { return $false }
             $user = 'name'
             Test-NotDefaultUser($user) | Should Be $false
         }
@@ -149,12 +163,12 @@ Describe "Test-NotDefaultUser" {
             Test-NotDefaultUser($user) | Should Be $true
         }
         It "different username and outside VirtualEnv gives 'true'" {
-            Mock Test-VirtualEnv { return $false }                        
+            Mock Test-VirtualEnv { return $false }
             $user = 'differentName'
             Test-NotDefaultUser($user) | Should Be $true
         }
         It "no username and inside VirtualEnv gives 'true'" {
-            Mock Test-VirtualEnv { return $true }                        
+            Mock Test-VirtualEnv { return $true }
             Test-NotDefaultUser($user) | Should Be $true
         }
     }

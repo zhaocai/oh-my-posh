@@ -58,10 +58,10 @@ function global:Write-WithPrompt() {
     $sl.ErrorCount = $global:error.Count
 
     if(Test-IsVanillaWindow) {
-        Write-ClassicPrompt -command $command 
+        Write-ClassicPrompt -command $command
         return
     }
-    
+
     Write-Theme -lastCommandFailed $lastCommandFailed -with $command
     Write-Host ' ' -NoNewline
 }
@@ -75,7 +75,7 @@ function Show-ThemeColors {
     # Good for checking if your current color mappings
     # work well with the theme.
     #
-    ############################## 
+    ##############################
     Write-Host -Object ''
     $sl.Colors.Keys | Sort-Object | ForEach-Object { Write-ColorPreview -text ("{0,-35}" -f $_ ) -color $sl.Colors[$_] }
     Write-Host -Object ''
@@ -90,7 +90,7 @@ function Show-ThemeSymbols {
     # Good for checking if your current font supports
     # all the symbols the theme uses.
     #
-    ############################## 
+    ##############################
     Write-Host -Object "`n--PromptSymbols--`n"
     $sl.PromptSymbols.Keys | Sort-Object | ForEach-Object { Write-Host -Object ("{0,3} {1}" -f $sl.PromptSymbols[$_], $_) }
     Write-Host -Object ''
@@ -162,12 +162,12 @@ function Get-Theme {
     # Shows available themes, as well as their type and location
     # - Defaults (shipped with module)
     # - User (user defined themes)
-    ############################## 
+    ##############################
     $themes = @()
-    
+
     if (Test-Path "$($ThemeSettings.MyThemesLocation)\*") {
-        Get-ChildItem -Path "$($ThemeSettings.MyThemesLocation)\*" -Include '*.psm1' -Exclude Tools.ps1 | ForEach-Object -Process { 
-            $themes += [PSCustomObject]@{ 
+        Get-ChildItem -Path "$($ThemeSettings.MyThemesLocation)\*" -Include '*.psm1' -Exclude Tools.ps1 | ForEach-Object -Process {
+            $themes += [PSCustomObject]@{
                 Name = $_.BaseName
                 Type = "User"
                 Location = $_.FullName
@@ -175,8 +175,8 @@ function Get-Theme {
         }
     }
 
-    Get-ChildItem -Path "$PSScriptRoot\Themes\*" -Include '*.psm1' -Exclude Tools.ps1 | Sort-Object Name | ForEach-Object -Process { 
-        $themes += [PSCustomObject]@{ 
+    Get-ChildItem -Path "$PSScriptRoot\Themes\*" -Include '*.psm1' -Exclude Tools.ps1 | Sort-Object Name | ForEach-Object -Process {
+        $themes += [PSCustomObject]@{
                 Name = $_.BaseName
                 Type = "Defaults"
                 Location = $_.FullName
@@ -187,16 +187,16 @@ function Get-Theme {
 
 function ThemeCompletion {
     param(
-        $commandName, 
+        $commandName,
         $parameterName,
         $wordToComplete,
         $commandAst,
         $fakeBoundParameter
     )
     $themes = Get-Theme
-    $themes | 
-        Where-Object { $_.Name.ToLower().StartsWith($wordToComplete.ToLower()); } | 
-        Select-Object -Unique -ExpandProperty Name | 
+    $themes |
+        Where-Object { $_.Name.ToLower().StartsWith($wordToComplete.ToLower()); } |
+        Select-Object -Unique -ExpandProperty Name |
         ForEach-Object { New-CompletionResult -CompletionText $_ }
 }
 
