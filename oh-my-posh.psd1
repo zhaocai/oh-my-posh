@@ -9,7 +9,7 @@
 @{
 
 # Version number of this module.
-ModuleVersion = '%version%'
+ModuleVersion = '1.0.0.0'
 
 # Script module or binary module file associated with this manifest.
 RootModule = 'oh-my-posh.psm1'
@@ -61,7 +61,8 @@ FunctionsToExport = @('Show-Colors',
                       'Set-CursorUp',
                       'Test-VirtualEnv',
                       'Get-VirtualEnvName',
-                      'Test-NotDefaultUser')
+                      'Test-NotDefaultUser',
+                      'Test-Administrator')
 
 # Private data to pass to the module specified in RootModule. This may also contain a PSData hashtable with additional module metadata used by PowerShell.
 PrivateData = @{

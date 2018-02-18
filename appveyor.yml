@@ -12,7 +12,7 @@ install:
   - ps: Get-PackageProvider -Name Nuget -Force
   - ps: cinst pester
 build_script:
-  - ps: (Get-Content '.\oh-my-posh.psd1' -Raw).Replace('%version%', $ENV:APPVEYOR_BUILD_VERSION) | Out-File -Encoding 'UTF8' '.\oh-my-posh.psd1'
+  - ps: (Get-Content '.\oh-my-posh.psd1' -Raw).Replace('1.0.0.0', $ENV:APPVEYOR_BUILD_VERSION) | Out-File -Encoding 'UTF8' '.\oh-my-posh.psd1'
 before_test:
   - ps: Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
   - ps: Install-Module Coveralls -MinimumVersion 1.0.25 -Scope CurrentUser
