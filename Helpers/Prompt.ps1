@@ -22,9 +22,9 @@ function Test-Administrator {
     if ($PSVersionTable.Platform -eq 'Unix') {
         return $false #TO-DO: find out how to distinguish this one
     } elseif ($PSVersionTable.Platform -eq 'Windows') {
-        return Test-Administrator
+        return $false #TO-DO: find out how to distinguish this one
     } else {
-        return $false
+        return ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')
     }
 }
 
