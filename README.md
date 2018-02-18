@@ -49,7 +49,7 @@ I use `Meslo LG M Regular for Powerline Nerd Font` in my ConEmu setup together w
 
 ## Installation
 
-You need to use the the [PowerShell Gallery][powershell-gallery] to install oh-my-posh.
+You need to use the [PowerShell Gallery][powershell-gallery] to install oh-my-posh.
 
 Install posh-git and oh-my-posh:
 
@@ -58,14 +58,14 @@ Install-Module posh-git -Scope CurrentUser
 Install-Module oh-my-posh -Scope CurrentUser
 ```
 
-Enable engine in your PowerShell profile:
+Enable the engine in your PowerShell profile:
 
 ```bash
 if (!(Test-Path -Path $PROFILE )) { New-Item -Type File -Path $PROFILE -Force }
 notepad $PROFILE
 ```
 
-Append following lines to your PowerShell profile:
+Append the following lines to your PowerShell profile:
 
 ```bash
 Import-Module posh-git
@@ -73,7 +73,11 @@ Import-Module oh-my-posh
 Set-Theme paradox
 ```
 
-Last command sets theme for the console. Check available themes list below.
+The last command sets the theme for the console. Check the available themes list below.
+
+In case you're running this on PS Core, make sure to also install version 2.0.0-beta1 of `PSReadLine`
+
+    Install-Module -Name PSReadLine -AllowPrerelease -Scope CurrentUser -Force
 
 ## Configuration
 
