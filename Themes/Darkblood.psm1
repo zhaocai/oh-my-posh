@@ -10,9 +10,9 @@ function Write-Theme {
     )
 
     $prompt = Write-Prompt -Object ([char]::ConvertFromUtf32(0x250C)) -ForegroundColor $sl.Colors.PromptSymbolColor
-    Write-Segment -content ([Environment]::UserName) -foregroundColor $sl.Colors.PromptForegroundColor
+    Write-Segment -content (Get-UserName) -foregroundColor $sl.Colors.PromptForegroundColor
 
-    $prompt = "$user$($sl.PromptSymbols.SegmentForwardSymbol) "
+    $prompt = "$($sl.PromptSymbols.SegmentForwardSymbol) "
 
     $status = Get-VCSStatus
     if ($status) {

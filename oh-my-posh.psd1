@@ -45,7 +45,7 @@ VariablesToExport = @()
 AliasesToExport = '*'
 
 # Functions to export from this module
-FunctionsToExport = @('Show-Colors', 
+FunctionsToExport = @('Show-Colors',
                       'Show-ThemeColors',
                       'Show-ThemeSymbols',
                       'Get-Theme',
@@ -62,7 +62,8 @@ FunctionsToExport = @('Show-Colors',
                       'Test-VirtualEnv',
                       'Get-VirtualEnvName',
                       'Test-NotDefaultUser',
-                      'Test-Administrator')
+                      'Test-Administrator',
+                      'Get-ComputerName')
 
 # Private data to pass to the module specified in RootModule. This may also contain a PSData hashtable with additional module metadata used by PowerShell.
 PrivateData = @{

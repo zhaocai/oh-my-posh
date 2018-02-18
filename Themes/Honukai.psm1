@@ -11,7 +11,7 @@ function Write-Theme {
     # write # and space
     $prompt = Write-Prompt -Object $sl.PromptSymbols.StartSymbol -ForegroundColor $sl.Colors.PromptHighlightColor
     # write user
-    $user = [Environment]::UserName
+    $user = [System.Environment]::UserName
     if (Test-NotDefaultUser($user)) {
         $prompt += Write-Prompt -Object " $user" -ForegroundColor $sl.Colors.PromptHighlightColor
         # write at (devicename)

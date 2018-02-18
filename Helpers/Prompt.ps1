@@ -28,6 +28,12 @@ function Test-Administrator {
     }
 }
 
+function Get-ComputerName {
+    if ($PSVersionTable.Platform -ne 'Windows') {
+        return $env:NAME
+    }
+    return $env:COMPUTERNAME
+}
 
 function Get-Provider {
     param(
