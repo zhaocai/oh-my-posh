@@ -14,8 +14,13 @@ function Test-AnsiTerminal {
     return $Host.UI.SupportsVirtualTerminal
 }
 
+function Test-PsCore {
+    return $PSVersionTable.PSVersion.Major -gt 5
+}
+
 function Get-Home {
-    return $HOME
+    # On Unix systems, $HOME comes with a trailing slash, unlike the Windows variant
+    return $HOME.TrimEnd('/','\')
 }
 
 function Test-Administrator {
@@ -29,7 +34,7 @@ function Test-Administrator {
 }
 
 function Get-ComputerName {
-    if ($PSVersionTable.Platform -ne 'Windows') {
+    if (Test-PsCore -and $PSVersionTable.Platform -ne 'Windows') {
         return $env:NAME
     }
     return $env:COMPUTERNAME
@@ -97,7 +102,7 @@ function Get-FullPath {
     if ($dir.path -eq "$($dir.Drive.Name):\") {
         return "$($dir.Drive.Name):"
     }
-    $path = $dir.path.Replace($HOME,'~').Replace('\', $sl.PromptSymbols.PathSeparator)
+    $path = $dir.path.Replace((Get-Home),'~').Replace('\', $sl.PromptSymbols.PathSeparator)
     return $path
 }
 
@@ -114,7 +119,7 @@ function Get-ShortPath {
         $result = @()
         $currentDir = Get-Item $dir.path
 
-        while( ($currentDir.Parent) -And ($currentDir.FullName -ne $HOME) ) {
+        while( ($currentDir.Parent) -And ($currentDir.FullName -ne (Get-Home)) ) {
             if( (Test-IsVCSRoot -dir $currentDir) -Or ($result.length -eq 0) ) {
                 $result = ,$currentDir.Name + $result
             }
@@ -130,7 +135,7 @@ function Get-ShortPath {
             return "$drive$($sl.PromptSymbols.PathSeparator)$shortPath"
         }
         else {
-            if ($dir.path -eq $HOME) {
+            if ($dir.path -eq (Get-Home)) {
                 return '~'
             }
             return "$($dir.Drive.Name):"
