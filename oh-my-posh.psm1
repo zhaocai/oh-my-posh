@@ -17,8 +17,6 @@ function Start-Up {
         Remove-Item -Path ~\.last
     }
 
-    # Makes git diff work
-    $env:TERM = 'msys'
     Set-Prompt
 }
 
