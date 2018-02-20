@@ -1,18 +1,18 @@
 $global:ThemeSettings = New-Object -TypeName PSObject -Property @{
-    CurrentThemeLocation             = "$PSScriptRoot\Themes\Agnoster.psm1"
-    MyThemesLocation                 = '~\Documents\WindowsPowerShell\PoshThemes'
-    ErrorCount                       = 0
-    PromptSymbols                    = @{
-        StartSymbol                      = ' '
-        TruncatedFolderSymbol            = '..'
-        PromptIndicator                  = '>'
-        FailedCommandSymbol              = 'x'
-        ElevatedSymbol                   = '!'
-        SegmentForwardSymbol             = '>'
-        SegmentBackwardSymbol            = '<'
-        SegmentSeparatorForwardSymbol    = '>'
-        SegmentSeparatorBackwardSymbol   = '<'
-        PathSeparator                    = '\'
+    CurrentThemeLocation = "$PSScriptRoot\Themes\Agnoster.psm1"
+    MyThemesLocation     = '~\Documents\WindowsPowerShell\PoshThemes'
+    ErrorCount           = 0
+    PromptSymbols        = @{
+        StartSymbol                    = ' '
+        TruncatedFolderSymbol          = '..'
+        PromptIndicator                = '>'
+        FailedCommandSymbol            = 'x'
+        ElevatedSymbol                 = '!'
+        SegmentForwardSymbol           = '>'
+        SegmentBackwardSymbol          = '<'
+        SegmentSeparatorForwardSymbol  = '>'
+        SegmentSeparatorBackwardSymbol = '<'
+        PathSeparator                  = '\'
     }
 }
 
@@ -22,8 +22,8 @@ $sut = (Split-Path -Leaf $MyInvocation.MyCommand.Path).Replace(".Tests.", ".")
 
 Describe "Test-IsVanillaWindow" {
     BeforeEach { Remove-Item Env:\ConEmuANSI -ErrorAction SilentlyContinue
-                 Remove-Item Env:\PROMPT -ErrorAction SilentlyContinue
-                 Remove-Item Env:\TERM_PROGRAM -ErrorAction SilentlyContinue }
+        Remove-Item Env:\PROMPT -ErrorAction SilentlyContinue
+        Remove-Item Env:\TERM_PROGRAM -ErrorAction SilentlyContinue }
     Context "Running in a non-vanilla window" {
         It "runs in ConEmu and outputs 'false'" {
             $env:ConEmuANSI = "ON"
@@ -75,53 +75,58 @@ Describe "Test-IsVanillaWindow" {
 }
 
 Describe "Get-Home" {
-    It "returns $HOME" {
-           Get-Home | Should Be $HOME
-        }
+    It "returns $($HOME.TrimEnd('/','\'))" {
+        Get-Home | Should Be $HOME.TrimEnd('/', '\')
+    }
 }
 
 Describe "Get-Provider" {
     It "uses the provider 'AwesomeSauce'" {
-           Mock Get-Item { return @{PSProvider = @{Name = 'AwesomeSauce'}} }
-           Get-Provider $pwd | Should Be 'AwesomeSauce'
-        }
+        Mock Get-Item { return @{PSProvider = @{Name = 'AwesomeSauce'}} }
+        Get-Provider $pwd | Should Be 'AwesomeSauce'
+    }
 }
 
 Describe "Get-Drive" {
     Context "Running in the FileSystem" {
         BeforeAll { Mock Get-Provider { return 'FileSystem'} }
         It "is in the $HOME folder" {
-           Mock Get-Home {return 'C:\Users\Jan'}
-           $path = @{Drive = @{Name = 'C:'}; Path = 'C:\Users\Jan'}
-           Get-Drive $path | Should Be '~'
+            Mock Get-Home {return 'C:\Users\Jan'}
+            $path = @{Drive = @{Name = 'C:'}; Path = 'C:\Users\Jan'}
+            Get-Drive $path | Should Be '~'
         }
         It "is somewhere in the $HOME folder" {
-           Mock Get-Home {return 'C:\Users\Jan'}
-           $path = @{Drive = @{Name = 'C:'}; Path = 'C:\Users\Jan\Git\Somewhere'}
-           Get-Drive $path | Should Be '~'
+            Mock Get-Home {return 'C:\Users\Jan'}
+            $path = @{Drive = @{Name = 'C:'}; Path = 'C:\Users\Jan\Git\Somewhere'}
+            Get-Drive $path | Should Be '~'
         }
         It "is in 'Microsoft.PowerShell.Core\FileSystem::\\Test\Hello' with provider X:" {
-           $path = @{Drive = @{Name = 'X:'}; Path = 'Microsoft.PowerShell.Core\FileSystem::\\Test\Hello'}
-           Get-Drive $path | Should Be "Test$($ThemeSettings.PromptSymbols.PathSeparator)Hello$($ThemeSettings.PromptSymbols.PathSeparator)"
+            $path = @{Drive = @{Name = 'X:'}; Path = 'Microsoft.PowerShell.Core\FileSystem::\\Test\Hello'}
+            Get-Drive $path | Should Be "Test$($ThemeSettings.PromptSymbols.PathSeparator)Hello$($ThemeSettings.PromptSymbols.PathSeparator)"
         }
         It "is in C:" {
-           $path = @{Drive = @{Name = 'C:'}; Path = 'C:\Documents'}
-           Get-Drive $path | Should Be 'C:'
+            $path = @{Drive = @{Name = 'C:'}; Path = 'C:\Documents'}
+            Get-Drive $path | Should Be 'C:'
         }
         It "is has no drive" {
-           $path = @{Path = 'J:\Test\Folder\Somewhere'}
-           Get-Drive $path | Should Be 'J:'
+            $path = @{Path = 'J:\Test\Folder\Somewhere'}
+            Get-Drive $path | Should Be 'J:'
         }
         It "is has no valid path" {
-           $path = @{Path = 'J\Test\Folder\Somewhere'}
-           Get-Drive $path | Should Be 'J:'
+            if (Test-PsCore) {
+                $true | Should Be $true
+            }
+            else {
+                $path = @{Path = 'J\Test\Folder\Somewhere'}
+                Get-Drive $path | Should Be 'J:'
+            }
         }
     }
     Context "Running outside of the FileSystem" {
         BeforeAll { Mock Get-Provider { return 'SomewhereElse'} }
         It "running outside of the Filesystem in L:" {
-           $path = @{Drive = @{Name = 'L:'}; Path = 'L:\Documents'}
-           Get-Drive $path | Should Be 'L:'
+            $path = @{Drive = @{Name = 'L:'}; Path = 'L:\Documents'}
+            Get-Drive $path | Should Be 'L:'
         }
     }
 }
