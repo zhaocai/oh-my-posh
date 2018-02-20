@@ -47,7 +47,7 @@ function Get-Provider {
         $path
     )
 
-    return (Get-Item $path).PSProvider.Name
+    return (Get-Item $path -Force).PSProvider.Name
 }
 
 function Get-Drive {
@@ -117,7 +117,7 @@ function Get-ShortPath {
 
     if($provider -eq 'FileSystem') {
         $result = @()
-        $currentDir = Get-Item $dir.path
+        $currentDir = Get-Item $dir.path -Force
 
         while( ($currentDir.Parent) -And ($currentDir.FullName -ne (Get-Home)) ) {
             if( (Test-IsVCSRoot -dir $currentDir) -Or ($result.length -eq 0) ) {
