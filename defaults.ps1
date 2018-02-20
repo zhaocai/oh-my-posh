@@ -17,10 +17,10 @@ $global:ThemeSettings = New-Object -TypeName PSObject -Property @{
         BranchBehindStatusSymbol         = [char]::ConvertFromUtf32(0x2193)
     }
     PromptSymbols                    = @{
-        StartSymbol                      = ' '        
+        StartSymbol                      = ' '
         TruncatedFolderSymbol            = '..'
-        PromptIndicator                  = [char]::ConvertFromUtf32(0x25B6)  
-        FailedCommandSymbol              = [char]::ConvertFromUtf32(0x2A2F)        
+        PromptIndicator                  = [char]::ConvertFromUtf32(0x25B6)
+        FailedCommandSymbol              = [char]::ConvertFromUtf32(0x2A2F)
         ElevatedSymbol                   = [char]::ConvertFromUtf32(0x26A1)
         SegmentForwardSymbol             = [char]::ConvertFromUtf32(0xE0B0)
         SegmentBackwardSymbol            = [char]::ConvertFromUtf32(0x26A1)
@@ -47,7 +47,7 @@ $global:ThemeSettings = New-Object -TypeName PSObject -Property @{
         GitForegroundColor               = [ConsoleColor]::Black
         VirtualEnvForegroundColor        = [ConsoleColor]::White
         VirtualEnvBackgroundColor        = [ConsoleColor]::Red
-    }    
+    }
 }
 
 # PSColor default settings
@@ -55,7 +55,7 @@ $global:PSColor = @{
     File = @{
         Default    = @{ Color = 'White' }
         Directory  = @{ Color = 'DarkBlue'}
-        Hidden     = @{ Color = 'Gray'; Pattern = '^\.' } 
+        Hidden     = @{ Color = 'Gray'; Pattern = '^\.' }
         Code       = @{ Color = 'Magenta'; Pattern = '\.(java|c|cpp|cs|js|css|html)$' }
         Executable = @{ Color = 'Red'; Pattern = '\.(exe|bat|cmd|py|pl|ps1|psm1|vbs|rb|reg)$' }
         Text       = @{ Color = 'White'; Pattern = '\.(txt|cfg|conf|ini|csv|log|config|xml|yml|md|markdown)$' }
@@ -64,7 +64,7 @@ $global:PSColor = @{
     Service = @{
         Default = @{ Color = 'White' }
         Running = @{ Color = 'DarkGreen' }
-        Stopped = @{ Color = 'DarkYellow' }     
+        Stopped = @{ Color = 'DarkYellow' }
     }
     Match = @{
         Default    = @{ Color = 'White' }
@@ -76,5 +76,13 @@ $global:PSColor = @{
 
 # PSReadline options
 Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
-Set-PSReadlineOption -TokenKind Command -ForegroundColor DarkBlue
-Set-PSReadlineOption -TokenKind Parameter -ForegroundColor Yellow
+if ((Get-Module PSReadline).Version.Major -lt 2) {
+    Set-PSReadlineOption -TokenKind Command -ForegroundColor DarkBlue
+    Set-PSReadlineOption -TokenKind Parameter -ForegroundColor Yellow
+}
+else {
+    Set-PSReadlineOption -Colors @{
+        "Command" = [ConsoleColor]::DarkBlue
+        "Parameter" = [ConsoleColor]::Yellow
+    }
+}
