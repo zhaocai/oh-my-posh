@@ -1,5 +1,4 @@
-oh-my-posh
-==========
+# oh-my-posh
 
 [![Build status][build-status-badge]][build-status]
 [![Travis build status][travis-build-status-badge]][travis-build-status]
@@ -47,6 +46,8 @@ choco install ConEmu
 
 The fonts I use are Powerline fonts, there is a great [repository][nerdfonts] containing them.
 I use `Meslo LG M Regular for Powerline Nerd Font` in my ConEmu setup together with custom colors. You can find my theme [here][theme-gist].
+
+In case you notice weird glyphs after installing a font of choice, make sure the glyphs are available (maybe they have a different location in the font, if so, adjust the correct `$ThemeSettings` icon). If it turns out the character you want is not supported, select a different font.
 
 ## Installation
 
