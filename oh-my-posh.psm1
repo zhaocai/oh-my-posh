@@ -28,6 +28,9 @@ function Set-Prompt {
     Import-Module $sl.CurrentThemeLocation -Force
 
     [ScriptBlock]$Prompt = {
+
+        Update-ZLocation $pwd
+
         $lastCommandFailed = $global:error.Count -gt $sl.ErrorCount
         $sl.ErrorCount = $global:error.Count
 
