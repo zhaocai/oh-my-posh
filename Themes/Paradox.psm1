@@ -51,10 +51,10 @@ function Write-Theme {
     # Writes the postfix to the prompt
     $prompt += Write-Prompt -Object $sl.PromptSymbols.SegmentForwardSymbol -ForegroundColor $lastColor
 
-    $timeStamp = Get-Date -UFormat %r
+    $timeStamp = Get-Date -UFormat %R
     $timestamp = "[$timeStamp]"
 
-    $prompt += Set-CursorForRightBlockWrite -textLength $timestamp.Length
+    $prompt += Set-CursorForRightBlockWrite -textLength ($timestamp.Length + 1)
     $prompt += Write-Prompt $timeStamp -ForegroundColor $sl.Colors.PromptForegroundColor
 
     $prompt += Set-Newline
@@ -62,14 +62,13 @@ function Write-Theme {
     if ($with) {
         $prompt += Write-Prompt -Object "$($with.ToUpper()) " -BackgroundColor $sl.Colors.WithBackgroundColor -ForegroundColor $sl.Colors.WithForegroundColor
     }
-
-    $prompt += Write-Prompt -Object $sl.PromptSymbols.PromptIndicator -ForegroundColor $sl.Colors.PromptBackgroundColor
+    $prompt += Write-Prompt -Object ($sl.PromptSymbols.PromptIndicator) -ForegroundColor $sl.Colors.PromptBackgroundColor
     $prompt += ' '
     $prompt
 }
 
 $sl = $global:ThemeSettings #local settings
-$sl.PromptSymbols.StartSymbol = ' '
+$sl.PromptSymbols.StartSymbol = ''
 $sl.PromptSymbols.PromptIndicator = [char]::ConvertFromUtf32(0x276F)
 $sl.PromptSymbols.SegmentForwardSymbol = [char]::ConvertFromUtf32(0xE0B0)
 $sl.Colors.PromptForegroundColor = [ConsoleColor]::White
